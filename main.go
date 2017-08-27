@@ -35,6 +35,13 @@ const invTypeDDL = `CREATE TABLE IF NOT EXISTS invtypes (
 )
 `
 
+const certMasteriesDDL = `CREATE TABLE IF NOT EXISTS certmasteries (
+    typeid integer,
+    masterylevel integer,
+	certid integer
+)
+`
+
 var (
 	dbUser, dbName, dbHost, dbPassword string
 	dbPort                             int
@@ -42,7 +49,7 @@ var (
 )
 
 func importInventoryTypes(db *sql.DB, entries map[string]*inventory.Type) {
-	var columns = []string{
+	var invCols = []string{
 		"typeid",
 		"groupid",
 		"typename",
@@ -62,15 +69,25 @@ func importInventoryTypes(db *sql.DB, entries map[string]*inventory.Type) {
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	stmt, err := txn.Prepare(pq.CopyIn("invtypes", columns...))
+	// There's something weird with multiple pq.CopyIn in the same transaction. Investigate.
+	txn2, err := db.Begin()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	for key, entry := range entries {
+	invStmt, err := txn.Prepare(pq.CopyIn("invtypes", invCols...))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	mastStmt, err := txn2.Prepare(pq.CopyIn("certmasteries", "typeid", "masterylevel", "certid"))
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Println("about to run")
+	for typeID, entry := range entries {
 		vals := []interface{}{
-			key,
+			typeID,
 			entry.GroupID,
 			entry.Name["en"],
 			entry.Description["en"],
@@ -84,20 +101,46 @@ func importInventoryTypes(db *sql.DB, entries map[string]*inventory.Type) {
 			entry.IconID,
 			entry.SoundID,
 		}
-		_, err = stmt.Exec(vals...)
+		_, err = invStmt.Exec(vals...)
 		if err != nil {
 			log.Fatal(err)
 		}
+		if len(entry.Masteries) > 0 {
+			for level, masteries := range entry.Masteries {
+				for _, certID := range masteries {
+					_, err = mastStmt.Exec(typeID, level, certID)
+					if err != nil {
+						log.Fatal(err)
+					}
+					//					log.Printf("added mastery (%s %s %d)", typeID, level, certID)
+				}
+			}
+		}
+
 	}
-	_, err = stmt.Exec()
+
+	_, err = invStmt.Exec()
 	if err != nil {
 		log.Fatal(err)
 	}
-	err = stmt.Close()
+	_, err = mastStmt.Exec()
 	if err != nil {
 		log.Fatal(err)
 	}
+	err = invStmt.Close()
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = mastStmt.Close()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	err = txn.Commit()
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = txn2.Commit()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -135,6 +178,11 @@ func main() {
 
 	// TODO move this to it's own function
 	_, err = db.Exec(invTypeDDL)
+	if err != nil {
+		log.Fatalf("Could not create table: %s", err)
+	}
+
+	_, err = db.Exec(certMasteriesDDL)
 	if err != nil {
 		log.Fatalf("Could not create table: %s", err)
 	}
