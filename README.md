@@ -1,6 +1,6 @@
 # eve-sdeloader
 
-`eve-sdeloader` is a tool for importing an EVE static data export from [EVE Developer Resources](https://developers.eveonline.com/resource/resources) and imports it into a Postgresql database. 
+`eve-sdeloader` is a tool for importing an EVE static data export from [EVE Developer Resources](https://developers.eveonline.com/resource/resources) to a Postgresql database. 
 
 # Current status
 
