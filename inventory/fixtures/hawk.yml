@@ -1,0 +1,198 @@
+0:
+    capacity: 300.0
+    description:
+        de: 'In Nachfolge der Schiffsbaukunst der Caldari verlässt sich die Hawk seit
+            grauer Vorzeit auf unglaublich starke Schildsysteme, um Kämpfe durchzustehen.
+            Zusammen mit Lenkwaffenwerfern und Geschütztürmen ist sie ein kampfstarkes,
+            gut ausgewogenes Kampfschiff.
+
+
+            Entwickler: Lai Dai
+
+
+            Lai Dai hatte immer Ausgewogenheit bei der Zusammenstellung der Bordinstrumente
+            im Sinn, was zu einer Reihe von vielseitigen Schiffen geführt, aber nur
+            sehr wenig zu taktischer Spezialisierung beigetragen hat.'
+        en: 'Following in the footsteps of Caldari vessels since time immemorial,
+            the Hawk relies on tremendously powerful shield systems to see it through
+            combat, blending launchers and turrets to provide for a powerful, well-rounded
+            combat vessel.
+
+
+            Developer: Lai Dai
+
+
+            Lai Dai have always favored a balanced approach to their mix of on-board
+            systems, leading to a line-up of versatile ships but providing very little
+            in terms of tactical specialization.'
+        fr: 'Vaisseau de combat puissant et équilibré, le Hawk dispose de systèmes
+            de boucliers extrêmement puissants à l''instar de tous les vaisseaux caldari,
+            complémentés par une alliance détonante de lance-missiles et de tourelles.
+
+
+            Constructeur : Lai Dai
+
+
+            Lai Dai a toujours privilégié une certaine homogénéité dans les multiples
+            systèmes embarqués de ses vaisseaux extrêmement polyvalents, mais peu
+            adaptés aux spécialisations tactiques.'
+        ja: '有史以前から続くカルダリ艦船の伝統を受け継ぐホークは、戦闘に耐え抜くための極めて強力なシールドシステムにランチャーやタレットを組み合わせた、強力でバランスの良い戦闘艦である。
+
+
+            開発元: ライダイ
+
+
+            ライダイの船は一般的に船内システムがバランスよく組み合わされ、多目的に使用できる。ただし、個別の用途における能力は劣る。'
+        ru: 'В соответствии с древними традициями калдарского кораблестроения ударные
+            фрегаты типа «Хок» оснащены мощнейшей аппаратурой силовых полей, которая
+            может стать главным козырем, определяющим выживание корабля в бою; благодаря
+            наличию точек монтажа как пусковых, так и орудийных установок, «Хок» является
+            эффективным и многофункциональным кораблём.
+
+
+            Разработчик: корпорация «Лай Дай»
+
+
+            Конструкторы «Лай Дай» предпочитают сбалансированный подход при сочетании
+            бортовых систем, что делает их корабли очень гибкими в использовании,
+            но при этом менее эффективными при выполнении некоторых частных задач.'
+        zh: '战鹰级突击护卫舰沿袭了自古以来的加达里舰船模式，依靠强大的护盾系统在战斗中求得生存，并且将炮台和发射器混合搭配，从而使自身成为全面的战斗舰船。
+
+
+            开发商：莱戴
+
+
+            莱戴集团一直喜欢从平衡的角度来搭配他们的船载系统，因此他们拥有一系列多用途的舰船，却少有针对特定战术的产品。'
+    factionID: 500001
+    graphicID: 1882
+    groupID: 324
+    marketGroupID: 434
+    mass: 1217000.0
+    masteries:
+        0:
+        - 96
+        - 99
+        - 150
+        - 75
+        - 139
+        - 85
+        - 94
+        1:
+        - 96
+        - 99
+        - 150
+        - 75
+        - 139
+        - 85
+        - 94
+        2:
+        - 96
+        - 99
+        - 150
+        - 75
+        - 139
+        - 85
+        - 94
+        3:
+        - 96
+        - 99
+        - 150
+        - 75
+        - 139
+        - 85
+        - 94
+        4:
+        - 96
+        - 99
+        - 150
+        - 75
+        - 139
+        - 85
+        - 118
+        - 94
+    name:
+        de: Hawk
+        en: Hawk
+        fr: Hawk
+        ja: ホーク
+        ru: Hawk
+        zh: 战鹰级
+    portionSize: 1
+    published: true
+    raceID: 1
+    radius: 39.0
+    sofFactionName: laidai
+    soundID: 20070
+    traits:
+        roleBonuses:
+        -   bonus: 50
+            bonusText:
+                de: Reduktion des <a href=showinfo:3454>Mikrowarpantrieb</a>-Signaturradius
+                en: reduction in <a href=showinfo:3454>Microwarpdrive</a> signature
+                    radius penalty
+                fr: de réduction à la pénalité de rayon de signature des <a href=showinfo:3454>propulseurs
+                    de microwarp</a>
+                ja: <a href=showinfo:3454>マイクロワープドライブ</a>のシグネチャ半径ペナルティが軽減
+                ru: уменьшается влияние <a href=showinfo:3454>микроварп-ускорителей</a>
+                    на размер сигнатуры корабля
+                zh: <a href="showinfo:3454">微型跃迁推进器</a>的信号半径惩罚加成
+            importance: 1
+            unitID: 105
+        types:
+            3330:
+            -   bonus: 10
+                bonusText:
+                    de: Bonus auf den Kinetikschaden von <a href=showinfo:3321>leichten
+                        Lenkwaffen</a> und <a href=showinfo:3320>Raketen</a>
+                    en: bonus to kinetic <a href=showinfo:3321>Light Missile</a> and
+                        <a href=showinfo:3320>Rocket</a> damage
+                    fr: de bonus aux dégâts cinétiques des <a href=showinfo:3321>missiles
+                        légers</a> et des <a href=showinfo:3320>roquettes</a>
+                    ja: <a href=showinfo:3321>ライトミサイル</a>と<a href=showinfo:3320>ロケット</a>のキネティックダメージが増加
+                    ru: увеличивается урон кинетических БЧ <a href=showinfo:3321>лёгких
+                        ракет</a> и <a href=showinfo:3320>лёгких штурмовых ракет</a>
+                    zh: <a href="showinfo:3321">轻型导弹</a>和<a href="showinfo:3320">火箭</a>动能伤害加成
+                importance: 1
+                unitID: 105
+            -   bonus: 5
+                bonusText:
+                    de: Bonus auf die Feuerrate von <a href=showinfo:3321>Leichten
+                        Lenkwaffenwerfern</a> und <a href=showinfo:3320>Raketenwerfern</a>
+                    en: bonus to <a href=showinfo:3321>Light Missile</a> and <a href=showinfo:3320>Rocket</a>
+                        Launcher rate of fire
+                    fr: de bonus à la cadence de tir des <a href=showinfo:3321>lance-missiles
+                        légers</a> et des <a href=showinfo:3320>lance-roquettes</a>
+                    ja: <a href=showinfo:3321>ライトミサイル</a>と<a href=showinfo:3320>ロケット</a>ランチャーの発射間隔が短縮
+                    ru: увеличивается скорострельность ПУ <a href=showinfo:3321>лёгких
+                        ракет</a> и <a href=showinfo:3320>лёгких штурмовых ракет</a>
+                    zh: <a href="showinfo:3320">火箭</a>和<a href="showinfo:3321">轻型导弹</a>发射器射速加成
+                importance: 2
+                unitID: 105
+            12095:
+            -   bonus: 10
+                bonusText:
+                    de: Bonus auf die Maximalgeschwindigkeit von <a href=showinfo:3321>leichten
+                        Lenkwaffen</a> und <a href=showinfo:3320>Raketen</a>
+                    en: bonus to <a href=showinfo:3321>Light Missile</a> and <a href=showinfo:3320>Rocket</a>
+                        max velocity
+                    fr: de bonus à la vitesse maximale des <a href=showinfo:3321>missiles
+                        légers</a> et des <a href=showinfo:3320>roquettes</a>
+                    ja: <a href=showinfo:3321>ライトミサイル</a>と<a href=showinfo:3320>ロケット</a>の最高速度が上昇
+                    ru: увеличивается скорость полёта <a href=showinfo:3321>лёгких
+                        ракет</a> и <a href=showinfo:3320>лёгких штурмовых ракет</a>
+                    zh: <a href="showinfo:3321">轻型导弹</a>和<a href="showinfo:3320">火箭</a>飞行速度加成
+                importance: 1
+                unitID: 105
+            -   bonus: 7.5
+                bonusText:
+                    de: Bonus auf die Leistung von <a href=showinfo:3416>Schildboostern</a>
+                    en: bonus to <a href=showinfo:3416>Shield Booster</a> amount
+                    fr: de bonus au montant des <a href=showinfo:3416>boosters de
+                        bouclier</a>
+                    ja: <a href=showinfo:3416>シールドブースター</a>のブースト量が増加
+                    ru: повышается производительность <a href=showinfo:3416>установок
+                        накачки щитов</a>
+                    zh: <a href="showinfo:3416">护盾回充增量器</a>回充量加成
+                importance: 2
+                unitID: 105
+    volume: 16500.0

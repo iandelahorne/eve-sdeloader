@@ -1,0 +1,53 @@
+0:
+    description:
+        de: 'Dieser Hauptreihenstern gehört einer Klasse an, die sich oft durch eine
+            gelbe oder gelblich-orange Farbe auszeichnet und über den gewaltigen Wasserstofffusionsprozess
+            im Herzen des Sterns eine enorme Menge Energie erzeugt und ausstrahlt.
+
+
+
+
+            Im Orbit dieser Planeten können sowohl terrestrische Planeten als auch
+            Gasriesen in unterschiedlicher Anzahl gefunden werden, von denen sich
+            einer oder mehrere in der bewohnbaren Zone befindet.'
+        en: "A main-sequence stellar body of a class that is often yellow or yellow-orange
+            in hue, generating and emitting energy from the vast hydrogen fusion process
+            within the heart of the star.\r\n\r\nVarious numbers of planets of the
+            terrestrial and gas giant types are found around these stars and the habitable
+            zones often contain one or more planets."
+        fr: Communément jaunes ou jaune orangé, ces étoiles de la séquence principale
+            génèrent et émettent de l'énergie par fusion des noyaux d'hydrogène emprisonnés
+            dans le cœur. Leur écosphère stellaire engendre la formation de planètes
+            géantes de type terrestre ou gazeux, parmi lesquelles quelques spécimens
+            gravitent souvent en zone habitable.
+        ru: 'Звезда главной последовательности, желтого или желто-оранжевого цвета,
+            генерирует и излучает энергию в ходе мощного процесса водородного термоядерного
+            синтеза, идущего в центре звезды.
+
+
+
+
+            Вокруг этих звезд могут находиться планетные системы, состоящие из планет
+            земного типа и газовых гигантов; в обитаемой зоне часто находится как
+            минимум одна планета.'
+        zh: '一种主星序星体，通常是黄色或黄橙色的色调，通过巨大的氢融合过程从恒星内产生和发射能量。
+
+
+
+
+            这些恒星周围发现了大量陆地和气体巨星，而居住区通常包含一个或多个行星。'
+    graphicID: 21457
+    groupID: 6
+    mass: 1000000000000000000
+    name:
+        de: Sun G5 (Yellow)
+        en: Sun G5 (Yellow)
+        fr: Soleil G5 (jaune)
+        ja: 恒星G5（イエロー）
+        ru: Sun G5 (Yellow)
+        zh: 恒星G5(黄色)
+    portionSize: 1
+    published: false
+    radius: 10000
+    soundID: 20099
+    volume: 1
