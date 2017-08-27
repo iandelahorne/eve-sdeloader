@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"path/filepath"
 
 	"github.com/lib/pq"
 	yaml "gopkg.in/yaml.v2"
@@ -14,7 +15,7 @@ import (
 	"github.com/lflux/eve-sdeloader/inventory"
 )
 
-const typeIDFile = `sde/fsd/typeIDs.yaml`
+const typeIDFile = `fsd/typeIDs.yaml`
 const invTypeDDL = `CREATE TABLE IF NOT EXISTS invtypes (
     typeid integer NOT NULL,
     groupid integer,
@@ -37,6 +38,7 @@ const invTypeDDL = `CREATE TABLE IF NOT EXISTS invtypes (
 var (
 	dbUser, dbName, dbHost, dbPassword string
 	dbPort                             int
+	sdeDirectory                       string
 )
 
 func importInventoryTypes(db *sql.DB, entries map[string]*inventory.Type) {
@@ -104,10 +106,11 @@ func importInventoryTypes(db *sql.DB, entries map[string]*inventory.Type) {
 
 func init() {
 	flag.IntVar(&dbPort, "dbport", 5432, "Database port")
-	flag.StringVar(&dbUser, "dbuser", "", "Database username")
+	flag.StringVar(&dbUser, "dbuser", "sdetest", "Database username")
 	flag.StringVar(&dbHost, "dbhost", "localhost", "Database host")
 	flag.StringVar(&dbName, "dbname", "sdetest", "Database name")
 	flag.StringVar(&dbPassword, "dbpassword", "", "Database password")
+	flag.StringVar(&sdeDirectory, "sdedirectory", "./sde", "Directory containing an unzipped EVE SDE YAML dump")
 }
 
 func main() {
@@ -130,15 +133,17 @@ func main() {
 		_ = db.Close()
 	}()
 
+	// TODO move this to it's own function
 	_, err = db.Exec(invTypeDDL)
 	if err != nil {
 		log.Fatalf("Could not create table: %s", err)
 	}
 
-	f, err := os.Open(typeIDFile)
+	path := filepath.Join(sdeDirectory, typeIDFile)
+	f, err := os.Open(path)
 
 	if err != nil {
-		log.Fatalf("Could not open %s: %s", typeIDFile, err)
+		log.Fatalf("Could not open %s: %s", path, err)
 	}
 	defer func() {
 		_ = f.Close()
@@ -146,14 +151,16 @@ func main() {
 
 	buf, err := ioutil.ReadAll(f)
 	if err != nil {
-		log.Fatalf("Could not read %s: %s", typeIDFile, err)
+		log.Fatalf("Could not read %s: %s", path, err)
 	}
 
+	log.Println("Parsing invtypes from ", path)
 	entries := make(map[string]*inventory.Type)
 	err = yaml.Unmarshal(buf, entries)
 	if err != nil {
-		log.Fatalf("Could not parse %s: %s", typeIDFile, err)
+		log.Fatalf("Could not parse %s: %s", path, err)
 	}
-
+	log.Println("Starting invtypes import")
 	importInventoryTypes(db, entries)
+	log.Println("Import finished")
 }
