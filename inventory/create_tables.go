@@ -28,6 +28,15 @@ const certMasteriesDDL = `CREATE TABLE IF NOT EXISTS certmasteries (
 )
 `
 
+const invTraitsDDL = `CREATE TABLE IF NOT EXISTS invtraits (
+    traitid serial,
+    typeid integer,
+    skillid integer,
+    bonus double precision,
+    bonustext text,
+    unitid integer
+);`
+
 // CreateTables creates the tables for invtypes
 func CreateTables(db *sql.DB) error {
 	tx, err := db.Begin()
@@ -41,6 +50,11 @@ func CreateTables(db *sql.DB) error {
 	}
 
 	_, err = tx.Exec(certMasteriesDDL)
+	if err != nil {
+		return err
+	}
+
+	_, err = tx.Exec(invTraitsDDL)
 	if err != nil {
 		return err
 	}

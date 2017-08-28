@@ -10,6 +10,7 @@ import (
 	_ "github.com/lib/pq"
 
 	"github.com/lflux/eve-sdeloader/inventory"
+	"github.com/lflux/eve-sdeloader/translations"
 )
 
 const typeIDFile = `fsd/typeIDs.yaml`
@@ -52,6 +53,10 @@ func main() {
 	err = inventory.CreateTables(db)
 	if err != nil {
 		log.Fatalf("could not create inventory tables: %s", err)
+	}
+	err = translations.CreateTables(db)
+	if err != nil {
+		log.Fatalf("could not create translation tables: %s", err)
 	}
 
 	path := filepath.Join(sdeDirectory, typeIDFile)

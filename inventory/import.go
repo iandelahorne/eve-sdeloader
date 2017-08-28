@@ -5,12 +5,32 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"log"
 	"os"
 	"strings"
 
+	"github.com/mitchellh/mapstructure"
 	yaml "gopkg.in/yaml.v2"
 )
+
+func insertBonuses(stmt *sql.Stmt, typeID string, skillID int64, bonuses []map[string]interface{}) error {
+	for _, bonus := range bonuses {
+		var decodedBonus Bonus
+		err := mapstructure.Decode(bonus, &decodedBonus)
+		if err != nil {
+			return err
+		}
+		var traitID int
+		err = stmt.QueryRow(typeID,
+			skillID,
+			decodedBonus.Amount,
+			decodedBonus.UnitID,
+			decodedBonus.BonusText["en"]).Scan(&traitID)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
 
 // ImportFile imports a file at path to the table `invtypes`
 func ImportFile(db *sql.DB, path string) error {
@@ -39,6 +59,7 @@ func loadFromReader(r io.Reader) (map[string]*Type, error) {
 	}
 
 	return entries, nil
+
 }
 
 // Import imports from a reader containing typeID YAML to the table `invtypes`
@@ -84,6 +105,11 @@ func Import(db *sql.DB, r io.Reader) error {
 		return err
 	}
 
+	traitStmt, err := txn.Prepare(`INSERT INTO invtraits (typeid, skillid, bonus, unitid, bonustext) VALUES ($1, $2, $3, $4, $5) RETURNING traitid`)
+	if err != nil {
+		return err
+	}
+
 	for typeID, entry := range entries {
 		vals := []interface{}{
 			typeID,
@@ -102,28 +128,30 @@ func Import(db *sql.DB, r io.Reader) error {
 		}
 		_, err = invStmt.Exec(vals...)
 		if err != nil {
-			if e := txn.Rollback(); e != nil {
-				// Need a good way to combine errors
-				log.Println("Error rolling back txn in error handler: ", e)
-			}
 			return err
 		}
 
-		if len(entry.Masteries) > 0 {
-			for level, masteries := range entry.Masteries {
-				for _, certID := range masteries {
-					_, err = mastStmt.Exec(typeID, level, certID)
-					if err != nil {
-						if e := txn.Rollback(); e != nil {
-							// Need a good way to combine errors
-							log.Println("Error rolling back txn in error handler: ", e)
-						}
-						return err
-					}
+		for level, masteries := range entry.Masteries {
+			for _, certID := range masteries {
+				_, err = mastStmt.Exec(typeID, level, certID)
+				if err != nil {
+					return err
 				}
 			}
 		}
 
+		if entry.Traits != nil {
+			for skill, typeBonus := range entry.Traits.Types {
+				err = insertBonuses(traitStmt, typeID, skill, typeBonus)
+				if err != nil {
+					return err
+				}
+			}
+			err = insertBonuses(traitStmt, typeID, -1, entry.Traits.RoleBonuses)
+			if err != nil {
+				return err
+			}
+		}
 	}
 
 	err = invStmt.Close()
@@ -131,6 +159,10 @@ func Import(db *sql.DB, r io.Reader) error {
 		return err
 	}
 	err = mastStmt.Close()
+	if err != nil {
+		return err
+	}
+	err = traitStmt.Close()
 	if err != nil {
 		return err
 	}

@@ -27,3 +27,10 @@ type Type struct {
 	Volume           float64
 	Traits           *Traits `yaml:"traits"`
 }
+
+type Bonus struct {
+	Amount     int `mapstructure:"bonus"`
+	BonusText  map[string]string
+	Importance int
+	UnitID     int `mapstructure:"unitID"`
+}

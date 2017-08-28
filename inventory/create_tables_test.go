@@ -19,6 +19,7 @@ var _ = Describe("CreateTables", func() {
 		mock.ExpectBegin()
 		mock.ExpectExec(`CREATE TABLE IF NOT EXISTS invtypes .*`).WillReturnResult(sqlmock.NewResult(1, 1))
 		mock.ExpectExec(`CREATE TABLE IF NOT EXISTS certmasteries .*`).WillReturnResult(sqlmock.NewResult(1, 1))
+		mock.ExpectExec(`CREATE TABLE IF NOT EXISTS invtraits .*`).WillReturnResult(sqlmock.NewResult(1, 1))
 		mock.ExpectCommit()
 
 		err = CreateTables(db)
