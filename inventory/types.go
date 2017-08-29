@@ -1,8 +1,8 @@
 package inventory
 
 type Traits struct {
-	RoleBonuses []map[string]interface{}           `yaml:"roleBonuses"`
-	Types       map[int64][]map[string]interface{} `yaml:"types"`
+	RoleBonuses []Bonus           `yaml:"roleBonuses"`
+	Types       map[int64][]Bonus `yaml:"types"`
 }
 
 type Type struct {
@@ -29,8 +29,8 @@ type Type struct {
 }
 
 type Bonus struct {
-	Amount     int `mapstructure:"bonus"`
+	Amount     int `yaml:"bonus"`
 	BonusText  map[string]string
 	Importance int
-	UnitID     int `mapstructure:"unitID"`
+	UnitID     int `yaml:"unitID"`
 }
