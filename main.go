@@ -9,11 +9,13 @@ import (
 
 	_ "github.com/lib/pq"
 
+	"github.com/lflux/eve-sdeloader/icons"
 	"github.com/lflux/eve-sdeloader/inventory"
 	"github.com/lflux/eve-sdeloader/translations"
 )
 
 const typeIDFile = `fsd/typeIDs.yaml`
+const iconFile = `fsd/iconIDs.yaml`
 
 var (
 	dbUser, dbName, dbHost, dbPassword string
@@ -50,6 +52,11 @@ func main() {
 		_ = db.Close()
 	}()
 
+	err = icons.CreateTables(db)
+	if err != nil {
+		log.Fatalf("could not create icon tables: %s", err)
+	}
+
 	err = inventory.CreateTables(db)
 	if err != nil {
 		log.Fatalf("could not create inventory tables: %s", err)
@@ -59,10 +66,18 @@ func main() {
 		log.Fatalf("could not create translation tables: %s", err)
 	}
 
-	path := filepath.Join(sdeDirectory, typeIDFile)
+	iconPath := filepath.Join(sdeDirectory, iconFile)
 
-	log.Println("Importing invtypes from ", path)
-	err = inventory.ImportFile(db, path)
+	log.Println("Importing icons from ", iconPath)
+	err = icons.ImportFile(db, iconPath)
+	if err != nil {
+		log.Fatalf("Error importing icons: %s", err)
+	}
+
+	typePath := filepath.Join(sdeDirectory, typeIDFile)
+
+	log.Println("Importing invtypes from ", typePath)
+	err = inventory.ImportFile(db, typePath)
 	if err != nil {
 		log.Fatalf("Error importing invtypes: %s", err)
 	}
