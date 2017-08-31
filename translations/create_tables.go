@@ -1,6 +1,10 @@
 package translations
 
-import "database/sql"
+import (
+	"database/sql"
+
+	"github.com/lflux/eve-sdeloader/utils"
+)
 
 const trnTranslationsDDL = `CREATE TABLE IF NOT EXISTS trntranslations (
     tcid integer NOT NULL,
@@ -11,14 +15,5 @@ const trnTranslationsDDL = `CREATE TABLE IF NOT EXISTS trntranslations (
 `
 
 func CreateTables(db *sql.DB) error {
-	tx, err := db.Begin()
-	if err != nil {
-		return err
-	}
-	_, err = tx.Exec(trnTranslationsDDL)
-	if err != nil {
-		return err
-	}
-
-	return tx.Commit()
+	return utils.CreateTable(db, trnTranslationsDDL)
 }

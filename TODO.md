@@ -15,3 +15,8 @@
 - [x] icon DDL
 - [x] import icons
 - [ ] test icons
+
+# groups
+- [x] groups DDL
+- [x] import groups
+- [ ] test groups

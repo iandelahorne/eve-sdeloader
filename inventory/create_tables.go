@@ -1,6 +1,10 @@
 package inventory
 
-import "database/sql"
+import (
+	"database/sql"
+
+	"github.com/lflux/eve-sdeloader/utils"
+)
 
 const invTypeDDL = `CREATE TABLE IF NOT EXISTS invtypes (
     typeid integer NOT NULL,
@@ -39,25 +43,15 @@ const invTraitsDDL = `CREATE TABLE IF NOT EXISTS invtraits (
 
 // CreateTables creates the tables for invtypes
 func CreateTables(db *sql.DB) error {
-	tx, err := db.Begin()
+	err := utils.CreateTable(db, invTypeDDL)
 	if err != nil {
 		return err
 	}
 
-	_, err = tx.Exec(invTypeDDL)
+	err = utils.CreateTable(db, certMasteriesDDL)
 	if err != nil {
 		return err
 	}
 
-	_, err = tx.Exec(certMasteriesDDL)
-	if err != nil {
-		return err
-	}
-
-	_, err = tx.Exec(invTraitsDDL)
-	if err != nil {
-		return err
-	}
-
-	return tx.Commit()
+	return utils.CreateTable(db, invTraitsDDL)
 }

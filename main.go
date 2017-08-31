@@ -9,13 +9,17 @@ import (
 
 	_ "github.com/lib/pq"
 
+	"github.com/lflux/eve-sdeloader/groups"
 	"github.com/lflux/eve-sdeloader/icons"
 	"github.com/lflux/eve-sdeloader/inventory"
 	"github.com/lflux/eve-sdeloader/translations"
 )
 
-const typeIDFile = `fsd/typeIDs.yaml`
-const iconFile = `fsd/iconIDs.yaml`
+const (
+	typeIDFile   = `fsd/typeIDs.yaml`
+	iconFile     = `fsd/iconIDs.yaml`
+	groupsIDFile = `fsd/groupIDs.yaml`
+)
 
 var (
 	dbUser, dbName, dbHost, dbPassword string
@@ -65,6 +69,10 @@ func main() {
 	if err != nil {
 		log.Fatalf("could not create translation tables: %s", err)
 	}
+	err = groups.CreateTables(db)
+	if err != nil {
+		log.Fatalf("could not create translation tables: %s", err)
+	}
 
 	iconPath := filepath.Join(sdeDirectory, iconFile)
 
@@ -72,6 +80,13 @@ func main() {
 	err = icons.ImportFile(db, iconPath)
 	if err != nil {
 		log.Fatalf("Error importing icons: %s", err)
+	}
+
+	groupsPath := filepath.Join(sdeDirectory, groupsIDFile)
+	log.Println("Importing groups from ", groupsPath)
+	err = groups.ImportFile(db, groupsPath)
+	if err != nil {
+		log.Fatalf("Error importing groups: %s", err)
 	}
 
 	typePath := filepath.Join(sdeDirectory, typeIDFile)
@@ -82,4 +97,5 @@ func main() {
 		log.Fatalf("Error importing invtypes: %s", err)
 	}
 	log.Println("Import finished")
+
 }
