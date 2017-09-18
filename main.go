@@ -5,7 +5,10 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"os"
 	"path/filepath"
+	"runtime"
+	"runtime/pprof"
 
 	_ "github.com/lib/pq"
 
@@ -22,12 +25,16 @@ const (
 )
 
 var (
+	cpuprofile, memprofile             string
 	dbUser, dbName, dbHost, dbPassword string
 	dbPort                             int
 	sdeDirectory                       string
 )
 
 func init() {
+	flag.StringVar(&cpuprofile, "cpuprofile", "", "write cpu profile `file`")
+	flag.StringVar(&memprofile, "memprofile", "", "write memory profile to `file`")
+
 	flag.IntVar(&dbPort, "dbport", 5432, "Database port")
 	flag.StringVar(&dbUser, "dbuser", "sdetest", "Database username")
 	flag.StringVar(&dbHost, "dbhost", "localhost", "Database host")
@@ -38,6 +45,18 @@ func init() {
 
 func main() {
 	flag.Parse()
+
+	if cpuprofile != "" {
+		f, err := os.Create(cpuprofile)
+		if err != nil {
+			log.Fatal("could not create CPU profile: ", err)
+		}
+		if err := pprof.StartCPUProfile(f); err != nil {
+			log.Fatal("could not start CPU profile: ", err)
+		}
+		defer pprof.StopCPUProfile()
+	}
+
 	connStr := fmt.Sprintf("user=%s dbname=%s host=%s port=%d sslmode=disable",
 		dbUser,
 		dbName,
@@ -98,4 +117,15 @@ func main() {
 	}
 	log.Println("Import finished")
 
+	if memprofile != "" {
+		f, err := os.Create(memprofile)
+		if err != nil {
+			log.Fatal("could not create memory profile: ", err)
+		}
+		runtime.GC() // get up-to-date statistics
+		if err := pprof.WriteHeapProfile(f); err != nil {
+			log.Fatal("could not write memory profile: ", err)
+		}
+		f.Close()
+	}
 }
