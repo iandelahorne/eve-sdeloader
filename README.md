@@ -26,6 +26,12 @@ Usage of ./eve-sdeloader:
     	Directory containing an unzipped EVE SDE YAML dump (default "./sde")
 ```
 
+## Profiling
+
+`eve-sdeloader` accepts `-cpuprofile` and `-memprofile` flags to dump profiling
+output from `runtime/pprof` into pprof files that can be consumed by other
+tools.
+
 # Installing 
 
 `go get github.com/lflux/eve-sdeloader` should install the tool. If this fails, check out the repository under your `$GOPATH` and use [dep](https://github.com/golang/dep) to fetch the dependencies:
