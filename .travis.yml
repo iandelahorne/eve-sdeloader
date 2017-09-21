@@ -9,10 +9,11 @@ go:
 install:
   - npm install -g codeclimate-test-reporter
   - go get github.com/golang/dep/cmd/dep
+  - go get github.com/onsi/ginkgo/ginkgo
   - dep ensure
 
 script:
-  - go test -i -v ./...
+  - ginkgo -v -r
   - ./coverage.sh
 
 after_success:
