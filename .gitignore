@@ -3,3 +3,5 @@ debug
 sde
 vendor
 .DS_Store
+coverage.txt
+

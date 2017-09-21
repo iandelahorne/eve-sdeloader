@@ -1,0 +1,16 @@
+language: go
+go:
+  - 1.8.x
+  - 1.9
+
+install:
+  - npm install -g codeclimate-test-reporter
+  - go get github.com/golang/dep
+  - dep ensure
+
+script:
+  - go test -i -v ./...
+  - ./coverage.sh
+
+after_success:
+  - codeclimate-test-reporter < coverage.txt
