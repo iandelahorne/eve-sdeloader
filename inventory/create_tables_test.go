@@ -9,7 +9,7 @@ import (
 )
 
 var _ = Describe("CreateTables", func() {
-	XIt("Creates the tables for invtypes", func() {
+	It("Creates the tables for invtypes", func() {
 		db, mock, err := sqlmock.New()
 		Expect(err).NotTo(HaveOccurred())
 		defer func() {
@@ -18,7 +18,11 @@ var _ = Describe("CreateTables", func() {
 
 		mock.ExpectBegin()
 		mock.ExpectExec(`CREATE TABLE IF NOT EXISTS invtypes .*`).WillReturnResult(sqlmock.NewResult(1, 1))
+		mock.ExpectCommit()
+		mock.ExpectBegin()
 		mock.ExpectExec(`CREATE TABLE IF NOT EXISTS certmasteries .*`).WillReturnResult(sqlmock.NewResult(1, 1))
+		mock.ExpectCommit()
+		mock.ExpectBegin()
 		mock.ExpectExec(`CREATE TABLE IF NOT EXISTS invtraits .*`).WillReturnResult(sqlmock.NewResult(1, 1))
 		mock.ExpectCommit()
 
