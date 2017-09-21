@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/lflux/eve-sdeloader.svg?branch=master)](https://travis-ci.org/lflux/eve-sdeloader)
+[![Test Coverage](https://codeclimate.com/github/lflux/eve-sdeloader/badges/coverage.svg)]
+
 # eve-sdeloader
 
 `eve-sdeloader` is a tool for importing an EVE static data export from [EVE Developer Resources](https://developers.eveonline.com/resource/resources) to a Postgresql database. 
