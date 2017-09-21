@@ -2,6 +2,7 @@ package utils_test
 
 import (
 	"bytes"
+	"testing/iotest"
 
 	"github.com/lflux/eve-sdeloader/utils"
 
@@ -44,4 +45,12 @@ var _ = Describe("Load", func() {
 		err = utils.LoadFromReader(buf, &entries)
 		Expect(err).To(MatchError("yaml: line 1: found character that cannot start any token"))
 	})
+
+	It("Errors if reader is bad", func() {
+		buf := bytes.NewBufferString(goodYAML)
+		r := iotest.TimeoutReader(buf)
+		err = utils.LoadFromReader(r, &entries)
+		Expect(err).To(MatchError("timeout"))
+	})
+
 })
