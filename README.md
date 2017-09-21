@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/lflux/eve-sdeloader.svg?branch=master)](https://travis-ci.org/lflux/eve-sdeloader)
-[![Test Coverage](https://codeclimate.com/github/lflux/eve-sdeloader/badges/coverage.svg)]
+[![Test Coverage](https://codeclimate.com/github/lflux/eve-sdeloader/badges/coverage.svg)](https://codeclimate.com/github/lflux/eve-sdeloader/coverage)
 
 # eve-sdeloader
 
