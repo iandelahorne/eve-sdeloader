@@ -9,7 +9,7 @@ import (
 )
 
 var _ = Describe("CreateTables", func() {
-	It("Creates the tables for invtypes", func() {
+	XIt("Creates the tables for invtypes", func() {
 		db, mock, err := sqlmock.New()
 		Expect(err).NotTo(HaveOccurred())
 		defer func() {
