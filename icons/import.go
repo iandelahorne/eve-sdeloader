@@ -7,8 +7,6 @@ import (
 	"os"
 
 	yaml "gopkg.in/yaml.v2"
-
-	"github.com/lflux/eve-sdeloader/utils"
 )
 
 const iconDDL = `CREATE TABLE IF NOT EXISTS eveicons (
@@ -16,10 +14,6 @@ const iconDDL = `CREATE TABLE IF NOT EXISTS eveicons (
     iconfile text,
     description text
 );`
-
-func CreateTables(db *sql.DB) error {
-	return utils.CreateTable(db, iconDDL)
-}
 
 func ImportFile(db *sql.DB, path string) error {
 	f, err := os.Open(path)

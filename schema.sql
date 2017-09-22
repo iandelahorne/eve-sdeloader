@@ -16,34 +16,66 @@ SET row_security = off;
 
 SET search_path = public, pg_catalog;
 
+DROP INDEX public."mapDenormalize_IX_groupSystem";
+DROP INDEX public."mapDenormalize_IX_groupRegion";
+DROP INDEX public."mapDenormalize_IX_groupConstellation";
 DROP INDEX public."ix_staStations_stationTypeID";
 DROP INDEX public."ix_staStations_solarSystemID";
 DROP INDEX public."ix_staStations_regionID";
 DROP INDEX public."ix_staStations_operationID";
 DROP INDEX public."ix_staStations_corporationID";
 DROP INDEX public."ix_staStations_constellationID";
+DROP INDEX public."ix_skinShip_typeID";
+DROP INDEX public."ix_skinShip_skinID";
 DROP INDEX public."ix_ramAssemblyLineStations_solarSystemID";
 DROP INDEX public."ix_ramAssemblyLineStations_regionID";
 DROP INDEX public."ix_ramAssemblyLineStations_ownerID";
+DROP INDEX public."ix_mapSolarSystems_security";
+DROP INDEX public."ix_mapSolarSystems_regionID";
+DROP INDEX public."ix_mapSolarSystems_constellationID";
+DROP INDEX public."ix_mapDenormalize_typeID";
+DROP INDEX public."ix_mapDenormalize_solarSystemID";
+DROP INDEX public."ix_mapDenormalize_regionID";
+DROP INDEX public."ix_mapDenormalize_orbitID";
+DROP INDEX public."ix_mapDenormalize_constellationID";
 DROP INDEX public."ix_invUniqueNames_itemName";
+DROP INDEX public."ix_invTypes_groupID";
 DROP INDEX public."ix_invItems_locationID";
+DROP INDEX public."ix_invGroups_categoryID";
 DROP INDEX public."ix_invContrabandTypes_typeID";
+DROP INDEX public."ix_industryActivity_activityID";
+DROP INDEX public."ix_industryActivitySkills_typeID";
+DROP INDEX public."ix_industryActivitySkills_skillID";
+DROP INDEX public."ix_industryActivityRaces_typeID";
+DROP INDEX public."ix_industryActivityRaces_productTypeID";
+DROP INDEX public."ix_industryActivityProducts_typeID";
+DROP INDEX public."ix_industryActivityProducts_productTypeID";
+DROP INDEX public."ix_industryActivityProbabilities_typeID";
+DROP INDEX public."ix_industryActivityProbabilities_productTypeID";
+DROP INDEX public."ix_industryActivityMaterials_typeID";
 DROP INDEX public."ix_dgmTypeAttributes_attributeID";
+DROP INDEX public."ix_certSkills_skillID";
 DROP INDEX public."ix_agtResearchAgents_typeID";
 DROP INDEX public."ix_agtAgents_locationID";
 DROP INDEX public."ix_agtAgents_corporationID";
 DROP INDEX public."items_IX_OwnerLocation";
 DROP INDEX public."invUniqueNames_IX_GroupName";
+DROP INDEX public."industryActivitySkills_idx1";
+DROP INDEX public."industryActivityMaterials_idx1";
 ALTER TABLE ONLY public.warcombatzonesystems DROP CONSTRAINT warcombatzonesystems_pkey;
 ALTER TABLE ONLY public.warcombatzones DROP CONSTRAINT warcombatzones_pkey;
 ALTER TABLE ONLY public.trntranslations DROP CONSTRAINT trntranslations_pkey;
 ALTER TABLE ONLY public.trntranslationlanguages DROP CONSTRAINT trntranslationlanguages_pkey;
 ALTER TABLE ONLY public.trntranslationcolumns DROP CONSTRAINT trntranslationcolumns_pkey;
+ALTER TABLE ONLY public.translationtables DROP CONSTRAINT translationtables_pkey;
 ALTER TABLE ONLY public.stastationtypes DROP CONSTRAINT stastationtypes_pkey;
 ALTER TABLE ONLY public.stastations DROP CONSTRAINT stastations_pkey;
 ALTER TABLE ONLY public.staservices DROP CONSTRAINT staservices_pkey;
 ALTER TABLE ONLY public.staoperationservices DROP CONSTRAINT staoperationservices_pkey;
 ALTER TABLE ONLY public.staoperations DROP CONSTRAINT staoperations_pkey;
+ALTER TABLE ONLY public.skins DROP CONSTRAINT skins_pkey;
+ALTER TABLE ONLY public.skinmaterials DROP CONSTRAINT skinmaterials_pkey;
+ALTER TABLE ONLY public.skinlicense DROP CONSTRAINT skinlicense_pkey;
 ALTER TABLE ONLY public.raminstallationtypecontents DROP CONSTRAINT raminstallationtypecontents_pkey;
 ALTER TABLE ONLY public.ramassemblylinetypes DROP CONSTRAINT ramassemblylinetypes_pkey;
 ALTER TABLE ONLY public.ramassemblylinetypedetailpergroup DROP CONSTRAINT ramassemblylinetypedetailpergroup_pkey;
@@ -54,20 +86,41 @@ ALTER TABLE ONLY public.planetschematicstypemap DROP CONSTRAINT planetschematics
 ALTER TABLE ONLY public.planetschematicspinmap DROP CONSTRAINT planetschematicspinmap_pkey;
 ALTER TABLE ONLY public.planetschematics DROP CONSTRAINT planetschematics_pkey;
 ALTER TABLE ONLY public.mapuniverse DROP CONSTRAINT mapuniverse_pkey;
+ALTER TABLE ONLY public.mapsolarsystems DROP CONSTRAINT mapsolarsystems_pkey;
+ALTER TABLE ONLY public.mapsolarsystemjumps DROP CONSTRAINT mapsolarsystemjumps_pkey;
+ALTER TABLE ONLY public.mapregions DROP CONSTRAINT mapregions_pkey;
+ALTER TABLE ONLY public.mapregionjumps DROP CONSTRAINT mapregionjumps_pkey;
+ALTER TABLE ONLY public.maplocationwormholeclasses DROP CONSTRAINT maplocationwormholeclasses_pkey;
+ALTER TABLE ONLY public.maplocationscenes DROP CONSTRAINT maplocationscenes_pkey;
+ALTER TABLE ONLY public.maplandmarks DROP CONSTRAINT maplandmarks_pkey;
+ALTER TABLE ONLY public.mapjumps DROP CONSTRAINT mapjumps_pkey;
+ALTER TABLE ONLY public.mapdenormalize DROP CONSTRAINT mapdenormalize_pkey;
+ALTER TABLE ONLY public.mapconstellations DROP CONSTRAINT mapconstellations_pkey;
+ALTER TABLE ONLY public.mapconstellationjumps DROP CONSTRAINT mapconstellationjumps_pkey;
+ALTER TABLE ONLY public.mapcelestialstatistics DROP CONSTRAINT mapcelestialstatistics_pkey;
+ALTER TABLE ONLY public.invvolumes DROP CONSTRAINT invvolumes_pkey;
 ALTER TABLE ONLY public.invuniquenames DROP CONSTRAINT invuniquenames_pkey;
+ALTER TABLE ONLY public.invtypes DROP CONSTRAINT invtypes_pkey;
 ALTER TABLE ONLY public.invtypereactions DROP CONSTRAINT invtypereactions_pkey;
 ALTER TABLE ONLY public.invtypematerials DROP CONSTRAINT invtypematerials_pkey;
+ALTER TABLE ONLY public.invtraits DROP CONSTRAINT invtraits_pkey;
 ALTER TABLE ONLY public.invpositions DROP CONSTRAINT invpositions_pkey;
 ALTER TABLE ONLY public.invnames DROP CONSTRAINT invnames_pkey;
 ALTER TABLE ONLY public.invmetatypes DROP CONSTRAINT invmetatypes_pkey;
 ALTER TABLE ONLY public.invmetagroups DROP CONSTRAINT invmetagroups_pkey;
 ALTER TABLE ONLY public.invmarketgroups DROP CONSTRAINT invmarketgroups_pkey;
 ALTER TABLE ONLY public.invitems DROP CONSTRAINT invitems_pkey;
+ALTER TABLE ONLY public.invgroups DROP CONSTRAINT invgroups_pkey;
 ALTER TABLE ONLY public.invflags DROP CONSTRAINT invflags_pkey;
 ALTER TABLE ONLY public.invcontroltowerresources DROP CONSTRAINT invcontroltowerresources_pkey;
 ALTER TABLE ONLY public.invcontroltowerresourcepurposes DROP CONSTRAINT invcontroltowerresourcepurposes_pkey;
 ALTER TABLE ONLY public.invcontrabandtypes DROP CONSTRAINT invcontrabandtypes_pkey;
+ALTER TABLE ONLY public.invcategories DROP CONSTRAINT invcategories_pkey;
+ALTER TABLE ONLY public.industryblueprints DROP CONSTRAINT industryblueprints_pkey;
+ALTER TABLE ONLY public.industryactivity DROP CONSTRAINT industryactivity_pkey;
 ALTER TABLE ONLY public.eveunits DROP CONSTRAINT eveunits_pkey;
+ALTER TABLE ONLY public.eveicons DROP CONSTRAINT eveicons_pkey;
+ALTER TABLE ONLY public.evegraphics DROP CONSTRAINT evegraphics_pkey;
 ALTER TABLE ONLY public.dgmtypeeffects DROP CONSTRAINT dgmtypeeffects_pkey;
 ALTER TABLE ONLY public.dgmtypeattributes DROP CONSTRAINT dgmtypeattributes_pkey;
 ALTER TABLE ONLY public.dgmexpressions DROP CONSTRAINT dgmexpressions_pkey;
@@ -85,19 +138,26 @@ ALTER TABLE ONLY public.chrfactions DROP CONSTRAINT chrfactions_pkey;
 ALTER TABLE ONLY public.chrbloodlines DROP CONSTRAINT chrbloodlines_pkey;
 ALTER TABLE ONLY public.chrattributes DROP CONSTRAINT chrattributes_pkey;
 ALTER TABLE ONLY public.chrancestries DROP CONSTRAINT chrancestries_pkey;
+ALTER TABLE ONLY public.certcerts DROP CONSTRAINT certcerts_pkey;
 ALTER TABLE ONLY public.agtresearchagents DROP CONSTRAINT agtresearchagents_pkey;
 ALTER TABLE ONLY public.agtagenttypes DROP CONSTRAINT agtagenttypes_pkey;
 ALTER TABLE ONLY public.agtagents DROP CONSTRAINT agtagents_pkey;
+ALTER TABLE public.invtraits ALTER COLUMN traitid DROP DEFAULT;
 DROP TABLE public.warcombatzonesystems;
 DROP TABLE public.warcombatzones;
 DROP TABLE public.trntranslations;
 DROP TABLE public.trntranslationlanguages;
 DROP TABLE public.trntranslationcolumns;
+DROP TABLE public.translationtables;
 DROP TABLE public.stastationtypes;
 DROP TABLE public.stastations;
 DROP TABLE public.staservices;
 DROP TABLE public.staoperationservices;
 DROP TABLE public.staoperations;
+DROP TABLE public.skinship;
+DROP TABLE public.skins;
+DROP TABLE public.skinmaterials;
+DROP TABLE public.skinlicense;
 DROP TABLE public.raminstallationtypecontents;
 DROP TABLE public.ramassemblylinetypes;
 DROP TABLE public.ramassemblylinetypedetailpergroup;
@@ -108,20 +168,47 @@ DROP TABLE public.planetschematicstypemap;
 DROP TABLE public.planetschematicspinmap;
 DROP TABLE public.planetschematics;
 DROP TABLE public.mapuniverse;
+DROP TABLE public.mapsolarsystems;
+DROP TABLE public.mapsolarsystemjumps;
+DROP TABLE public.mapregions;
+DROP TABLE public.mapregionjumps;
+DROP TABLE public.maplocationwormholeclasses;
+DROP TABLE public.maplocationscenes;
+DROP TABLE public.maplandmarks;
+DROP TABLE public.mapjumps;
+DROP TABLE public.mapdenormalize;
+DROP TABLE public.mapconstellations;
+DROP TABLE public.mapconstellationjumps;
+DROP TABLE public.mapcelestialstatistics;
+DROP TABLE public.invvolumes;
 DROP TABLE public.invuniquenames;
+DROP TABLE public.invtypes;
 DROP TABLE public.invtypereactions;
 DROP TABLE public.invtypematerials;
+DROP SEQUENCE public.invtraits_traitid_seq;
+DROP TABLE public.invtraits;
 DROP TABLE public.invpositions;
 DROP TABLE public.invnames;
 DROP TABLE public.invmetatypes;
 DROP TABLE public.invmetagroups;
 DROP TABLE public.invmarketgroups;
 DROP TABLE public.invitems;
+DROP TABLE public.invgroups;
 DROP TABLE public.invflags;
 DROP TABLE public.invcontroltowerresources;
 DROP TABLE public.invcontroltowerresourcepurposes;
 DROP TABLE public.invcontrabandtypes;
+DROP TABLE public.invcategories;
+DROP TABLE public.industryblueprints;
+DROP TABLE public.industryactivityskills;
+DROP TABLE public.industryactivityraces;
+DROP TABLE public.industryactivityproducts;
+DROP TABLE public.industryactivityprobabilities;
+DROP TABLE public.industryactivitymaterials;
+DROP TABLE public.industryactivity;
 DROP TABLE public.eveunits;
+DROP TABLE public.eveicons;
+DROP TABLE public.evegraphics;
 DROP TABLE public.dgmtypeeffects;
 DROP TABLE public.dgmtypeattributes;
 DROP TABLE public.dgmexpressions;
@@ -139,9 +226,13 @@ DROP TABLE public.chrfactions;
 DROP TABLE public.chrbloodlines;
 DROP TABLE public.chrattributes;
 DROP TABLE public.chrancestries;
+DROP TABLE public.certskills;
+DROP TABLE public.certmasteries;
+DROP TABLE public.certcerts;
 DROP TABLE public.agtresearchagents;
 DROP TABLE public.agtagenttypes;
 DROP TABLE public.agtagents;
+
 SET search_path = public, pg_catalog;
 
 SET default_tablespace = '';
@@ -181,6 +272,42 @@ CREATE TABLE agtagenttypes (
 CREATE TABLE agtresearchagents (
     agentid integer NOT NULL,
     typeid integer NOT NULL
+);
+
+
+--
+-- Name: certcerts; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE certcerts (
+    certid integer NOT NULL,
+    description text,
+    groupid integer,
+    name character varying(255)
+);
+
+
+--
+-- Name: certmasteries; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE certmasteries (
+    typeid integer,
+    masterylevel integer,
+    certid integer
+);
+
+
+--
+-- Name: certskills; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE certskills (
+    certid integer,
+    skillid integer,
+    certlevelint integer,
+    skilllevel integer,
+    certleveltext character varying(8)
 );
 
 
@@ -472,6 +599,31 @@ CREATE TABLE dgmtypeeffects (
 
 
 --
+-- Name: evegraphics; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE evegraphics (
+    graphicid integer NOT NULL,
+    soffactionname character varying(100),
+    graphicfile character varying(100),
+    sofhullname character varying(100),
+    sofracename character varying(100),
+    description text
+);
+
+
+--
+-- Name: eveicons; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE eveicons (
+    iconid integer NOT NULL,
+    iconfile character varying(500),
+    description text
+);
+
+
+--
 -- Name: eveunits; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -480,6 +632,99 @@ CREATE TABLE eveunits (
     unitname character varying(100),
     displayname character varying(50),
     description character varying(1000)
+);
+
+
+--
+-- Name: industryactivity; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE industryactivity (
+    typeid integer NOT NULL,
+    activityid integer NOT NULL,
+    "time" integer
+);
+
+
+--
+-- Name: industryactivitymaterials; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE industryactivitymaterials (
+    typeid integer,
+    activityid integer,
+    materialtypeid integer,
+    quantity integer
+);
+
+
+--
+-- Name: industryactivityprobabilities; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE industryactivityprobabilities (
+    typeid integer,
+    activityid integer,
+    producttypeid integer,
+    probability numeric(3,2)
+);
+
+
+--
+-- Name: industryactivityproducts; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE industryactivityproducts (
+    typeid integer,
+    activityid integer,
+    producttypeid integer,
+    quantity integer
+);
+
+
+--
+-- Name: industryactivityraces; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE industryactivityraces (
+    typeid integer,
+    activityid integer,
+    producttypeid integer,
+    raceid integer
+);
+
+
+--
+-- Name: industryactivityskills; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE industryactivityskills (
+    typeid integer,
+    activityid integer,
+    skillid integer,
+    level integer
+);
+
+
+--
+-- Name: industryblueprints; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE industryblueprints (
+    typeid integer NOT NULL,
+    maxproductionlimit integer
+);
+
+
+--
+-- Name: invcategories; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE invcategories (
+    categoryid integer NOT NULL,
+    categoryname character varying(100),
+    iconid integer,
+    published boolean
 );
 
 
@@ -530,6 +775,23 @@ CREATE TABLE invflags (
     flagname character varying(200),
     flagtext character varying(100),
     orderid integer
+);
+
+
+--
+-- Name: invgroups; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE invgroups (
+    groupid integer NOT NULL,
+    categoryid integer,
+    groupname character varying(100),
+    iconid integer,
+    usebaseprice boolean,
+    anchored boolean,
+    anchorable boolean,
+    fittablenonsingleton boolean,
+    published boolean
 );
 
 
@@ -610,6 +872,39 @@ CREATE TABLE invpositions (
 
 
 --
+-- Name: invtraits; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE invtraits (
+    traitid integer NOT NULL,
+    typeid integer,
+    skillid integer,
+    bonus double precision,
+    bonustext text,
+    unitid integer
+);
+
+
+--
+-- Name: invtraits_traitid_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE invtraits_traitid_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: invtraits_traitid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE invtraits_traitid_seq OWNED BY invtraits.traitid;
+
+
+--
 -- Name: invtypematerials; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -633,6 +928,29 @@ CREATE TABLE invtypereactions (
 
 
 --
+-- Name: invtypes; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE invtypes (
+    typeid integer NOT NULL,
+    groupid integer,
+    typename character varying(100),
+    description text,
+    mass double precision,
+    volume double precision,
+    capacity double precision,
+    portionsize integer,
+    raceid integer,
+    baseprice numeric(19,4),
+    published boolean,
+    marketgroupid integer,
+    iconid integer,
+    soundid integer,
+    graphicid integer
+);
+
+
+--
 -- Name: invuniquenames; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -640,6 +958,226 @@ CREATE TABLE invuniquenames (
     itemid integer NOT NULL,
     itemname character varying(200) NOT NULL,
     groupid integer
+);
+
+
+--
+-- Name: invvolumes; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE invvolumes (
+    typeid integer NOT NULL,
+    volume integer
+);
+
+
+--
+-- Name: mapcelestialstatistics; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE mapcelestialstatistics (
+    celestialid integer NOT NULL,
+    temperature double precision,
+    spectralclass character varying(10),
+    luminosity double precision,
+    age double precision,
+    life double precision,
+    orbitradius double precision,
+    eccentricity double precision,
+    massdust double precision,
+    massgas double precision,
+    fragmented boolean,
+    density double precision,
+    surfacegravity double precision,
+    escapevelocity double precision,
+    orbitperiod double precision,
+    rotationrate double precision,
+    locked boolean,
+    pressure bigint,
+    radius bigint,
+    mass integer
+);
+
+
+--
+-- Name: mapconstellationjumps; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE mapconstellationjumps (
+    fromregionid integer,
+    fromconstellationid integer NOT NULL,
+    toconstellationid integer NOT NULL,
+    toregionid integer
+);
+
+
+--
+-- Name: mapconstellations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE mapconstellations (
+    regionid integer,
+    constellationid integer NOT NULL,
+    constellationname character varying(100),
+    x double precision,
+    y double precision,
+    z double precision,
+    "xMin" double precision,
+    "xMax" double precision,
+    ymin double precision,
+    ymax double precision,
+    zmin double precision,
+    zmax double precision,
+    factionid integer,
+    radius double precision
+);
+
+
+--
+-- Name: mapdenormalize; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE mapdenormalize (
+    itemid integer NOT NULL,
+    typeid integer,
+    groupid integer,
+    solarsystemid integer,
+    constellationid integer,
+    regionid integer,
+    orbitid integer,
+    x double precision,
+    y double precision,
+    z double precision,
+    radius double precision,
+    itemname character varying(100),
+    security double precision,
+    celestialindex integer,
+    orbitindex integer
+);
+
+
+--
+-- Name: mapjumps; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE mapjumps (
+    stargateid integer NOT NULL,
+    destinationid integer
+);
+
+
+--
+-- Name: maplandmarks; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE maplandmarks (
+    landmarkid integer NOT NULL,
+    landmarkname character varying(100),
+    description text,
+    locationid integer,
+    x double precision,
+    y double precision,
+    z double precision,
+    iconid integer
+);
+
+
+--
+-- Name: maplocationscenes; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE maplocationscenes (
+    locationid integer NOT NULL,
+    graphicid integer
+);
+
+
+--
+-- Name: maplocationwormholeclasses; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE maplocationwormholeclasses (
+    locationid integer NOT NULL,
+    wormholeclassid integer
+);
+
+
+--
+-- Name: mapregionjumps; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE mapregionjumps (
+    fromregionid integer NOT NULL,
+    toregionid integer NOT NULL
+);
+
+
+--
+-- Name: mapregions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE mapregions (
+    regionid integer NOT NULL,
+    regionname character varying(100),
+    x double precision,
+    y double precision,
+    z double precision,
+    "xMin" double precision,
+    "xMax" double precision,
+    ymin double precision,
+    ymax double precision,
+    zmin double precision,
+    zmax double precision,
+    factionid integer,
+    radius double precision
+);
+
+
+--
+-- Name: mapsolarsystemjumps; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE mapsolarsystemjumps (
+    fromregionid integer,
+    fromconstellationid integer,
+    fromsolarsystemid integer NOT NULL,
+    tosolarsystemid integer NOT NULL,
+    toconstellationid integer,
+    toregionid integer
+);
+
+
+--
+-- Name: mapsolarsystems; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE mapsolarsystems (
+    regionid integer,
+    constellationid integer,
+    solarsystemid integer NOT NULL,
+    solarsystemname character varying(100),
+    x double precision,
+    y double precision,
+    z double precision,
+    "xMin" double precision,
+    "xMax" double precision,
+    ymin double precision,
+    ymax double precision,
+    zmin double precision,
+    zmax double precision,
+    luminosity double precision,
+    border boolean,
+    fringe boolean,
+    corridor boolean,
+    hub boolean,
+    international boolean,
+    regional boolean,
+    constellation boolean,
+    security double precision,
+    factionid integer,
+    radius double precision,
+    suntypeid integer,
+    securityclass character varying(2)
 );
 
 
@@ -779,6 +1317,49 @@ CREATE TABLE raminstallationtypecontents (
 
 
 --
+-- Name: skinlicense; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE skinlicense (
+    licensetypeid integer NOT NULL,
+    duration integer,
+    skinid integer
+);
+
+
+--
+-- Name: skinmaterials; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE skinmaterials (
+    skinmaterialid integer NOT NULL,
+    displaynameid integer,
+    materialsetid integer
+);
+
+
+--
+-- Name: skins; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE skins (
+    skinid integer NOT NULL,
+    internalname character varying(70),
+    skinmaterialid integer
+);
+
+
+--
+-- Name: skinship; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE skinship (
+    skinid integer,
+    typeid integer
+);
+
+
+--
 -- Name: staoperations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -867,6 +1448,19 @@ CREATE TABLE stastationtypes (
 
 
 --
+-- Name: translationtables; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE translationtables (
+    sourcetable character varying(200) NOT NULL,
+    destinationtable character varying(200),
+    translatedkey character varying(200) NOT NULL,
+    tcgroupid integer,
+    tcid integer
+);
+
+
+--
 -- Name: trntranslationcolumns; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -926,6 +1520,13 @@ CREATE TABLE warcombatzonesystems (
 
 
 --
+-- Name: invtraits traitid; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY invtraits ALTER COLUMN traitid SET DEFAULT nextval('invtraits_traitid_seq'::regclass);
+
+
+--
 -- Name: agtagents agtagents_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -947,6 +1548,14 @@ ALTER TABLE ONLY agtagenttypes
 
 ALTER TABLE ONLY agtresearchagents
     ADD CONSTRAINT agtresearchagents_pkey PRIMARY KEY (agentid, typeid);
+
+
+--
+-- Name: certcerts certcerts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY certcerts
+    ADD CONSTRAINT certcerts_pkey PRIMARY KEY (certid);
 
 
 --
@@ -1086,11 +1695,51 @@ ALTER TABLE ONLY dgmtypeeffects
 
 
 --
+-- Name: evegraphics evegraphics_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY evegraphics
+    ADD CONSTRAINT evegraphics_pkey PRIMARY KEY (graphicid);
+
+
+--
+-- Name: eveicons eveicons_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY eveicons
+    ADD CONSTRAINT eveicons_pkey PRIMARY KEY (iconid);
+
+
+--
 -- Name: eveunits eveunits_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY eveunits
     ADD CONSTRAINT eveunits_pkey PRIMARY KEY (unitid);
+
+
+--
+-- Name: industryactivity industryactivity_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY industryactivity
+    ADD CONSTRAINT industryactivity_pkey PRIMARY KEY (typeid, activityid);
+
+
+--
+-- Name: industryblueprints industryblueprints_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY industryblueprints
+    ADD CONSTRAINT industryblueprints_pkey PRIMARY KEY (typeid);
+
+
+--
+-- Name: invcategories invcategories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY invcategories
+    ADD CONSTRAINT invcategories_pkey PRIMARY KEY (categoryid);
 
 
 --
@@ -1123,6 +1772,14 @@ ALTER TABLE ONLY invcontroltowerresources
 
 ALTER TABLE ONLY invflags
     ADD CONSTRAINT invflags_pkey PRIMARY KEY (flagid);
+
+
+--
+-- Name: invgroups invgroups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY invgroups
+    ADD CONSTRAINT invgroups_pkey PRIMARY KEY (groupid);
 
 
 --
@@ -1174,6 +1831,14 @@ ALTER TABLE ONLY invpositions
 
 
 --
+-- Name: invtraits invtraits_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY invtraits
+    ADD CONSTRAINT invtraits_pkey PRIMARY KEY (traitid);
+
+
+--
 -- Name: invtypematerials invtypematerials_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1190,11 +1855,123 @@ ALTER TABLE ONLY invtypereactions
 
 
 --
+-- Name: invtypes invtypes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY invtypes
+    ADD CONSTRAINT invtypes_pkey PRIMARY KEY (typeid);
+
+
+--
 -- Name: invuniquenames invuniquenames_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY invuniquenames
     ADD CONSTRAINT invuniquenames_pkey PRIMARY KEY (itemid);
+
+
+--
+-- Name: invvolumes invvolumes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY invvolumes
+    ADD CONSTRAINT invvolumes_pkey PRIMARY KEY (typeid);
+
+
+--
+-- Name: mapcelestialstatistics mapcelestialstatistics_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY mapcelestialstatistics
+    ADD CONSTRAINT mapcelestialstatistics_pkey PRIMARY KEY (celestialid);
+
+
+--
+-- Name: mapconstellationjumps mapconstellationjumps_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY mapconstellationjumps
+    ADD CONSTRAINT mapconstellationjumps_pkey PRIMARY KEY (fromconstellationid, toconstellationid);
+
+
+--
+-- Name: mapconstellations mapconstellations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY mapconstellations
+    ADD CONSTRAINT mapconstellations_pkey PRIMARY KEY (constellationid);
+
+
+--
+-- Name: mapdenormalize mapdenormalize_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY mapdenormalize
+    ADD CONSTRAINT mapdenormalize_pkey PRIMARY KEY (itemid);
+
+
+--
+-- Name: mapjumps mapjumps_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY mapjumps
+    ADD CONSTRAINT mapjumps_pkey PRIMARY KEY (stargateid);
+
+
+--
+-- Name: maplandmarks maplandmarks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY maplandmarks
+    ADD CONSTRAINT maplandmarks_pkey PRIMARY KEY (landmarkid);
+
+
+--
+-- Name: maplocationscenes maplocationscenes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY maplocationscenes
+    ADD CONSTRAINT maplocationscenes_pkey PRIMARY KEY (locationid);
+
+
+--
+-- Name: maplocationwormholeclasses maplocationwormholeclasses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY maplocationwormholeclasses
+    ADD CONSTRAINT maplocationwormholeclasses_pkey PRIMARY KEY (locationid);
+
+
+--
+-- Name: mapregionjumps mapregionjumps_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY mapregionjumps
+    ADD CONSTRAINT mapregionjumps_pkey PRIMARY KEY (fromregionid, toregionid);
+
+
+--
+-- Name: mapregions mapregions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY mapregions
+    ADD CONSTRAINT mapregions_pkey PRIMARY KEY (regionid);
+
+
+--
+-- Name: mapsolarsystemjumps mapsolarsystemjumps_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY mapsolarsystemjumps
+    ADD CONSTRAINT mapsolarsystemjumps_pkey PRIMARY KEY (fromsolarsystemid, tosolarsystemid);
+
+
+--
+-- Name: mapsolarsystems mapsolarsystems_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY mapsolarsystems
+    ADD CONSTRAINT mapsolarsystems_pkey PRIMARY KEY (solarsystemid);
 
 
 --
@@ -1278,6 +2055,30 @@ ALTER TABLE ONLY raminstallationtypecontents
 
 
 --
+-- Name: skinlicense skinlicense_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY skinlicense
+    ADD CONSTRAINT skinlicense_pkey PRIMARY KEY (licensetypeid);
+
+
+--
+-- Name: skinmaterials skinmaterials_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY skinmaterials
+    ADD CONSTRAINT skinmaterials_pkey PRIMARY KEY (skinmaterialid);
+
+
+--
+-- Name: skins skins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY skins
+    ADD CONSTRAINT skins_pkey PRIMARY KEY (skinid);
+
+
+--
 -- Name: staoperations staoperations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1315,6 +2116,14 @@ ALTER TABLE ONLY stastations
 
 ALTER TABLE ONLY stastationtypes
     ADD CONSTRAINT stastationtypes_pkey PRIMARY KEY (stationtypeid);
+
+
+--
+-- Name: translationtables translationtables_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY translationtables
+    ADD CONSTRAINT translationtables_pkey PRIMARY KEY (sourcetable, translatedkey);
 
 
 --
@@ -1358,6 +2167,20 @@ ALTER TABLE ONLY warcombatzonesystems
 
 
 --
+-- Name: industryActivityMaterials_idx1; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "industryActivityMaterials_idx1" ON industryactivitymaterials USING btree (typeid, activityid);
+
+
+--
+-- Name: industryActivitySkills_idx1; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "industryActivitySkills_idx1" ON industryactivityskills USING btree (typeid, activityid);
+
+
+--
 -- Name: invUniqueNames_IX_GroupName; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1393,10 +2216,87 @@ CREATE INDEX "ix_agtResearchAgents_typeID" ON agtresearchagents USING btree (typ
 
 
 --
+-- Name: ix_certSkills_skillID; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "ix_certSkills_skillID" ON certskills USING btree (skillid);
+
+
+--
 -- Name: ix_dgmTypeAttributes_attributeID; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "ix_dgmTypeAttributes_attributeID" ON dgmtypeattributes USING btree (attributeid);
+
+
+--
+-- Name: ix_industryActivityMaterials_typeID; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "ix_industryActivityMaterials_typeID" ON industryactivitymaterials USING btree (typeid);
+
+
+--
+-- Name: ix_industryActivityProbabilities_productTypeID; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "ix_industryActivityProbabilities_productTypeID" ON industryactivityprobabilities USING btree (producttypeid);
+
+
+--
+-- Name: ix_industryActivityProbabilities_typeID; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "ix_industryActivityProbabilities_typeID" ON industryactivityprobabilities USING btree (typeid);
+
+
+--
+-- Name: ix_industryActivityProducts_productTypeID; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "ix_industryActivityProducts_productTypeID" ON industryactivityproducts USING btree (producttypeid);
+
+
+--
+-- Name: ix_industryActivityProducts_typeID; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "ix_industryActivityProducts_typeID" ON industryactivityproducts USING btree (typeid);
+
+
+--
+-- Name: ix_industryActivityRaces_productTypeID; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "ix_industryActivityRaces_productTypeID" ON industryactivityraces USING btree (producttypeid);
+
+
+--
+-- Name: ix_industryActivityRaces_typeID; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "ix_industryActivityRaces_typeID" ON industryactivityraces USING btree (typeid);
+
+
+--
+-- Name: ix_industryActivitySkills_skillID; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "ix_industryActivitySkills_skillID" ON industryactivityskills USING btree (skillid);
+
+
+--
+-- Name: ix_industryActivitySkills_typeID; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "ix_industryActivitySkills_typeID" ON industryactivityskills USING btree (typeid);
+
+
+--
+-- Name: ix_industryActivity_activityID; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "ix_industryActivity_activityID" ON industryactivity USING btree (activityid);
 
 
 --
@@ -1407,6 +2307,13 @@ CREATE INDEX "ix_invContrabandTypes_typeID" ON invcontrabandtypes USING btree (t
 
 
 --
+-- Name: ix_invGroups_categoryID; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "ix_invGroups_categoryID" ON invgroups USING btree (categoryid);
+
+
+--
 -- Name: ix_invItems_locationID; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1414,10 +2321,73 @@ CREATE INDEX "ix_invItems_locationID" ON invitems USING btree (locationid);
 
 
 --
+-- Name: ix_invTypes_groupID; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "ix_invTypes_groupID" ON invtypes USING btree (groupid);
+
+
+--
 -- Name: ix_invUniqueNames_itemName; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX "ix_invUniqueNames_itemName" ON invuniquenames USING btree (itemname);
+
+
+--
+-- Name: ix_mapDenormalize_constellationID; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "ix_mapDenormalize_constellationID" ON mapdenormalize USING btree (constellationid);
+
+
+--
+-- Name: ix_mapDenormalize_orbitID; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "ix_mapDenormalize_orbitID" ON mapdenormalize USING btree (orbitid);
+
+
+--
+-- Name: ix_mapDenormalize_regionID; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "ix_mapDenormalize_regionID" ON mapdenormalize USING btree (regionid);
+
+
+--
+-- Name: ix_mapDenormalize_solarSystemID; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "ix_mapDenormalize_solarSystemID" ON mapdenormalize USING btree (solarsystemid);
+
+
+--
+-- Name: ix_mapDenormalize_typeID; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "ix_mapDenormalize_typeID" ON mapdenormalize USING btree (typeid);
+
+
+--
+-- Name: ix_mapSolarSystems_constellationID; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "ix_mapSolarSystems_constellationID" ON mapsolarsystems USING btree (constellationid);
+
+
+--
+-- Name: ix_mapSolarSystems_regionID; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "ix_mapSolarSystems_regionID" ON mapsolarsystems USING btree (regionid);
+
+
+--
+-- Name: ix_mapSolarSystems_security; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "ix_mapSolarSystems_security" ON mapsolarsystems USING btree (security);
 
 
 --
@@ -1439,6 +2409,20 @@ CREATE INDEX "ix_ramAssemblyLineStations_regionID" ON ramassemblylinestations US
 --
 
 CREATE INDEX "ix_ramAssemblyLineStations_solarSystemID" ON ramassemblylinestations USING btree (solarsystemid);
+
+
+--
+-- Name: ix_skinShip_skinID; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "ix_skinShip_skinID" ON skinship USING btree (skinid);
+
+
+--
+-- Name: ix_skinShip_typeID; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "ix_skinShip_typeID" ON skinship USING btree (typeid);
 
 
 --
@@ -1484,6 +2468,21 @@ CREATE INDEX "ix_staStations_stationTypeID" ON stastations USING btree (stationt
 
 
 --
--- PostgreSQL database dump complete
+-- Name: mapDenormalize_IX_groupConstellation; Type: INDEX; Schema: public; Owner: -
 --
 
+CREATE INDEX "mapDenormalize_IX_groupConstellation" ON mapdenormalize USING btree (groupid, constellationid);
+
+
+--
+-- Name: mapDenormalize_IX_groupRegion; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "mapDenormalize_IX_groupRegion" ON mapdenormalize USING btree (groupid, regionid);
+
+
+--
+-- Name: mapDenormalize_IX_groupSystem; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "mapDenormalize_IX_groupSystem" ON mapdenormalize USING btree (groupid, solarsystemid);

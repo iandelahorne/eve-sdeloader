@@ -10,14 +10,14 @@ import (
 	"runtime"
 	"runtime/pprof"
 
+	"github.com/lflux/eve-sdeloader/utils"
+
 	_ "github.com/lib/pq"
 
 	"github.com/lflux/eve-sdeloader/bsd"
 	"github.com/lflux/eve-sdeloader/groups"
 	"github.com/lflux/eve-sdeloader/icons"
 	"github.com/lflux/eve-sdeloader/inventory"
-	"github.com/lflux/eve-sdeloader/translations"
-	"github.com/lflux/eve-sdeloader/universe"
 )
 
 const (
@@ -77,42 +77,14 @@ func main() {
 		_ = db.Close()
 	}()
 
-	err = bsd.CreateTables(db, "bsd/create_bsd_tables.pgsql")
-	if err != nil {
-		log.Fatalf("Error creating BSD tables: %s", err)
-	}
-
+	utils.ExecDDLFromFile(db, "schema.sql")
 	bsdImporter := &bsd.Importer{DB: db}
 	err = bsdImporter.Import(filepath.Join(sdeDirectory, "bsd"), "")
 	if err != nil {
 		log.Fatalf("Error importing BSD data: %s", err)
 	}
 
-	err = icons.CreateTables(db)
-	if err != nil {
-		log.Fatalf("could not create icon tables: %s", err)
-	}
-
-	err = inventory.CreateTables(db)
-	if err != nil {
-		log.Fatalf("could not create inventory tables: %s", err)
-	}
-	err = translations.CreateTables(db)
-	if err != nil {
-		log.Fatalf("could not create translation tables: %s", err)
-	}
-	err = groups.CreateTables(db)
-	if err != nil {
-		log.Fatalf("could not create translation tables: %s", err)
-	}
-
-	err = universe.CreateTables(db)
-	if err != nil {
-		log.Fatalf("could not create map tables: %s", err)
-	}
-
 	iconPath := filepath.Join(sdeDirectory, iconFile)
-
 	log.Println("Importing icons from ", iconPath)
 	err = icons.ImportFile(db, iconPath)
 	if err != nil {
