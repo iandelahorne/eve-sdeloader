@@ -24,6 +24,7 @@ func ImportFile(db *sql.DB, path string) error {
 func InsertGroupStmt(tx *sql.Tx) (*sql.Stmt, error) {
 	return tx.Prepare(`INSERT INTO invgroups VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`)
 }
+
 func Import(db *sql.DB, r io.Reader) error {
 	entries := make(map[string]*Group)
 	err := utils.LoadFromReader(r, entries)

@@ -1,0 +1,15 @@
+497:
+    anchorable: false
+    anchored: false
+    categoryID: 8
+    fittableNonSingleton: true
+    iconID: 0
+    name:
+        de: Treibstoff
+        en: Fuel
+        fr: Carburant
+        ja: 燃料
+        ru: Топливо
+        zh: 燃剂
+    published: false
+    useBasePrice: false
