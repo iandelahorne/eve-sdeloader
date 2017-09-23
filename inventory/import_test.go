@@ -11,7 +11,7 @@ import (
 )
 
 var _ = Describe("Import", func() {
-	It("tests importing with a bad file", func() {
+	It("Fails with a nonexistent file", func() {
 		err := ImportFile(nil, "nonexistent.yml")
 		Expect(err).To(MatchError("open nonexistent.yml: no such file or directory"))
 	})
