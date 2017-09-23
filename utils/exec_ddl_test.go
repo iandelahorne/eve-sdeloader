@@ -32,6 +32,9 @@ var _ = Describe("ExecDDL", func() {
 		mock.ExpectCommit()
 		err = utils.ExecDDLFromFile(db, "fixture.sql")
 		Expect(err).NotTo(HaveOccurred())
+
+		err = mock.ExpectationsWereMet()
+		Expect(err).NotTo(HaveOccurred())
 	})
 
 	It("Returns an error from begin", func() {
