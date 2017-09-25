@@ -10,20 +10,22 @@ import (
 	"runtime"
 	"runtime/pprof"
 
-	"github.com/lflux/eve-sdeloader/utils"
-
-	_ "github.com/lib/pq"
-
 	"github.com/lflux/eve-sdeloader/bsd"
 	"github.com/lflux/eve-sdeloader/groups"
 	"github.com/lflux/eve-sdeloader/icons"
 	"github.com/lflux/eve-sdeloader/inventory"
+	"github.com/lflux/eve-sdeloader/utils"
+
+	_ "github.com/lib/pq"
+
+	"github.com/lflux/eve-sdeloader/categories"
 )
 
 const (
-	typeIDFile   = `fsd/typeIDs.yaml`
-	iconFile     = `fsd/iconIDs.yaml`
-	groupsIDFile = `fsd/groupIDs.yaml`
+	categoryIDFile = `fsd/categoryIDs.yaml`
+	groupsIDFile   = `fsd/groupIDs.yaml`
+	iconFile       = `fsd/iconIDs.yaml`
+	typeIDFile     = `fsd/typeIDs.yaml`
 )
 
 var (
@@ -99,12 +101,19 @@ func main() {
 	}
 
 	typePath := filepath.Join(sdeDirectory, typeIDFile)
-
 	log.Println("Importing invtypes from ", typePath)
 	err = inventory.ImportFile(db, typePath)
 	if err != nil {
 		log.Fatalf("Error importing invtypes: %s", err)
 	}
+
+	categoryPath := filepath.Join(sdeDirectory, categoryIDFile)
+	log.Println("Importing categories from ", categoryPath)
+	err = categories.ImportFile(db, categoryPath)
+	if err != nil {
+		log.Fatalf("Error importing categories: %s", err)
+	}
+
 	log.Println("Import finished")
 
 	if memprofile != "" {
