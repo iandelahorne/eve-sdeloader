@@ -1,0 +1,7 @@
+4711:
+  description: Caldari Station Administrative Small
+  iconFolder: res:/dx9/fake
+  sofFactionName: caldaribase
+  sofHullName: cs1_small
+  sofRaceName: caldari
+  graphicFile: res:/dx9/fake.red
