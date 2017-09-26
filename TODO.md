@@ -1,6 +1,9 @@
 # Overall
 - [ ] test with mysql
 - [ ] cleanup DDLs and importing
+- [ ] Import with NULL values where this makes sense
+- [ ] test with capitalized table names
+- [ ] Generalize importers even more
 
 # blueprints
 - [ ] import blueprints
@@ -12,7 +15,7 @@
 - [x] import certificates
 
 # graphics
-- [ ] import graphics
+- [x] import graphics
 
 # groups
 - [x] import groups
@@ -24,8 +27,8 @@
 
 # skins
 - [ ] import skins
-- [ ] import skinLicenses
-- [ ] import skinMaterials
+- [x] import skinLicenses
+- [x] import skinMaterials
 
 # types
 - [ ] translations for description

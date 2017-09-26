@@ -21,7 +21,7 @@ func InsertSkinStmt(tx *sql.Tx) (*sql.Stmt, error) {
 	return tx.Prepare(`INSERT INTO skins VALUES ($1, $2, $3)`)
 }
 
-func ImportSkin(db *sql.DB, r io.Reader) error {
+func ImportSkins(db *sql.DB, r io.Reader) error {
 
 	entries := make(map[string]*Skin)
 
