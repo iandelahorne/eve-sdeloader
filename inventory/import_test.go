@@ -1,9 +1,6 @@
 package inventory
 
 import (
-	"bytes"
-	"os"
-
 	sqlmock "gopkg.in/DATA-DOG/go-sqlmock.v1"
 
 	. "github.com/onsi/ginkgo"
@@ -11,11 +8,6 @@ import (
 )
 
 var _ = Describe("Import", func() {
-	It("Fails with a nonexistent file", func() {
-		err := ImportFile(nil, "nonexistent.yml")
-		Expect(err).To(MatchError("open nonexistent.yml: no such file or directory"))
-	})
-
 	It("Tests inserting bonuses", func() {
 		bonuses := []Bonus{
 			{
@@ -72,46 +64,5 @@ var _ = Describe("Import", func() {
 
 		err = mock.ExpectationsWereMet()
 		Expect(err).NotTo(HaveOccurred())
-	})
-
-	It("Tests loading from a reader with no data", func() {
-		r := bytes.NewReader([]byte{})
-		entries, err := loadFromReader(r)
-		Expect(err).NotTo(HaveOccurred())
-		Expect(len(entries)).To(Equal(0))
-	})
-
-	It("Tests loading from a reader with bad yaml", func() {
-		r := bytes.NewReader([]byte("asdf"))
-		entries, err := loadFromReader(r)
-
-		Expect(err).Should(MatchError("yaml: unmarshal errors:\n  line 1: cannot unmarshal !!str `asdf` into map[string]*inventory.Type"))
-		Expect(len(entries)).To(Equal(0))
-	})
-
-	Context("loadFromReader", func() {
-		It("can parse from a reader with good YAML", func() {
-			f, err := os.Open("fixtures/hawk.yml")
-			Expect(err).NotTo(HaveOccurred())
-			defer func() {
-				err := f.Close()
-				Expect(err).NotTo(HaveOccurred())
-			}()
-			entries, err := loadFromReader(f)
-			Expect(len(entries)).To(Equal(1))
-			Expect(err).NotTo(HaveOccurred())
-		})
-
-		It("returns an error from a closed reader", func() {
-			f, err := os.Open("fixtures/hawk.yml")
-			Expect(err).NotTo(HaveOccurred())
-			err = f.Close()
-			Expect(err).NotTo(HaveOccurred())
-
-			entries, err := loadFromReader(f)
-			Expect(entries).To(BeNil())
-			Expect(err).To(MatchError("read fixtures/hawk.yml: file already closed"))
-
-		})
 	})
 })

@@ -3,48 +3,14 @@ package icons
 import (
 	"database/sql"
 	"io"
-	"io/ioutil"
-	"os"
 
-	yaml "gopkg.in/yaml.v2"
+	"github.com/lflux/eve-sdeloader/utils"
 )
 
-const iconDDL = `CREATE TABLE IF NOT EXISTS eveicons (
-    iconid integer NOT NULL,
-    iconfile text,
-    description text
-);`
-
-func ImportFile(db *sql.DB, path string) error {
-	f, err := os.Open(path)
-
-	if err != nil {
-		return err
-	}
-	defer func() {
-		_ = f.Close()
-	}()
-
-	return Import(db, f)
-}
-
-func loadFromReader(r io.Reader) (map[int64]*Icon, error) {
-	buf, err := ioutil.ReadAll(r)
-	if err != nil {
-		return nil, err
-	}
-
-	entries := make(map[int64]*Icon)
-	err = yaml.Unmarshal(buf, entries)
-	if err != nil {
-		return nil, err
-	}
-
-	return entries, nil
-}
-
 func Import(db *sql.DB, r io.Reader) error {
-	entries, err := loadFromReader(r)
+	entries := make(map[int64]*Icon)
+
+	err := utils.LoadFromReader(r, entries)
 	if err != nil {
 		return err
 	}

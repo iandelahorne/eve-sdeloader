@@ -4,11 +4,9 @@ import (
 	"database/sql"
 	"fmt"
 	"io"
-	"io/ioutil"
-	"os"
 	"strings"
 
-	yaml "gopkg.in/yaml.v2"
+	"github.com/lflux/eve-sdeloader/utils"
 )
 
 var (
@@ -44,35 +42,6 @@ func InsertBonuses(stmt *sql.Stmt, typeID string, skillID int64, bonuses []Bonus
 	return nil
 }
 
-// ImportFile imports a file at path to the table `invtypes`
-func ImportFile(db *sql.DB, path string) error {
-	f, err := os.Open(path)
-
-	if err != nil {
-		return err
-	}
-	defer func() {
-		_ = f.Close()
-	}()
-
-	return Import(db, f)
-}
-
-func loadFromReader(r io.Reader) (map[string]*Type, error) {
-	buf, err := ioutil.ReadAll(r)
-	if err != nil {
-		return nil, err
-	}
-
-	entries := make(map[string]*Type)
-	err = yaml.Unmarshal(buf, entries)
-	if err != nil {
-		return nil, err
-	}
-
-	return entries, nil
-}
-
 func InsertInvTypeStatement(tx *sql.Tx) (*sql.Stmt, error) {
 	// TODO investigate if we can perform multiple CopyIn in the same transaction
 	// return txn.Prepare(pq.CopyIn("invtypes", invCols...))
@@ -91,8 +60,9 @@ func InsertTraitStatement(tx *sql.Tx) (*sql.Stmt, error) {
 
 // Import imports from a reader containing typeID YAML to the table `invtypes`
 func Import(db *sql.DB, r io.Reader) error {
+	entries := make(map[string]*Type)
 
-	entries, err := loadFromReader(r)
+	err := utils.LoadFromReader(r, entries)
 	if err != nil {
 		return err
 	}

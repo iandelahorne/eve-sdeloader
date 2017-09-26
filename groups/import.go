@@ -3,23 +3,9 @@ package groups
 import (
 	"database/sql"
 	"io"
-	"os"
 
 	"github.com/lflux/eve-sdeloader/utils"
 )
-
-func ImportFile(db *sql.DB, path string) error {
-	f, err := os.Open(path)
-
-	if err != nil {
-		return err
-	}
-	defer func() {
-		_ = f.Close()
-	}()
-
-	return Import(db, f)
-}
 
 func InsertGroupStmt(tx *sql.Tx) (*sql.Stmt, error) {
 	return tx.Prepare(`INSERT INTO invgroups VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`)

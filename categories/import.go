@@ -3,7 +3,6 @@ package categories
 import (
 	"database/sql"
 	"io"
-	"os"
 
 	"github.com/lflux/eve-sdeloader/utils"
 )
@@ -16,19 +15,6 @@ type Category struct {
 
 func InsertCategoryStmt(tx *sql.Tx) (*sql.Stmt, error) {
 	return tx.Prepare(`INSERT INTO invcategories VALUES ($1, $2, $3, $4)`)
-}
-
-func ImportFile(db *sql.DB, path string) error {
-	f, err := os.Open(path)
-
-	if err != nil {
-		return err
-	}
-	defer func() {
-		_ = f.Close()
-	}()
-
-	return Import(db, f)
 }
 
 func Import(db *sql.DB, r io.Reader) error {
