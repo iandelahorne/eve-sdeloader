@@ -26,7 +26,7 @@
 - [ ] test icons
 
 # skins
-- [ ] import skins
+- [x] import skins
 - [x] import skinLicenses
 - [x] import skinMaterials
 
