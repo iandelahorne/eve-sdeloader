@@ -2,21 +2,37 @@
 - [ ] test with mysql
 - [ ] cleanup DDLs and importing
 
-# translations
-- [x] create translations table
+# blueprints
+- [ ] import blueprints
 
-# invTypes
+# categories
+- [x] import categories
+
+# certificates
+- [x] import certificates
+
+# graphics
+- [ ] import graphics
+
+# groups
+- [x] import groups
+- [ ] test groups
+
+# icons
+- [x] import icons
+- [ ] test icons
+
+# skins
+- [ ] import skins
+
+# types
 - [ ] translations for description
 - [ ] translations for name
 - [x] traits
 - [x] traits miscbonuses
 
-# icons
-- [x] icon DDL
-- [x] import icons
-- [ ] test icons
+# universe
+- [ ] universe
 
-# groups
-- [x] groups DDL
-- [x] import groups
-- [ ] test groups
+# volumes
+- [ ] volumes
