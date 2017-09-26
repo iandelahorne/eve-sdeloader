@@ -24,6 +24,8 @@
 
 # skins
 - [ ] import skins
+- [ ] import skinLicenses
+- [ ] import skinMaterials
 
 # types
 - [ ] translations for description
