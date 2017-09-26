@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"flag"
 	"fmt"
+	"io"
 	"log"
 	"os"
 	"path/filepath"
@@ -11,6 +12,7 @@ import (
 	"runtime/pprof"
 
 	"github.com/lflux/eve-sdeloader/bsd"
+	"github.com/lflux/eve-sdeloader/graphics"
 	"github.com/lflux/eve-sdeloader/groups"
 	"github.com/lflux/eve-sdeloader/icons"
 	"github.com/lflux/eve-sdeloader/inventory"
@@ -21,8 +23,11 @@ import (
 	"github.com/lflux/eve-sdeloader/categories"
 )
 
+type Importer func(*sql.DB, io.Reader) error
+
 const (
 	categoryIDFile = `fsd/categoryIDs.yaml`
+	graphicIDFile  = `fsd/graphicIDs.yaml`
 	groupsIDFile   = `fsd/groupIDs.yaml`
 	iconFile       = `fsd/iconIDs.yaml`
 	typeIDFile     = `fsd/typeIDs.yaml`
@@ -33,6 +38,13 @@ var (
 	dbUser, dbName, dbHost, dbPassword string
 	dbPort                             int
 	sdeDirectory                       string
+	fsdImporters                       = map[string]Importer{
+		"categoryIDs.yaml": categories.Import,
+		"graphicIDS.yaml":  graphics.Import,
+		"groupIDs.yaml":    groups.Import,
+		"iconIDs.yaml":     icons.Import,
+		"typeIDs.yaml":     inventory.Import,
+	}
 )
 
 func init() {
@@ -79,41 +91,31 @@ func main() {
 		_ = db.Close()
 	}()
 
-	utils.ExecDDLFromFile(db, "schema.sql")
+	err = utils.ExecDDLFromFile(db, "schema.sql")
+	if err != nil {
+		log.Fatalf("Could import schema.sql: %s", err)
+	}
+
 	bsdImporter := &bsd.Importer{DB: db}
 	err = bsdImporter.Import(filepath.Join(sdeDirectory, "bsd"), "")
 	if err != nil {
 		log.Fatalf("Error importing BSD data: %s", err)
 	}
 
-	iconPath := filepath.Join(sdeDirectory, iconFile)
-	log.Println("Importing icons from ", iconPath)
-	err = icons.ImportFile(db, iconPath)
-	if err != nil {
-		log.Fatalf("Error importing icons: %s", err)
-	}
+	for filename, importer := range fsdImporters {
+		path := filepath.Join(sdeDirectory, "fsd", filename)
+		log.Println("Importing ", path)
+		f, err := os.Open(path)
+		if err != nil {
+			log.Fatalf("Error importing %s: %s", path, err)
+		}
+		defer f.Close()
 
-	groupsPath := filepath.Join(sdeDirectory, groupsIDFile)
-	log.Println("Importing groups from ", groupsPath)
-	err = groups.ImportFile(db, groupsPath)
-	if err != nil {
-		log.Fatalf("Error importing groups: %s", err)
+		err = importer(db, f)
+		if err != nil {
+			log.Fatalf("Error importing %s: %s", path, err)
+		}
 	}
-
-	typePath := filepath.Join(sdeDirectory, typeIDFile)
-	log.Println("Importing invtypes from ", typePath)
-	err = inventory.ImportFile(db, typePath)
-	if err != nil {
-		log.Fatalf("Error importing invtypes: %s", err)
-	}
-
-	categoryPath := filepath.Join(sdeDirectory, categoryIDFile)
-	log.Println("Importing categories from ", categoryPath)
-	err = categories.ImportFile(db, categoryPath)
-	if err != nil {
-		log.Fatalf("Error importing categories: %s", err)
-	}
-
 	log.Println("Import finished")
 
 	if memprofile != "" {
