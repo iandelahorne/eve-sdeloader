@@ -21,6 +21,9 @@ func InsertSkinStmt(tx *sql.Tx) (*sql.Stmt, error) {
 	return tx.Prepare(`INSERT INTO skins VALUES ($1, $2, $3)`)
 }
 
+func InsertSkinShipStmt(tx *sql.Tx) (*sql.Stmt, error) {
+	return tx.Prepare(`INSERT INTO skinship VALUES ($1, $2)`)
+}
 func ImportSkins(db *sql.DB, r io.Reader) error {
 
 	entries := make(map[string]*Skin)
@@ -35,15 +38,26 @@ func ImportSkins(db *sql.DB, r io.Reader) error {
 		return err
 	}
 
-	stmt, err := InsertSkinStmt(tx)
+	skinStmt, err := InsertSkinStmt(tx)
+	if err != nil {
+		return err
+	}
+
+	skinShipStmt, err := InsertSkinShipStmt(tx)
 	if err != nil {
 		return err
 	}
 
 	for skinID, skin := range entries {
-		_, err = stmt.Exec(skinID, skin.InternalName, skin.MaterialID)
+		_, err = skinStmt.Exec(skinID, skin.InternalName, skin.MaterialID)
 		if err != nil {
 			return err
+		}
+		for _, typeID := range skin.Types {
+			_, err = skinShipStmt.Exec(skinID, typeID)
+			if err != nil {
+				return err
+			}
 		}
 	}
 
