@@ -25,14 +25,6 @@ import (
 
 type Importer func(*sql.DB, io.Reader) error
 
-const (
-	categoryIDFile = `fsd/categoryIDs.yaml`
-	graphicIDFile  = `fsd/graphicIDs.yaml`
-	groupsIDFile   = `fsd/groupIDs.yaml`
-	iconFile       = `fsd/iconIDs.yaml`
-	typeIDFile     = `fsd/typeIDs.yaml`
-)
-
 var (
 	cpuprofile, memprofile             string
 	dbUser, dbName, dbHost, dbPassword string
