@@ -14,7 +14,7 @@
 - [ ] test categories
 
 # certificates
-- [x] import certificates
+- [ ] import certificates
 - [ ] test certificates
 
 # graphics
