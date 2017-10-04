@@ -7,7 +7,9 @@
 
 # Current status
 
-I won't even call this alpha, it can currently import the `invtypes` table. Currently tested on Go 1.9 with Postgres 9.6, but it probably works all the way back to 8.4.
+Under development. Almost all tables except for universe and translations are imported. A full import currently takes about 3.5 minutes. The [TODO](TODO.md) file attempts to keep track of project status.
+
+Currently tested on Go 1.9 with Postgres 9.6, but it probably works all the way back to 8.4.
 
 # Usage
 
