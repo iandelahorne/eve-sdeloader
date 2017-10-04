@@ -11,16 +11,17 @@ import (
 	"runtime"
 	"runtime/pprof"
 
+	"github.com/lflux/eve-sdeloader/blueprints"
 	"github.com/lflux/eve-sdeloader/bsd"
+	"github.com/lflux/eve-sdeloader/categories"
 	"github.com/lflux/eve-sdeloader/graphics"
 	"github.com/lflux/eve-sdeloader/groups"
 	"github.com/lflux/eve-sdeloader/icons"
 	"github.com/lflux/eve-sdeloader/inventory"
+	"github.com/lflux/eve-sdeloader/skins"
 	"github.com/lflux/eve-sdeloader/utils"
 
 	_ "github.com/lib/pq"
-
-	"github.com/lflux/eve-sdeloader/categories"
 )
 
 type Importer func(*sql.DB, io.Reader) error
@@ -31,11 +32,15 @@ var (
 	dbPort                             int
 	sdeDirectory                       string
 	fsdImporters                       = map[string]Importer{
-		"categoryIDs.yaml": categories.Import,
-		"graphicIDS.yaml":  graphics.Import,
-		"groupIDs.yaml":    groups.Import,
-		"iconIDs.yaml":     icons.Import,
-		"typeIDs.yaml":     inventory.Import,
+		"blueprints.yaml":    blueprints.Import,
+		"categoryIDs.yaml":   categories.Import,
+		"graphicIDS.yaml":    graphics.Import,
+		"groupIDs.yaml":      groups.Import,
+		"iconIDs.yaml":       icons.Import,
+		"skins.yaml":         skins.ImportSkins,
+		"skinLicenses.yaml":  skins.ImportLicenses,
+		"skinMaterials.yaml": skins.ImportMaterials,
+		"typeIDs.yaml":       inventory.Import,
 	}
 )
 
