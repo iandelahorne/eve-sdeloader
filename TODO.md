@@ -6,16 +6,20 @@
 - [ ] Generalize importers even more
 
 # blueprints
-- [ ] import blueprints
+- [x] import blueprints
+- [ ] test blueprints
 
 # categories
 - [x] import categories
+- [ ] test categories
 
 # certificates
 - [x] import certificates
+- [ ] test certificates
 
 # graphics
 - [x] import graphics
+- [ ] test graphics
 
 # groups
 - [x] import groups
@@ -29,6 +33,7 @@
 - [x] import skins
 - [x] import skinLicenses
 - [x] import skinMaterials
+- [ ] test skins
 
 # types
 - [ ] translations for description
@@ -37,7 +42,9 @@
 - [x] traits miscbonuses
 
 # universe
-- [ ] universe
+- [ ] import universe
+- [ ] test universe
 
 # volumes
-- [ ] volumes
+- [ ] import volumes
+- [ ] test volumes
