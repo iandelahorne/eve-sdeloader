@@ -45,8 +45,8 @@ var (
 )
 
 func init() {
-	flag.StringVar(&cpuprofile, "cpuprofile", "", "write cpu profile `file`")
-	flag.StringVar(&memprofile, "memprofile", "", "write memory profile to `file`")
+	flag.StringVar(&cpuprofile, "cpuprofile", "", "File to write cpu profile to")
+	flag.StringVar(&memprofile, "memprofile", "", "File to write memory profile to")
 
 	flag.IntVar(&dbPort, "dbport", 5432, "Database port")
 	flag.StringVar(&dbUser, "dbuser", "sdetest", "Database username")

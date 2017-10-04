@@ -17,6 +17,8 @@ By default `eve-sdeloader` will try to import SDE files from under `./sde` to th
 
 ```
 Usage of ./eve-sdeloader:
+  -cpuprofile string
+    	File to write cpu profile to
   -dbhost string
     	Database host (default "localhost")
   -dbname string
@@ -27,9 +29,11 @@ Usage of ./eve-sdeloader:
     	Database port (default 5432)
   -dbuser string
     	Database username (default "sdetest")
+  -memprofile string
+    	File to write memory profile to
   -sdedirectory string
     	Directory containing an unzipped EVE SDE YAML dump (default "./sde")
-```
+  ```
 
 ## Profiling
 
