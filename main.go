@@ -36,7 +36,7 @@ var (
 		"blueprints.yaml":    blueprints.Import,
 		"categoryIDs.yaml":   categories.Import,
 		"certificates.yaml":  certificates.Import,
-		"graphicIDS.yaml":    graphics.Import,
+		"graphicIDs.yaml":    graphics.Import,
 		"groupIDs.yaml":      groups.Import,
 		"iconIDs.yaml":       icons.Import,
 		"skins.yaml":         skins.ImportSkins,
