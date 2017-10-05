@@ -3,7 +3,6 @@ package certificates
 import (
 	"database/sql"
 	"io"
-	"log"
 
 	"github.com/lflux/eve-sdeloader/utils"
 )
@@ -56,7 +55,6 @@ func Import(db *sql.DB, r io.Reader) error {
 	}
 
 	for certID, cert := range entries {
-		log.Println(certID)
 		_, err = insertCertCerts.Exec(certID, cert.Description, cert.GroupID, cert.Name)
 		if err != nil {
 			return err
@@ -64,7 +62,6 @@ func Import(db *sql.DB, r io.Reader) error {
 
 		for skillID, skillType := range cert.SkillTypes {
 			for skillLevel, value := range skillType {
-				log.Println(certID, skillID, skillLevelMap[skillLevel], skillLevel, value)
 				_, err = insertCertSkills.Exec(certID, skillID, skillLevelMap[skillLevel], skillLevel, value)
 			}
 		}
