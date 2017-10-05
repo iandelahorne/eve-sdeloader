@@ -14,6 +14,7 @@ import (
 	"github.com/lflux/eve-sdeloader/blueprints"
 	"github.com/lflux/eve-sdeloader/bsd"
 	"github.com/lflux/eve-sdeloader/categories"
+	"github.com/lflux/eve-sdeloader/certificates"
 	"github.com/lflux/eve-sdeloader/graphics"
 	"github.com/lflux/eve-sdeloader/groups"
 	"github.com/lflux/eve-sdeloader/icons"
@@ -34,6 +35,7 @@ var (
 	fsdImporters                       = map[string]Importer{
 		"blueprints.yaml":    blueprints.Import,
 		"categoryIDs.yaml":   categories.Import,
+		"certificates.yaml":  certificates.Import,
 		"graphicIDS.yaml":    graphics.Import,
 		"groupIDs.yaml":      groups.Import,
 		"iconIDs.yaml":       icons.Import,
