@@ -3,7 +3,7 @@
 - [ ] cleanup DDLs and importing
 - [ ] Import with NULL values where this makes sense
 - [ ] test with capitalized table names
-- [ ] Generalize importers even more
+- [ ] test with schemadiff against dump
 
 # blueprints
 - [x] import blueprints
@@ -36,8 +36,8 @@
 - [ ] test skins
 
 # types
-- [ ] translations for description
-- [ ] translations for name
+- [x] translations for description
+- [x] translations for name
 - [x] traits
 - [x] traits miscbonuses
 
