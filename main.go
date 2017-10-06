@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"runtime/pprof"
+	"strings"
 
 	"github.com/lflux/eve-sdeloader/blueprints"
 	"github.com/lflux/eve-sdeloader/bsd"
@@ -32,6 +33,8 @@ var (
 	dbUser, dbName, dbHost, dbPassword string
 	dbPort                             int
 	sdeDirectory                       string
+	noBsd                              bool
+	singleFile                         string
 	fsdImporters                       = map[string]Importer{
 		"blueprints.yaml":    blueprints.Import,
 		"categoryIDs.yaml":   categories.Import,
@@ -56,6 +59,8 @@ func init() {
 	flag.StringVar(&dbName, "dbname", "sdetest", "Database name")
 	flag.StringVar(&dbPassword, "dbpassword", "", "Database password")
 	flag.StringVar(&sdeDirectory, "sdedirectory", "./sde", "Directory containing an unzipped EVE SDE YAML dump")
+	flag.BoolVar(&noBsd, "nobsd", false, "Disable importing of BSD directory")
+	flag.StringVar(&singleFile, "single-file", "", "Import only a single FSD file")
 }
 
 func main() {
@@ -95,13 +100,20 @@ func main() {
 		log.Fatalf("Could import schema.sql: %s", err)
 	}
 
-	bsdImporter := &bsd.Importer{DB: db}
-	err = bsdImporter.Import(filepath.Join(sdeDirectory, "bsd"), "")
-	if err != nil {
-		log.Fatalf("Error importing BSD data: %s", err)
+	if !noBsd {
+		bsdImporter := &bsd.Importer{DB: db}
+		err = bsdImporter.Import(filepath.Join(sdeDirectory, "bsd"), "")
+		if err != nil {
+			log.Fatalf("Error importing BSD data: %s", err)
+		}
 	}
 
 	for filename, importer := range fsdImporters {
+		if singleFile != "" {
+			if !strings.Contains(filename, singleFile) {
+				continue
+			}
+		}
 		path := filepath.Join(sdeDirectory, "fsd", filename)
 		log.Println("Importing ", path)
 		f, err := os.Open(path)

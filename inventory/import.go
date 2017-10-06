@@ -27,7 +27,7 @@ var (
 	}
 )
 
-func InsertBonuses(stmt *sql.Stmt, typeID string, skillID int64, bonuses []Bonus) error {
+func InsertBonuses(stmt, insertTranslations *sql.Stmt, typeID string, skillID int64, bonuses []Bonus) error {
 	for _, bonus := range bonuses {
 		var traitID int
 		err := stmt.QueryRow(typeID,
@@ -37,6 +37,13 @@ func InsertBonuses(stmt *sql.Stmt, typeID string, skillID int64, bonuses []Bonus
 			bonus.BonusText["en"]).Scan(&traitID)
 		if err != nil {
 			return err
+		}
+
+		for lang, val := range bonus.BonusText {
+			_, err = insertTranslations.Exec(1002, traitID, lang, val)
+			if err != nil {
+				return err
+			}
 		}
 	}
 	return nil
@@ -77,13 +84,17 @@ func Import(db *sql.DB, r io.Reader) error {
 		return err
 	}
 
-	// mastStmt, err := txn2.Prepare(pq.CopyIn("certmasteries", "typeid", "masterylevel", "certid"))
 	mastStmt, err := InsertCertMasteryStatement(txn)
 	if err != nil {
 		return err
 	}
 
 	traitStmt, err := InsertTraitStatement(txn)
+	if err != nil {
+		return err
+	}
+
+	insertTranslations, err := utils.InsertTrnTranslations(txn)
 	if err != nil {
 		return err
 	}
@@ -120,12 +131,31 @@ func Import(db *sql.DB, r io.Reader) error {
 
 		if entry.Traits != nil {
 			for skill, typeBonus := range entry.Traits.Types {
-				err = InsertBonuses(traitStmt, typeID, skill, typeBonus)
+				err = InsertBonuses(traitStmt, insertTranslations, typeID, skill, typeBonus)
 				if err != nil {
 					return err
 				}
 			}
-			err = InsertBonuses(traitStmt, typeID, -1, entry.Traits.RoleBonuses)
+			err = InsertBonuses(traitStmt, insertTranslations, typeID, -1, entry.Traits.RoleBonuses)
+			if err != nil {
+				return err
+			}
+
+		}
+
+		if len(entry.Name) > 0 {
+			for lang, val := range entry.Name {
+				_, err = insertTranslations.Exec(8, typeID, lang, val)
+				if err != nil {
+					return err
+				}
+			}
+		}
+
+		if len(entry.Description) > 0 {
+			for lang, val := range entry.Description {
+				_, err = insertTranslations.Exec(33, typeID, lang, val)
+			}
 			if err != nil {
 				return err
 			}

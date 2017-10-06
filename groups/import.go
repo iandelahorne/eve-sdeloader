@@ -19,25 +19,38 @@ func Import(db *sql.DB, r io.Reader) error {
 		return err
 	}
 
-	txn, err := db.Begin()
+	tx, err := db.Begin()
 	if err != nil {
 		return err
 	}
 
-	stmt, err := InsertGroupStmt(txn)
+	stmt, err := InsertGroupStmt(tx)
 	if err != nil {
 		return err
 	}
+	insertTrnTranslations, err := utils.InsertTrnTranslations(tx)
 	for groupID, group := range entries {
 		_, err = stmt.Exec(groupID, group.CategoryID, group.Name["en"], group.IconID, group.UseBasePrice, group.Anchored, group.Anchorable, group.FittableNonSingleton, group.Published)
 		if err != nil {
 			return err
 		}
+		for lang, val := range group.Name {
+			_, err = insertTrnTranslations.Exec(7, groupID, lang, val)
+			if err != nil {
+				return err
+			}
+		}
 	}
+
+	err = insertTrnTranslations.Close()
+	if err != nil {
+		return err
+	}
+
 	err = stmt.Close()
 	if err != nil {
 		return err
 	}
 
-	return txn.Commit()
+	return tx.Commit()
 }
