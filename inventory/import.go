@@ -6,6 +6,7 @@ import (
 	"io"
 	"strings"
 
+	"github.com/davecgh/go-spew/spew"
 	"github.com/lflux/eve-sdeloader/utils"
 )
 
@@ -16,6 +17,7 @@ var (
 		"typename",
 		"description",
 		"mass",
+		"volume",
 		"capacity",
 		"portionsize",
 		"raceid",
@@ -53,7 +55,7 @@ func InsertInvTypeStatement(tx *sql.Tx) (*sql.Stmt, error) {
 	// TODO investigate if we can perform multiple CopyIn in the same transaction
 	// return txn.Prepare(pq.CopyIn("invtypes", invCols...))
 
-	return tx.Prepare(fmt.Sprintf(`INSERT INTO invtypes (%s) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)`,
+	return tx.Prepare(fmt.Sprintf(`INSERT INTO invtypes (%s) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)`,
 		strings.Join(invCols, ",")))
 }
 
@@ -100,12 +102,14 @@ func Import(db *sql.DB, r io.Reader) error {
 	}
 
 	for typeID, entry := range entries {
+		spew.Dump(entry)
 		vals := []interface{}{
 			typeID,
 			entry.GroupID,
 			entry.Name["en"],
 			entry.Description["en"],
 			entry.Mass,
+			entry.Volume,
 			entry.Capacity,
 			entry.PortionSize,
 			entry.RaceID,
