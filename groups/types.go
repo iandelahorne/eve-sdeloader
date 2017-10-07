@@ -3,10 +3,10 @@ package groups
 type Group struct {
 	Anchorable           bool
 	Anchored             bool
-	CategoryID           int64
-	FittableNonSingleton bool
-	IconID               int64
+	CategoryID           int64  `yaml:"categoryID"`
+	FittableNonSingleton bool   `yaml:"fittableNonSingleton"`
+	IconID               *int64 `yaml:"iconID"`
 	Name                 map[string]string
 	Published            bool
-	UseBasePrice         bool
+	UseBasePrice         bool `yaml:"useBasePrice"`
 }
