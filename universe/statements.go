@@ -10,6 +10,10 @@ func InsertMapDenormalizeStmt(tx *sql.Tx) (*sql.Stmt, error) {
 	return tx.Prepare(`INSERT INTO mapdenormalize (itemid, typeid, groupid, itemname, x, y, z) VALUES ($1, $2, $3, $4, $5, $6, $7)`)
 }
 
+func InsertRegionMapDenormalizeStmt(tx *sql.Tx) (*sql.Stmt, error) {
+	return tx.Prepare(`INSERT INTO mapdenormalize (itemid, regionid, typeid, groupid, itemname, x, y, z) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`)
+}
+
 func InsertMapLocationScenesStmt(tx *sql.Tx) (*sql.Stmt, error) {
 	return tx.Prepare(`INSERT INTO maplocationscenes (locationid, graphicid) VALUES ($1, $2)`)
 }
