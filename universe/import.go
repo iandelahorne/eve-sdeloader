@@ -6,8 +6,26 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/davecgh/go-spew/spew"
 	"github.com/lflux/eve-sdeloader/utils"
 )
+
+type SolarSystem struct {
+	Center []float64
+	Max    []float64
+	Min    []float64
+	Radius float64
+}
+
+type Constellation struct {
+	ConstellationID int64 `yaml:"constellationID"`
+	Center          []float64
+	Max             []float64
+	Min             []float64
+	NameID          int64 `yaml:"nameID"`
+	Radius          float64
+	FactionID       *int64 `yaml:"factionID"`
+}
 
 type Region struct {
 	Center          []float64
@@ -19,26 +37,91 @@ type Region struct {
 	Nebula          int64
 	RegionID        int64 `yaml:"regionID"`
 	WormholeClassID int64 `yaml:"wormholeClassID"`
+	db              *sql.DB
+	path            string
+	tx              *sql.Tx
 }
 
-func InsertRegionStmt(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO mapregions (regionid, regionname, x,y,z, "xMax", ymax, zmax, "xMin", ymin, zmin, factionid) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`)
-}
+func getItemNameByID(db *sql.DB, itemID int64) (string, error) {
+	var name string
 
-func InsertMapDenormalizeStmt(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO mapdenormalize (regionid, typeid, groupid, itemname, x, y, z) VALUES ($1, $2, $3, $4, $5, $6, $7)`)
-}
-
-func getRegionName(regionID int64, db *sql.DB) (string, error) {
-	var regionName string
-
-	row := db.QueryRow(`SELECT itemname from sdeyaml.invnames where itemid = $1`, regionID)
-	err := row.Scan(&regionName)
+	row := db.QueryRow(`SELECT itemname from sdeyaml.invnames where itemid = $1`, itemID)
+	err := row.Scan(&name)
 	if err != nil {
 		return "", nil
 	}
 
-	return regionName, nil
+	return name, nil
+}
+
+func (r *Region) ImportConstellation(path string) error {
+	f, err := os.Open(path)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	var c Constellation
+
+	err = utils.LoadFromReader(f, &c)
+	if err != nil {
+		return err
+	}
+
+	constStmt, err := InsertConstellationsStmt(r.tx)
+	if err != nil {
+		return err
+	}
+
+	log.Println(path)
+	spew.Dump(c)
+
+	constellationName, err := getItemNameByID(r.db, c.ConstellationID)
+	if err != nil {
+		return err
+	}
+
+	var factionID *int64
+	if c.FactionID != nil {
+		factionID = c.FactionID
+	} else {
+		factionID = r.FactionID
+	}
+	_, err = constStmt.Exec(r.RegionID,
+		c.ConstellationID,
+		constellationName,
+		c.Center[0],
+		c.Center[1],
+		c.Center[2],
+		c.Max[0],
+		c.Max[1],
+		c.Max[2],
+		c.Min[0],
+		c.Min[1],
+		c.Min[2],
+		c.Radius,
+		factionID,
+	)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *Region) ImportConstellations() error {
+	constellations, err := filepath.Glob(filepath.Join(r.path, "*", "constellation.staticdata"))
+	if err != nil {
+		return err
+	}
+
+	for _, constellationFile := range constellations {
+		err = r.ImportConstellation(constellationFile)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 func ImportRegion(db *sql.DB, path string) error {
@@ -55,7 +138,7 @@ func ImportRegion(db *sql.DB, path string) error {
 		return err
 	}
 
-	regionName, err := getRegionName(region.RegionID, db)
+	regionName, err := getItemNameByID(db, region.RegionID)
 	if err != nil {
 		return err
 	}
@@ -69,6 +152,21 @@ func ImportRegion(db *sql.DB, path string) error {
 	if err != nil {
 		return err
 	}
+	denormStmt, err := InsertMapDenormalizeStmt(tx)
+	if err != nil {
+		return err
+	}
+
+	locStmt, err := InsertMapLocationScenesStmt(tx)
+	if err != nil {
+		return err
+	}
+
+	whClassStmt, err := InsertMapWHClassesStmt(tx)
+	if err != nil {
+		return err
+	}
+
 	_, err = stmt.Exec(region.RegionID,
 		regionName,
 		region.Center[0],
@@ -84,8 +182,38 @@ func ImportRegion(db *sql.DB, path string) error {
 	if err != nil {
 		return err
 	}
-	// load region.staticdata
-	// get region name from invNames
+
+	_, err = denormStmt.Exec(region.RegionID,
+		3,
+		3,
+		regionName,
+		region.Center[0],
+		region.Center[1],
+		region.Center[2],
+	)
+	if err != nil {
+		return err
+	}
+
+	_, err = locStmt.Exec(region.RegionID, region.Nebula)
+	if err != nil {
+		return err
+	}
+
+	if region.WormholeClassID != 0 {
+		_, err = whClassStmt.Exec(region.RegionID, region.WormholeClassID)
+		if err != nil {
+			return err
+		}
+	}
+
+	region.db = db
+	region.path, _ = filepath.Split(path)
+	region.tx = tx
+	err = region.ImportConstellations()
+	if err != nil {
+		return err
+	}
 	return tx.Commit()
 }
 
