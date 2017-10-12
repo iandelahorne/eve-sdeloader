@@ -21,6 +21,7 @@ import (
 	"github.com/lflux/eve-sdeloader/icons"
 	"github.com/lflux/eve-sdeloader/inventory"
 	"github.com/lflux/eve-sdeloader/skins"
+	"github.com/lflux/eve-sdeloader/universe"
 	"github.com/lflux/eve-sdeloader/utils"
 
 	_ "github.com/lib/pq"
@@ -33,7 +34,7 @@ var (
 	dbUser, dbName, dbHost, dbPassword string
 	dbPort                             int
 	sdeDirectory                       string
-	noBsd                              bool
+	noBsd, noUniverse                  bool
 	singleFile                         string
 	fsdImporters                       = map[string]Importer{
 		"blueprints.yaml":    blueprints.Import,
@@ -60,6 +61,7 @@ func init() {
 	flag.StringVar(&dbPassword, "dbpassword", "", "Database password")
 	flag.StringVar(&sdeDirectory, "sdedirectory", "./sde", "Directory containing an unzipped EVE SDE YAML dump")
 	flag.BoolVar(&noBsd, "nobsd", false, "Disable importing of BSD directory")
+	flag.BoolVar(&noUniverse, "nouniverse", false, "Disable importing of universe data")
 	flag.StringVar(&singleFile, "single-file", "", "Import only a single FSD file")
 }
 
@@ -125,6 +127,13 @@ func main() {
 		err = importer(db, f)
 		if err != nil {
 			log.Fatalf("Error importing %s: %s", path, err)
+		}
+	}
+
+	if !noUniverse {
+		err = universe.Import(db, filepath.Join(sdeDirectory, "fsd", "universe"))
+		if err != nil {
+			log.Fatalf("Error importing universe: %s", err)
 		}
 	}
 	log.Println("Import finished")
