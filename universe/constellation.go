@@ -20,6 +20,7 @@ type Constellation struct {
 	db              *sql.DB
 	tx              *sql.Tx
 	path            string
+	region          *Region
 }
 
 func (r *Region) ImportConstellation(path string) error {
@@ -105,7 +106,7 @@ func (r *Region) ImportConstellation(path string) error {
 	c.db = r.db
 	c.tx = r.tx
 	c.path, _ = filepath.Split(path)
-
+	c.region = r
 	err = c.ImportSystems()
 	if err != nil {
 		return err

@@ -25,3 +25,7 @@ func InsertMapWHClassesStmt(tx *sql.Tx) (*sql.Stmt, error) {
 func InsertConstellationsStmt(tx *sql.Tx) (*sql.Stmt, error) {
 	return tx.Prepare(`INSERT INTO mapConstellations (regionid, constellationid, constellationname, x,y,z, "xMax", ymax, zmax, "xMin", ymin, zmin, radius, factionid) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)`)
 }
+
+func InsertStarDenormalizeStmt(tx *sql.Tx) (*sql.Stmt, error) {
+	return tx.Prepare(`INSERT INTO mapDenormalize (itemid, typeid, groupid, solarsystemid, regionid, constellationid, x, y, z, radius, itemname, security) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`)
+}

@@ -69,7 +69,7 @@ type SolarSystem struct {
 	Min             []float64
 	Radius          float64
 	Regional        bool
-	SecondarySun    SecondarySun
+	SecondarySun    *SecondarySun `yaml:"secondarySun"`
 	Security        float64
 	SecurityClass   string `yaml:"securityClass"`
 	SolarSystemID   int64  `yaml:"solarSystemID"`
@@ -91,6 +91,55 @@ func (c *Constellation) ImportSystem(path string) error {
 	err = utils.LoadFromReader(f, &s)
 	if err != nil {
 		return err
+	}
+	// solarSystemName, err := getItemNameByID(c.db, s.SolarSystemID)
+	// if err != nil {
+	// 	return err
+	// }
+	starName, err := getItemNameByID(c.db, s.Star.ID)
+	if err != nil {
+		return err
+	}
+
+	starDenormStmt, err := InsertStarDenormalizeStmt(c.tx)
+	if err != nil {
+		return err
+	}
+
+	_, err = starDenormStmt.Exec(
+		s.Star.ID,
+		s.Star.TypeID,
+		6,
+		s.SolarSystemID,
+		c.region.RegionID,
+		c.ConstellationID,
+		0,
+		0,
+		0,
+		s.Star.Radius,
+		starName,
+		s.Security)
+	if err != nil {
+		return err
+	}
+
+	if s.SecondarySun != nil {
+		_, err = starDenormStmt.Exec(
+			s.SecondarySun.ItemID,
+			s.SecondarySun.TypeID,
+			995,
+			s.SolarSystemID,
+			c.region.RegionID,
+			c.ConstellationID,
+			s.SecondarySun.Position[0],
+			s.SecondarySun.Position[1],
+			s.SecondarySun.Position[2],
+			nil,
+			"Unknown Anomaly",
+			0)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
