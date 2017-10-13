@@ -1,26 +1,20 @@
 package universe
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 
+	"github.com/pkg/errors"
+
 	"github.com/lflux/eve-sdeloader/utils"
 )
-
-type StarStatistics struct {
-	Age           float64
-	Life          float64
-	Luminosity    float64
-	Radius        float64
-	SpectralClass string `yaml:"spectralClass"`
-	Temperature   float64
-}
 
 type Star struct {
 	ID         int64
 	Radius     int64
 	TypeID     int64 `yaml:"typeID"`
-	Statistics StarStatistics
+	Statistics CelestialStatistics
 }
 
 type SecondarySun struct {
@@ -60,7 +54,7 @@ type SolarSystem struct {
 	Border          bool
 	Center          []float64
 	Corridor        bool
-	FactionID       *float64 `yaml:"factionID"`
+	FactionID       *int64 `yaml:"factionID"`
 	Fringe          bool
 	Hub             bool
 	International   bool
@@ -71,13 +65,13 @@ type SolarSystem struct {
 	Regional        bool
 	SecondarySun    *SecondarySun `yaml:"secondarySun"`
 	Security        float64
-	SecurityClass   string `yaml:"securityClass"`
-	SolarSystemID   int64  `yaml:"solarSystemID"`
+	SecurityClass   *string `yaml:"securityClass"`
+	SolarSystemID   int64   `yaml:"solarSystemID"`
 	Stargates       map[int64]Stargate
 	Planets         map[int64]Planet
 	Star            Star
 	SunTypeID       int64 `yaml:"sunTypeID"`
-	WormHoleClassID int64 `yaml:"wormholeClassID"`
+	WormholeClassID int64 `yaml:"wormholeClassID"`
 }
 
 func (c *Constellation) ImportSystem(path string) error {
@@ -92,10 +86,12 @@ func (c *Constellation) ImportSystem(path string) error {
 	if err != nil {
 		return err
 	}
-	// solarSystemName, err := getItemNameByID(c.db, s.SolarSystemID)
-	// if err != nil {
-	// 	return err
-	// }
+
+	solarSystemName, err := getItemNameByID(c.db, s.SolarSystemID)
+	if err != nil {
+		return err
+	}
+
 	starName, err := getItemNameByID(c.db, s.Star.ID)
 	if err != nil {
 		return err
@@ -104,6 +100,21 @@ func (c *Constellation) ImportSystem(path string) error {
 	starDenormStmt, err := InsertStarDenormalizeStmt(c.tx)
 	if err != nil {
 		return err
+	}
+
+	solarSystemStmt, err := InsertSolarSystemStmt(c.tx)
+	if err != nil {
+		return errors.Wrap(err, "Error creating solar system statement")
+	}
+
+	whClassStmt, err := InsertMapWHClassesStmt(c.tx)
+	if err != nil {
+		return errors.Wrap(err, "Error creating InsertMapWHClassesStmt")
+	}
+
+	celestialStmt, err := InsertCelestialStatsStmt(c.tx)
+	if err != nil {
+		return errors.Wrap(err, "Error creating InsertCelestialStatsStmt")
 	}
 
 	_, err = starDenormStmt.Exec(
@@ -120,7 +131,7 @@ func (c *Constellation) ImportSystem(path string) error {
 		starName,
 		s.Security)
 	if err != nil {
-		return err
+		return errors.Wrap(err, fmt.Sprintf("Error inserting star data for system %s", solarSystemName))
 	}
 
 	if s.SecondarySun != nil {
@@ -138,10 +149,102 @@ func (c *Constellation) ImportSystem(path string) error {
 			"Unknown Anomaly",
 			0)
 		if err != nil {
-			return err
+			return errors.Wrap(err, fmt.Sprintf("Error inserting secondary sun for system %s", solarSystemName))
 		}
 	}
 
+	var factionID *int64
+	if s.FactionID != nil {
+		factionID = s.FactionID
+	} else if c.FactionID != nil {
+		factionID = c.FactionID
+	} else {
+		factionID = c.region.FactionID
+	}
+
+	_, err = solarSystemStmt.Exec(
+		c.region.RegionID,
+		c.ConstellationID,
+		s.SolarSystemID,
+		solarSystemName,
+		s.Center[0],
+		s.Center[1],
+		s.Center[2],
+		s.Max[0],
+		s.Max[1],
+		s.Max[2],
+		s.Min[0],
+		s.Min[1],
+		s.Min[2],
+		s.Luminosity,
+		s.Border,
+		s.Fringe,
+		s.Corridor,
+		s.Hub,
+		s.International,
+		s.Regional,
+		s.Security,
+		factionID,
+		s.Radius,
+		s.SunTypeID,
+		s.SecurityClass,
+	)
+
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("Error inserting solar system %s", solarSystemName))
+	}
+
+	if s.WormholeClassID != 0 {
+		_, err = whClassStmt.Exec(s.SolarSystemID, s.WormholeClassID)
+		if err != nil {
+			return errors.Wrap(err, fmt.Sprintf("Error inserting wormhole data for solar system %s", solarSystemName))
+		}
+	}
+
+	_, err = celestialStmt.Exec(
+		s.Star.ID,
+		s.Star.Statistics.Temperature,
+		s.Star.Statistics.SpectralClass,
+		s.Star.Statistics.Luminosity,
+		s.Star.Statistics.Age,
+		s.Star.Statistics.Life,
+		s.Star.Statistics.OrbitRadius,
+		s.Star.Statistics.Eccentricity,
+		s.Star.Statistics.MassDust,
+		s.Star.Statistics.MassGas,
+		s.Star.Statistics.Fragmented,
+		s.Star.Statistics.Density,
+		s.Star.Statistics.SurfaceGravity,
+		s.Star.Statistics.EscapeVelocity,
+		s.Star.Statistics.OrbitPeriod,
+		s.Star.Statistics.RotationRate,
+		s.Star.Statistics.Locked,
+		s.Star.Statistics.Pressure,
+		s.Star.Statistics.Radius,
+		nil,
+	)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("Error inserting statistics data for solar system %s", solarSystemName))
+	}
+
+	err = s.ImportPlanets()
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("Error inserting planet data for solar system %s", solarSystemName))
+	}
+
+	err = s.ImportStargates()
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("Error inserting stargate data for solar system %s", solarSystemName))
+	}
+
+	return nil
+}
+
+func (s *SolarSystem) ImportPlanets() error {
+	return nil
+}
+
+func (s *SolarSystem) ImportStargates() error {
 	return nil
 }
 

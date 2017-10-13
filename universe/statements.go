@@ -29,3 +29,73 @@ func InsertConstellationsStmt(tx *sql.Tx) (*sql.Stmt, error) {
 func InsertStarDenormalizeStmt(tx *sql.Tx) (*sql.Stmt, error) {
 	return tx.Prepare(`INSERT INTO mapDenormalize (itemid, typeid, groupid, solarsystemid, regionid, constellationid, x, y, z, radius, itemname, security) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`)
 }
+
+func InsertSolarSystemStmt(tx *sql.Tx) (*sql.Stmt, error) {
+	stmt := `
+INSERT INTO mapSolarSystems (
+	regionid,
+	constellationid,
+	solarsystemid,
+	solarsystemname,
+	x,
+	y,
+	z,
+	"xMax",
+	ymax,
+	zmax,
+	"xMin",
+	ymin,
+	zmin,
+	luminosity,
+	border,
+	fringe,
+	corridor,
+	hub,
+	international,
+	regional,
+	security,
+	factionid,
+	radius,
+	suntypeid,
+	securityclass) 
+VALUES (
+	$1, $2, $3, $4, $5,
+	$6, $7, $8, $9, $10,
+	$11, $12, $13, $14, $15,
+	$16, $17, $18, $19, $20,
+	$21, $22, $23, $24, $25
+)`
+	return tx.Prepare(stmt)
+}
+
+func InsertCelestialStatsStmt(tx *sql.Tx) (*sql.Stmt, error) {
+	stmt := `
+INSERT INTO mapCelestialStatistics (
+	celestialid,
+	temperature,
+	spectralclass,
+	luminosity,
+	age,
+	life,
+	orbitradius,
+	eccentricity,
+	massdust,
+	massgas,
+	fragmented,
+	density,
+	surfacegravity,
+	escapevelocity,
+	orbitperiod,
+	rotationrate,
+	locked,
+	pressure,
+	radius,
+	mass
+) VALUES (
+	$1, $2, $3, $4, $5,
+	$6, $7, $8, $9, $10,
+	$11, $12, $13, $14, $15,
+	$16, $17, $18, $19, $20
+)`
+	return tx.Prepare(stmt)
+}
