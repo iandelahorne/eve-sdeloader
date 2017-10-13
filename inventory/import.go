@@ -6,7 +6,6 @@ import (
 	"io"
 	"strings"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/lflux/eve-sdeloader/utils"
 )
 
@@ -102,7 +101,6 @@ func Import(db *sql.DB, r io.Reader) error {
 	}
 
 	for typeID, entry := range entries {
-		spew.Dump(entry)
 		vals := []interface{}{
 			typeID,
 			entry.GroupID,
