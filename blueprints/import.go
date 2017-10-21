@@ -45,6 +45,7 @@ type Activities struct {
 	Copying          *Copying
 	Invention        *Invention
 	Manufacturing    *Manufacturing
+	Reaction         *Reaction
 	ResearchMaterial *ResearchMaterial `yaml:"research_material"`
 	ResearchTime     *ResearchTime     `yaml:"research_time"`
 }
@@ -223,6 +224,19 @@ func Import(db *sql.DB, r io.Reader) error {
 				return err
 			}
 		}
+
+		if a.Reaction != nil {
+			err = insertIndustryActivity(entryID, a.Reaction)
+			if err != nil {
+				return err
+			}
+
+			err = insertProductionActivity(entryID, a.Reaction)
+			if err != nil {
+				return err
+			}
+		}
+
 	}
 
 	return tx.Commit()
