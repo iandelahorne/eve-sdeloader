@@ -28,6 +28,8 @@ var (
 	}
 )
 
+var TypeIDs map[string]*Type
+
 func InsertBonuses(stmt, insertTranslations *sql.Stmt, typeID string, skillID int64, bonuses []Bonus) error {
 	for _, bonus := range bonuses {
 		var traitID int
@@ -74,6 +76,8 @@ func Import(db *sql.DB, r io.Reader) error {
 	if err != nil {
 		return err
 	}
+
+	TypeIDs = entries
 
 	txn, err := db.Begin()
 	if err != nil {

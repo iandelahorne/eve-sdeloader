@@ -2,9 +2,23 @@ package universe
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
+	"os"
 	"path/filepath"
+	"strconv"
+
+	"github.com/lflux/eve-sdeloader/inventory"
+	"github.com/lflux/eve-sdeloader/utils"
+	"github.com/pkg/errors"
 )
+
+type InvName struct {
+	ID   int64  `yaml:"itemID"`
+	Name string `yaml:"itemName"`
+}
+
+var invNames map[int64]string
 
 type CelestialStatistics struct {
 	Age            *float64
@@ -27,24 +41,56 @@ type CelestialStatistics struct {
 	Temperature    *float64
 }
 
-func getItemNameByID(db *sql.DB, itemID int64) (string, error) {
+func getItemNameByID(itemID int64) (string, error) {
+	if len(invNames) == 0 {
+		return "", errors.New("invNames not populated")
+	}
+	var ok bool
 	var name string
-
-	row := db.QueryRow(`SELECT itemname from sdeyaml.invnames where itemid = $1`, itemID)
-	err := row.Scan(&name)
-	if err != nil {
-		return "", nil
+	if name, ok = invNames[itemID]; ok {
+		return name, nil
 	}
 
-	return name, nil
+	return "", fmt.Errorf("No invName entry found for %d", itemID)
+
 }
 
-func Import(db *sql.DB, path string) error {
-	regions, err := filepath.Glob(filepath.Join(path, "*", "*", "region.staticdata"))
+func getGroupIDByTypeID(typeID int64) (int64, error) {
+	if len(inventory.TypeIDs) == 0 {
+		return 0, errors.New("Inventory must be imported before universe")
+	}
+	id := strconv.FormatInt(typeID, 10)
+	if e, ok := inventory.TypeIDs[id]; ok {
+		return e.GroupID, nil
+	}
+
+	return 0, fmt.Errorf("No inventory ID found for %d", typeID)
+}
+
+func Import(db *sql.DB, regionPath, invNamePath string) error {
+	regions, err := filepath.Glob(filepath.Join(regionPath, "*", "*", "region.staticdata"))
 
 	if err != nil {
 		return err
 	}
+
+	f, err := os.Open(invNamePath)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	entries := make([]InvName, 0)
+	err = utils.LoadFromReader(f, &entries)
+	if err != nil {
+		return err
+	}
+
+	invNames = make(map[int64]string, len(entries))
+	for _, entry := range entries {
+		invNames[entry.ID] = entry.Name
+	}
+
 	for _, regionFile := range regions {
 		log.Println(regionFile)
 		err = ImportRegion(db, regionFile)
@@ -53,5 +99,5 @@ func Import(db *sql.DB, path string) error {
 		}
 	}
 
-	return nil
+	return FixMapJumps(db)
 }

@@ -131,7 +131,8 @@ func main() {
 	}
 
 	if !noUniverse {
-		err = universe.Import(db, filepath.Join(sdeDirectory, "fsd", "universe"))
+		err = universe.Import(db, filepath.Join(sdeDirectory, "fsd", "universe"),
+			filepath.Join(sdeDirectory, "bsd", "invNames.yaml"))
 		if err != nil {
 			log.Fatalf("Error importing universe: %s", err)
 		}

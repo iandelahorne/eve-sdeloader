@@ -6,12 +6,20 @@ func InsertRegionStmt(tx *sql.Tx) (*sql.Stmt, error) {
 	return tx.Prepare(`INSERT INTO mapregions (regionid, regionname, x,y,z, "xMax", ymax, zmax, "xMin", ymin, zmin, factionid) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`)
 }
 
-func InsertMapDenormalizeStmt(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO mapdenormalize (itemid, typeid, groupid, itemname, x, y, z) VALUES ($1, $2, $3, $4, $5, $6, $7)`)
-}
-
 func InsertRegionMapDenormalizeStmt(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO mapdenormalize (itemid, regionid, typeid, groupid, itemname, x, y, z) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`)
+	const regionDenormStmt = `
+INSERT INTO mapdenormalize (
+	itemid,
+	regionid,
+	typeid,
+	groupid,
+	itemname,
+	x,
+	y,
+	z)
+VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`
+
+	return tx.Prepare(regionDenormStmt)
 }
 
 func InsertMapLocationScenesStmt(tx *sql.Tx) (*sql.Stmt, error) {
@@ -27,7 +35,27 @@ func InsertConstellationsStmt(tx *sql.Tx) (*sql.Stmt, error) {
 }
 
 func InsertStarDenormalizeStmt(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO mapDenormalize (itemid, typeid, groupid, solarsystemid, regionid, constellationid, x, y, z, radius, itemname, security) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`)
+	const starDenormStmt = `
+INSERT INTO mapDenormalize (
+	itemid,
+	typeid,
+	groupid, 
+	solarsystemid,
+	regionid,
+	constellationid,
+	x,
+	y,
+	z,
+	radius,
+	itemname,
+	security)
+VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`
+
+	return tx.Prepare(starDenormStmt)
+}
+
+func InsertMapJumpStmt(tx *sql.Tx) (*sql.Stmt, error) {
+	return tx.Prepare(`INSERT INTO mapJumps (stargateid, destinationid) VALUES ($1, $2)`)
 }
 
 func InsertSolarSystemStmt(tx *sql.Tx) (*sql.Stmt, error) {
@@ -97,5 +125,32 @@ INSERT INTO mapCelestialStatistics (
 	$11, $12, $13, $14, $15,
 	$16, $17, $18, $19, $20
 )`
+	return tx.Prepare(stmt)
+}
+
+func InsertOrbitalDenormStmt(tx *sql.Tx) (*sql.Stmt, error) {
+	const stmt = `
+INSERT INTO mapDenormalize (
+	itemID,
+	typeID,
+	groupID,
+	solarSystemID,
+	constellationID,
+	regionID,
+	orbitID,
+	x,
+	y,
+	z,
+	radius,
+	itemName,
+	security,
+	celestialIndex,
+	orbitIndex
+) VALUES (
+	$1, $2, $3, $4, $5,
+	$6, $7, $8, $9, $10,
+	$11, $12, $13, $14, $15
+)
+`
 	return tx.Prepare(stmt)
 }

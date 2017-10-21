@@ -17,7 +17,6 @@ type Constellation struct {
 	Radius          float64
 	FactionID       *int64 `yaml:"factionID"`
 	WormholeClassID int64  `yaml:"wormholeClassID"`
-	db              *sql.DB
 	tx              *sql.Tx
 	path            string
 	region          *Region
@@ -42,7 +41,7 @@ func (r *Region) ImportConstellation(path string) error {
 		return err
 	}
 
-	constellationName, err := getItemNameByID(r.db, c.ConstellationID)
+	constellationName, err := getItemNameByID(c.ConstellationID)
 	if err != nil {
 		return err
 	}
@@ -82,15 +81,16 @@ func (r *Region) ImportConstellation(path string) error {
 		return err
 	}
 
+	// XXX change this to use the bigger denormalize statement
 	_, err = denormStmt.Exec(c.ConstellationID,
 		r.RegionID,
 		4,
 		4,
 		constellationName,
-		// XXX this is actually r.Center in the python importer
-		c.Center[0],
-		c.Center[1],
-		c.Center[2],
+		// XXX This should be c.Center but the python importer uses the region center.
+		r.Center[0],
+		r.Center[1],
+		r.Center[2],
 	)
 	if err != nil {
 		return err
@@ -103,7 +103,6 @@ func (r *Region) ImportConstellation(path string) error {
 		}
 	}
 
-	c.db = r.db
 	c.tx = r.tx
 	c.path, _ = filepath.Split(path)
 	c.region = r

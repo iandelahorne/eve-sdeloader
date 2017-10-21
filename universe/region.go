@@ -18,11 +18,9 @@ type Region struct {
 	Nebula          int64
 	RegionID        int64 `yaml:"regionID"`
 	WormholeClassID int64 `yaml:"wormholeClassID"`
-	db              *sql.DB
 	path            string
 	tx              *sql.Tx
 }
-
 
 func ImportRegion(db *sql.DB, path string) error {
 	f, err := os.Open(path)
@@ -38,7 +36,7 @@ func ImportRegion(db *sql.DB, path string) error {
 		return err
 	}
 
-	regionName, err := getItemNameByID(db, region.RegionID)
+	regionName, err := getItemNameByID(region.RegionID)
 	if err != nil {
 		return err
 	}
@@ -52,7 +50,7 @@ func ImportRegion(db *sql.DB, path string) error {
 	if err != nil {
 		return err
 	}
-	denormStmt, err := InsertMapDenormalizeStmt(tx)
+	denormStmt, err := InsertOrbitalDenormStmt(tx)
 	if err != nil {
 		return err
 	}
@@ -83,13 +81,22 @@ func ImportRegion(db *sql.DB, path string) error {
 		return err
 	}
 
-	_, err = denormStmt.Exec(region.RegionID,
-		3,
-		3,
-		regionName,
-		region.Center[0],
-		region.Center[1],
-		region.Center[2],
+	_, err = denormStmt.Exec(
+		region.RegionID, //itemID
+		3,               // typeID
+		3,               // groupID
+		nil,
+		nil,
+		nil,
+		nil,
+		region.Center[0], // x
+		region.Center[1], // y
+		region.Center[2], // z
+		nil,
+		regionName, // itemName
+		nil,
+		nil,
+		nil,
 	)
 	if err != nil {
 		return err
@@ -107,7 +114,6 @@ func ImportRegion(db *sql.DB, path string) error {
 		}
 	}
 
-	region.db = db
 	region.path, _ = filepath.Split(path)
 	region.tx = tx
 	err = region.ImportConstellations()

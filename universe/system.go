@@ -1,6 +1,7 @@
 package universe
 
 import (
+	"database/sql"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -30,24 +31,24 @@ type Stargate struct {
 	TypeID      int64 `yaml:"typeID"`
 }
 
-type AsteroidBelt struct {
-	Position []float64
-	TypeID   int64 `yaml:"typeID"`
-}
-
 type Moon struct {
-	Position []float64
-	Radius   int64
-	TypeID   int64 `yaml:"typeID"`
+	Position    []float64
+	Radius      int64
+	TypeID      int64                `yaml:"typeID"`
+	NPCStations map[int64]NPCStation `yaml:"npcStations"`
 }
 
-type Planet struct {
-	AsteroidBelts  map[int64]AsteroidBelt `yaml:"asteroidBelts"`
-	Moons          map[int64]Moon
-	CelestialIndex int64 `yaml:"celestialIndex"`
-	Position       []float64
-	TypeID         int64 `yaml:"typeID"`
-	Radius         float64
+type NPCStation struct {
+	GraphicID                int64 `yaml:"graphicID"`
+	GroupID                  int64 `yaml:"groupID"`
+	IsConquerable            bool  `yaml:"isConquerable"`
+	OwnerID                  int64 `yaml:"ownerID"`
+	Position                 []float64
+	ReprocessingEfficiency   float64 `yaml:"reprocessingEfficiency"`
+	ReprocessingHangarFlag   int64   `yaml:"reprocessingHangarFlag"`
+	ReprocessingStationsTake float64 `yaml:"reprocessingStationsTake"`
+	TypeID                   int64   `yaml:"typeID"`
+	UseOperationName         bool    `yaml:"useOperationName"`
 }
 
 type SolarSystem struct {
@@ -61,6 +62,7 @@ type SolarSystem struct {
 	Luminosity      float64
 	Max             []float64
 	Min             []float64
+	NPCStations     map[int64]NPCStation `yaml:"npcStations"`
 	Radius          float64
 	Regional        bool
 	SecondarySun    *SecondarySun `yaml:"secondarySun"`
@@ -72,6 +74,9 @@ type SolarSystem struct {
 	Star            Star
 	SunTypeID       int64 `yaml:"sunTypeID"`
 	WormholeClassID int64 `yaml:"wormholeClassID"`
+	constellation   *Constellation
+	name            string
+	denormStmt      *sql.Stmt
 }
 
 func (c *Constellation) ImportSystem(path string) error {
@@ -87,19 +92,19 @@ func (c *Constellation) ImportSystem(path string) error {
 		return err
 	}
 
-	solarSystemName, err := getItemNameByID(c.db, s.SolarSystemID)
+	solarSystemName, err := getItemNameByID(s.SolarSystemID)
 	if err != nil {
 		return err
 	}
 
-	starName, err := getItemNameByID(c.db, s.Star.ID)
+	starName, err := getItemNameByID(s.Star.ID)
 	if err != nil {
 		return err
 	}
 
-	starDenormStmt, err := InsertStarDenormalizeStmt(c.tx)
+	s.denormStmt, err = InsertOrbitalDenormStmt(c.tx)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "Error creating OrbitalDenormalize statement")
 	}
 
 	solarSystemStmt, err := InsertSolarSystemStmt(c.tx)
@@ -117,37 +122,45 @@ func (c *Constellation) ImportSystem(path string) error {
 		return errors.Wrap(err, "Error creating InsertCelestialStatsStmt")
 	}
 
-	_, err = starDenormStmt.Exec(
+	mapJumpStmt, err := InsertMapJumpStmt(c.tx)
+
+	_, err = s.denormStmt.Exec(
 		s.Star.ID,
 		s.Star.TypeID,
 		6,
 		s.SolarSystemID,
-		c.region.RegionID,
 		c.ConstellationID,
+		c.region.RegionID,
+		nil,
 		0,
 		0,
 		0,
 		s.Star.Radius,
 		starName,
-		s.Security)
+		s.Security,
+		nil,
+		nil)
 	if err != nil {
 		return errors.Wrap(err, fmt.Sprintf("Error inserting star data for system %s", solarSystemName))
 	}
 
 	if s.SecondarySun != nil {
-		_, err = starDenormStmt.Exec(
+		_, err = s.denormStmt.Exec(
 			s.SecondarySun.ItemID,
 			s.SecondarySun.TypeID,
 			995,
 			s.SolarSystemID,
-			c.region.RegionID,
 			c.ConstellationID,
+			c.region.RegionID,
+			nil,
 			s.SecondarySun.Position[0],
 			s.SecondarySun.Position[1],
 			s.SecondarySun.Position[2],
 			nil,
 			"Unknown Anomaly",
-			0)
+			0,
+			nil,
+			nil)
 		if err != nil {
 			return errors.Wrap(err, fmt.Sprintf("Error inserting secondary sun for system %s", solarSystemName))
 		}
@@ -194,6 +207,27 @@ func (c *Constellation) ImportSystem(path string) error {
 		return errors.Wrap(err, fmt.Sprintf("Error inserting solar system %s", solarSystemName))
 	}
 
+	_, err = s.denormStmt.Exec(
+		s.SolarSystemID,
+		5,
+		5,
+		nil,
+		c.ConstellationID,
+		c.region.RegionID,
+		nil,
+		s.Center[0],
+		s.Center[1],
+		s.Center[2],
+		s.Radius,
+		solarSystemName,
+		s.Security,
+		nil,
+		nil,
+	)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("Error inserting solar system denormalize %s", solarSystemName))
+	}
+
 	if s.WormholeClassID != 0 {
 		_, err = whClassStmt.Exec(s.SolarSystemID, s.WormholeClassID)
 		if err != nil {
@@ -227,24 +261,47 @@ func (c *Constellation) ImportSystem(path string) error {
 		return errors.Wrap(err, fmt.Sprintf("Error inserting statistics data for solar system %s", solarSystemName))
 	}
 
+	for stargateID, stargate := range s.Stargates {
+		var groupID int64
+		groupID, err = getGroupIDByTypeID(stargate.TypeID)
+		if err != nil {
+			return errors.Wrap(err, fmt.Sprintf("Error fetching groupID for stargate %d for solar system %s", stargateID, solarSystemName))
+		}
+
+		_, err = mapJumpStmt.Exec(stargateID, stargate.Destination)
+		if err != nil {
+			return errors.Wrap(err, fmt.Sprintf("Error inserting stargate %d for solar system %s", stargateID, solarSystemName))
+		}
+		_, err = s.denormStmt.Exec(
+			stargateID,
+			stargate.TypeID,
+			groupID,
+			s.SolarSystemID,
+			c.ConstellationID,
+			c.region.RegionID,
+			nil,
+			stargate.Position[0],
+			stargate.Position[1],
+			stargate.Position[2],
+			nil,
+			nil,
+			s.Security,
+			nil,
+			nil,
+		)
+	}
+
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("Error inserting stargate data for solar system %s", solarSystemName))
+	}
+
+	s.constellation = c
+	s.name = solarSystemName
 	err = s.ImportPlanets()
 	if err != nil {
 		return errors.Wrap(err, fmt.Sprintf("Error inserting planet data for solar system %s", solarSystemName))
 	}
 
-	err = s.ImportStargates()
-	if err != nil {
-		return errors.Wrap(err, fmt.Sprintf("Error inserting stargate data for solar system %s", solarSystemName))
-	}
-
-	return nil
-}
-
-func (s *SolarSystem) ImportPlanets() error {
-	return nil
-}
-
-func (s *SolarSystem) ImportStargates() error {
 	return nil
 }
 
