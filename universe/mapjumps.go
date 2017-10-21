@@ -2,7 +2,7 @@ package universe
 
 import "database/sql"
 
-var dmls []string = []string{
+var dmls = []string{
 	`insert into mapSolarSystemJumps (
     fromRegionID,
     fromConstellationID,

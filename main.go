@@ -118,7 +118,8 @@ func main() {
 		}
 		path := filepath.Join(sdeDirectory, "fsd", filename)
 		log.Println("Importing ", path)
-		f, err := os.Open(path)
+		var f *os.File
+		f, err = os.Open(path)
 		if err != nil {
 			log.Fatalf("Error importing %s: %s", path, err)
 		}
