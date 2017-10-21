@@ -2,6 +2,7 @@ package universe
 
 import (
 	"fmt"
+	"sort"
 
 	"github.com/pkg/errors"
 )
@@ -10,6 +11,22 @@ type AsteroidBelt struct {
 	Position   []float64
 	Statistics CelestialStatistics
 	TypeID     int64 `yaml:"typeID"`
+	beltID     int64
+	groupID    int64
+	name       string
+	planet     *Planet
+}
+type AsteroidBelts []AsteroidBelt
+
+func (b AsteroidBelts) Len() int {
+	return len(b)
+}
+func (b AsteroidBelts) Swap(i, j int) {
+	b[i], b[j] = b[j], b[i]
+}
+
+func (b AsteroidBelts) Less(i, j int) bool {
+	return distance(b[i].Position, b[i].planet.Position) < distance(b[j].Position, b[j].planet.Position)
 }
 
 type Planet struct {
@@ -116,8 +133,12 @@ func (s *SolarSystem) ImportPlanet(planetID int64, planet Planet) error {
 }
 
 func (p *Planet) ImportBelts() error {
+	var err error
+	var belts = make(AsteroidBelts, 0, len(p.AsteroidBelts))
 	for beltID, belt := range p.AsteroidBelts {
-		beltName, err := getItemNameByID(beltID)
+		belt.planet = p
+		belt.beltID = beltID
+		belt.name, err = getItemNameByID(beltID)
 		if err != nil {
 			return errors.Wrap(err, fmt.Sprintf("Error fetching belt name for belt %d, planet %s, solar system %s",
 				beltID,
@@ -125,17 +146,26 @@ func (p *Planet) ImportBelts() error {
 				p.solarSystem.name))
 		}
 
-		beltGroupID, err := getGroupIDByTypeID(belt.TypeID)
+		belt.groupID, err = getGroupIDByTypeID(belt.TypeID)
 		if err != nil {
 			return errors.Wrap(err, fmt.Sprintf("Error fetching group ID for belt %s (%d) planet %s (%d), solar system %s",
-				beltName, beltGroupID,
+				belt.name, belt.groupID,
 				p.name, p.planetID, p.solarSystem.name))
 		}
+		err = insertCelestialStatistics(p.solarSystem.celestialStmt, beltID, belt.Statistics)
+		if err != nil {
+			return errors.Wrap(err, fmt.Sprintf("Error inserting belt mapCelestialStatistics for belt %s, planet %s, solar system %s",
+				belt.name, p.name, p.solarSystem.name))
+		}
+		belts = append(belts, belt)
+	}
 
+	sort.Sort(belts)
+	for index, belt := range belts {
 		_, err = p.solarSystem.denormStmt.Exec(
-			beltID,
+			belt.beltID,
 			belt.TypeID,
-			beltGroupID,
+			belt.groupID,
 			p.solarSystem.SolarSystemID,
 			p.solarSystem.constellation.ConstellationID,
 			p.solarSystem.constellation.region.RegionID,
@@ -144,31 +174,28 @@ func (p *Planet) ImportBelts() error {
 			belt.Position[1],
 			belt.Position[2],
 			1,
-			beltName,
+			belt.name,
 			p.solarSystem.Security,
 			p.CelestialIndex,
-			nil, // XXX need to fix orbit index
+			index+1,
 		)
 
 		if err != nil {
 			return errors.Wrap(err, fmt.Sprintf("Error inserting belt mapDenormalize for belt %s, planet %s, solar system %s",
-				beltName, p.name, p.solarSystem.name))
+				belt.name, p.name, p.solarSystem.name))
 		}
-
-		err = insertCelestialStatistics(p.solarSystem.celestialStmt, beltID, belt.Statistics)
-		if err != nil {
-			return errors.Wrap(err, fmt.Sprintf("Error inserting belt mapCelestialStatistics for belt %s, planet %s, solar system %s",
-				beltName, p.name, p.solarSystem.name))
-		}
-
 	}
 
 	return nil
 }
 
 func (p *Planet) ImportMoons() error {
+	var moons = make(Moons, 0, len(p.Moons))
+	var err error
 	for moonID, moon := range p.Moons {
-		moonName, err := getItemNameByID(moonID)
+		moon.moonID = moonID
+		moon.planet = p
+		moon.name, err = getItemNameByID(moonID)
 		if err != nil {
 			return errors.Wrap(err, fmt.Sprintf("Error fetching moon name for moon %d, planet %s, solar system %s",
 				moonID,
@@ -176,33 +203,11 @@ func (p *Planet) ImportMoons() error {
 				p.solarSystem.name))
 		}
 
-		moonGroupID, err := getGroupIDByTypeID(moon.TypeID)
+		moon.groupID, err = getGroupIDByTypeID(moon.TypeID)
 		if err != nil {
 			return errors.Wrap(err, fmt.Sprintf("Error fetching group ID for moon %s (%d) planet %s (%d), solar system %s",
-				moonName, moonGroupID,
+				moon.name, moonID,
 				p.name, p.planetID, p.solarSystem.name))
-		}
-
-		_, err = p.solarSystem.denormStmt.Exec(
-			moonID,
-			moon.TypeID,
-			moonGroupID,
-			p.solarSystem.SolarSystemID,
-			p.solarSystem.constellation.ConstellationID,
-			p.solarSystem.constellation.region.RegionID,
-			p.planetID,
-			moon.Position[0],
-			moon.Position[1],
-			moon.Position[2],
-			moon.Radius,
-			moonName,
-			p.solarSystem.Security,
-			p.CelestialIndex,
-			nil, // XXX need to fix orbit index
-		)
-
-		if err != nil {
-			return err
 		}
 
 		err = insertCelestialStatistics(p.solarSystem.celestialStmt, moonID, moon.Statistics)
@@ -211,7 +216,8 @@ func (p *Planet) ImportMoons() error {
 		}
 
 		for stationID, station := range moon.NPCStations {
-			stationName, err := getItemNameByID(stationID)
+			var stationName string
+			stationName, err = getItemNameByID(stationID)
 			if err != nil {
 				return errors.Wrap(err, fmt.Sprintf("Error fetching station name for station %d, solar system %s",
 					stationID, p.solarSystem.name))
@@ -243,7 +249,34 @@ func (p *Planet) ImportMoons() error {
 				return errors.Wrap(err, fmt.Sprintf("Error inserting NPC station %s", stationName))
 			}
 		}
+		moons = append(moons, moon)
 	}
+
+	sort.Sort(moons)
+	for index, moon := range moons {
+		_, err = p.solarSystem.denormStmt.Exec(
+			moon.moonID,
+			moon.TypeID,
+			moon.groupID,
+			p.solarSystem.SolarSystemID,
+			p.solarSystem.constellation.ConstellationID,
+			p.solarSystem.constellation.region.RegionID,
+			p.planetID,
+			moon.Position[0],
+			moon.Position[1],
+			moon.Position[2],
+			moon.Radius,
+			moon.name,
+			p.solarSystem.Security,
+			p.CelestialIndex,
+			index+1, // XXX need to fix orbit index
+		)
+
+		if err != nil {
+			return errors.Wrap(err, fmt.Sprintf("Error inserting moon %s (%d)", moon.name, moon.moonID))
+		}
+	}
+
 	return nil
 }
 

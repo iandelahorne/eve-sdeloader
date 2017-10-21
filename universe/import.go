@@ -67,6 +67,26 @@ func getGroupIDByTypeID(typeID int64) (int64, error) {
 	return 0, fmt.Errorf("No inventory ID found for %d", typeID)
 }
 
+// XXX the following doesn't work for some reason and i want to find out whay
+// XXX convert to github.com/gonum/gonum/internal/asm/f64.L1Dist
+// func distance(a, b []float64) float64 {
+// 	var norm float64
+// 	for i, v := range a {
+// 		norm += math.Abs(b[i] - v)
+// 	}
+//
+// 	return norm
+// }
+
+func distance(a, b []float64) float64 {
+	var norm = make([]float64, 3)
+	norm[0] = a[0] - b[0]
+	norm[1] = a[1] - b[1]
+	norm[2] = a[2] - b[2]
+
+	return norm[0]*norm[0] + norm[1]*norm[1] + norm[2]*norm[2]
+}
+
 func insertCelestialStatistics(stmt *sql.Stmt, id int64, stats CelestialStatistics) error {
 	var err error
 	_, err = stmt.Exec(

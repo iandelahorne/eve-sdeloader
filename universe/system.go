@@ -37,6 +37,23 @@ type Moon struct {
 	Statistics  CelestialStatistics
 	TypeID      int64                `yaml:"typeID"`
 	NPCStations map[int64]NPCStation `yaml:"npcStations"`
+	name        string
+	groupID     int64
+	moonID      int64
+	planet      *Planet
+}
+
+type Moons []Moon
+
+func (b Moons) Len() int {
+	return len(b)
+}
+func (b Moons) Swap(i, j int) {
+	b[i], b[j] = b[j], b[i]
+}
+
+func (b Moons) Less(i, j int) bool {
+	return distance(b[i].Position, b[i].planet.Position) < distance(b[j].Position, b[j].planet.Position)
 }
 
 type NPCStation struct {
