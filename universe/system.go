@@ -34,6 +34,7 @@ type Stargate struct {
 type Moon struct {
 	Position    []float64
 	Radius      int64
+	Statistics  CelestialStatistics
 	TypeID      int64                `yaml:"typeID"`
 	NPCStations map[int64]NPCStation `yaml:"npcStations"`
 }
@@ -77,6 +78,7 @@ type SolarSystem struct {
 	constellation   *Constellation
 	name            string
 	denormStmt      *sql.Stmt
+	celestialStmt   *sql.Stmt
 }
 
 func (c *Constellation) ImportSystem(path string) error {
@@ -117,7 +119,7 @@ func (c *Constellation) ImportSystem(path string) error {
 		return errors.Wrap(err, "Error creating InsertMapWHClassesStmt")
 	}
 
-	celestialStmt, err := InsertCelestialStatsStmt(c.tx)
+	s.celestialStmt, err = InsertCelestialStatsStmt(c.tx)
 	if err != nil {
 		return errors.Wrap(err, "Error creating InsertCelestialStatsStmt")
 	}
@@ -235,28 +237,7 @@ func (c *Constellation) ImportSystem(path string) error {
 		}
 	}
 
-	_, err = celestialStmt.Exec(
-		s.Star.ID,
-		s.Star.Statistics.Temperature,
-		s.Star.Statistics.SpectralClass,
-		s.Star.Statistics.Luminosity,
-		s.Star.Statistics.Age,
-		s.Star.Statistics.Life,
-		s.Star.Statistics.OrbitRadius,
-		s.Star.Statistics.Eccentricity,
-		s.Star.Statistics.MassDust,
-		s.Star.Statistics.MassGas,
-		s.Star.Statistics.Fragmented,
-		s.Star.Statistics.Density,
-		s.Star.Statistics.SurfaceGravity,
-		s.Star.Statistics.EscapeVelocity,
-		s.Star.Statistics.OrbitPeriod,
-		s.Star.Statistics.RotationRate,
-		s.Star.Statistics.Locked,
-		s.Star.Statistics.Pressure,
-		s.Star.Statistics.Radius,
-		nil,
-	)
+	err = insertCelestialStatistics(s.celestialStmt, s.Star.ID, s.Star.Statistics)
 	if err != nil {
 		return errors.Wrap(err, fmt.Sprintf("Error inserting statistics data for solar system %s", solarSystemName))
 	}

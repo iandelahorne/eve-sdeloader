@@ -65,6 +65,11 @@ CREATE ROLE sdetest LOGIN;
 CREATE DATABASE sdtest OWNER sdetest;
 ```
 
+# Differences from the Python importer
+- Negative 0 floats are imported as `-0`
+- mapCelestialStatistics.radius rounds correctly in the go importer (`31406.9` gets imported as `31407`) instead of being truncated (in reality, this should be a `double precision` in the database and not `bigint`)
+
+
 # License
 
 `eve-sdeloader` is copyright (c) 2017 Ian Delahorne and licensed under the MIT license, which can be found in the [LICENSE](LICENSE) file.

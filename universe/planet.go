@@ -7,8 +7,9 @@ import (
 )
 
 type AsteroidBelt struct {
-	Position []float64
-	TypeID   int64 `yaml:"typeID"`
+	Position   []float64
+	Statistics CelestialStatistics
+	TypeID     int64 `yaml:"typeID"`
 }
 
 type Planet struct {
@@ -19,6 +20,7 @@ type Planet struct {
 	Position       []float64
 	TypeID         int64 `yaml:"typeID"`
 	Radius         float64
+	Statistics     CelestialStatistics
 	solarSystem    *SolarSystem
 	name           string
 	groupID        int64
@@ -58,6 +60,12 @@ func (s *SolarSystem) ImportPlanet(planetID int64, planet Planet) error {
 	)
 	if err != nil {
 		return errors.Wrap(err, fmt.Sprintf("Error inserting mapDenormalize for planet %s, solar system %s",
+			planet.name, s.name))
+	}
+
+	err = insertCelestialStatistics(s.celestialStmt, planetID, planet.Statistics)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("Error inserting mapCelestial for planet %s, solar system %s",
 			planet.name, s.name))
 	}
 
@@ -146,6 +154,13 @@ func (p *Planet) ImportBelts() error {
 			return errors.Wrap(err, fmt.Sprintf("Error inserting belt mapDenormalize for belt %s, planet %s, solar system %s",
 				beltName, p.name, p.solarSystem.name))
 		}
+
+		err = insertCelestialStatistics(p.solarSystem.celestialStmt, beltID, belt.Statistics)
+		if err != nil {
+			return errors.Wrap(err, fmt.Sprintf("Error inserting belt mapCelestialStatistics for belt %s, planet %s, solar system %s",
+				beltName, p.name, p.solarSystem.name))
+		}
+
 	}
 
 	return nil
@@ -188,7 +203,11 @@ func (p *Planet) ImportMoons() error {
 
 		if err != nil {
 			return err
+		}
 
+		err = insertCelestialStatistics(p.solarSystem.celestialStmt, moonID, moon.Statistics)
+		if err != nil {
+			return err
 		}
 
 		for stationID, station := range moon.NPCStations {

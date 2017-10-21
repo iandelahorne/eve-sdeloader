@@ -67,6 +67,33 @@ func getGroupIDByTypeID(typeID int64) (int64, error) {
 	return 0, fmt.Errorf("No inventory ID found for %d", typeID)
 }
 
+func insertCelestialStatistics(stmt *sql.Stmt, id int64, stats CelestialStatistics) error {
+	var err error
+	_, err = stmt.Exec(
+		id,
+		stats.Temperature,
+		stats.SpectralClass,
+		stats.Luminosity,
+		stats.Age,
+		stats.Life,
+		stats.OrbitRadius,
+		stats.Eccentricity,
+		stats.MassDust,
+		stats.MassGas,
+		stats.Fragmented,
+		stats.Density,
+		stats.SurfaceGravity,
+		stats.EscapeVelocity,
+		stats.OrbitPeriod,
+		stats.RotationRate,
+		stats.Locked,
+		stats.Pressure,
+		stats.Radius,
+		nil,
+	)
+	return err
+}
+
 func Import(db *sql.DB, regionPath, invNamePath string) error {
 	regions, err := filepath.Glob(filepath.Join(regionPath, "*", "*", "region.staticdata"))
 
