@@ -6,22 +6,6 @@ func InsertRegionStmt(tx *sql.Tx) (*sql.Stmt, error) {
 	return tx.Prepare(`INSERT INTO mapregions (regionid, regionname, x,y,z, "xMax", ymax, zmax, "xMin", ymin, zmin, factionid) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`)
 }
 
-func InsertRegionMapDenormalizeStmt(tx *sql.Tx) (*sql.Stmt, error) {
-	const regionDenormStmt = `
-INSERT INTO mapdenormalize (
-	itemid,
-	regionid,
-	typeid,
-	groupid,
-	itemname,
-	x,
-	y,
-	z)
-VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`
-
-	return tx.Prepare(regionDenormStmt)
-}
-
 func InsertMapLocationScenesStmt(tx *sql.Tx) (*sql.Stmt, error) {
 	return tx.Prepare(`INSERT INTO maplocationscenes (locationid, graphicid) VALUES ($1, $2)`)
 }
@@ -32,26 +16,6 @@ func InsertMapWHClassesStmt(tx *sql.Tx) (*sql.Stmt, error) {
 
 func InsertConstellationsStmt(tx *sql.Tx) (*sql.Stmt, error) {
 	return tx.Prepare(`INSERT INTO mapConstellations (regionid, constellationid, constellationname, x,y,z, "xMax", ymax, zmax, "xMin", ymin, zmin, radius, factionid) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)`)
-}
-
-func InsertStarDenormalizeStmt(tx *sql.Tx) (*sql.Stmt, error) {
-	const starDenormStmt = `
-INSERT INTO mapDenormalize (
-	itemid,
-	typeid,
-	groupid, 
-	solarsystemid,
-	regionid,
-	constellationid,
-	x,
-	y,
-	z,
-	radius,
-	itemname,
-	security)
-VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`
-
-	return tx.Prepare(starDenormStmt)
 }
 
 func InsertMapJumpStmt(tx *sql.Tx) (*sql.Stmt, error) {

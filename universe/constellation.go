@@ -46,7 +46,7 @@ func (r *Region) ImportConstellation(path string) error {
 		return err
 	}
 
-	denormStmt, err := InsertRegionMapDenormalizeStmt(r.tx)
+	denormStmt, err := InsertOrbitalDenormStmt(r.tx)
 	if err != nil {
 		return err
 	}
@@ -81,16 +81,23 @@ func (r *Region) ImportConstellation(path string) error {
 		return err
 	}
 
-	// XXX change this to use the bigger denormalize statement
-	_, err = denormStmt.Exec(c.ConstellationID,
+	_, err = denormStmt.Exec(
+		c.ConstellationID,
+		4,
+		4,
+		nil,
+		nil,
 		r.RegionID,
-		4,
-		4,
-		constellationName,
+		nil,
 		// XXX This should be c.Center but the python importer uses the region center.
 		r.Center[0],
 		r.Center[1],
 		r.Center[2],
+		nil,
+		constellationName,
+		nil,
+		nil,
+		nil,
 	)
 	if err != nil {
 		return err
