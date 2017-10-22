@@ -5,46 +5,13 @@
 - [ ] test with capitalized table names
 - [ ] test with schemadiff against dump
 
-# blueprints
-- [x] import blueprints
-- [ ] test blueprints
+# Tables that look like they differ
+`invpositions` and `mapdenormalize` look like they differ from the python
+importer. This is due to `-0.0` in y position for `40476325` (`J105934 IV`)
+being parsed as `0.0` in python
 
-# categories
-- [x] import categories
-- [ ] test categories
-
-# certificates
-- [x] import certificates
-- [ ] test certificates
-
-# graphics
-- [x] import graphics
-- [ ] test graphics
-
-# groups
-- [x] import groups
-- [ ] test groups
-
-# icons
-- [x] import icons
-- [ ] test icons
-
-# skins
-- [x] import skins
-- [x] import skinLicenses
-- [x] import skinMaterials
-- [ ] test skins
-
-# types
-- [x] translations for description
-- [x] translations for name
-- [x] traits
-- [x] traits miscbonuses
-
-# universe
-- [ ] import universe
-- [ ] test universe
-
-# volumes
-- [ ] import volumes
-- [ ] test volumes
+# Tables needing fixes
+invtraits
+invvolumes
+stastations
+trntranslations
