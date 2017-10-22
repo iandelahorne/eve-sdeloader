@@ -1,9 +1,7 @@
 # Overall
 - [ ] test with mysql
 - [ ] cleanup DDLs and importing
-- [ ] Import with NULL values where this makes sense
 - [ ] test with capitalized table names
-- [ ] test with schemadiff against dump
 
 # Tables that look like they differ
 `invpositions` and `mapdenormalize` look like they differ from the python

@@ -5,43 +5,7 @@
 
 `eve-sdeloader` is a tool for importing an EVE static data export from [EVE Developer Resources](https://developers.eveonline.com/resource/resources) to a Postgresql database. 
 
-# Current status
-
-Under development. Almost all tables except for universe and translations are imported. A full import currently takes about 3.5 minutes. The [TODO](TODO.md) file attempts to keep track of project status.
-
-Currently tested on Go 1.9 with Postgres 9.6, but it probably works all the way back to 8.4.
-
-# Usage
-
-By default `eve-sdeloader` will try to import SDE files from under `./sde` to the database `sdetest` on localhost with the user `sdetest`. This is all overridable with CLI flags:
-
-```
-Usage of ./eve-sdeloader:
-  -cpuprofile string
-    	File to write cpu profile to
-  -dbhost string
-    	Database host (default "localhost")
-  -dbname string
-    	Database name (default "sdetest")
-  -dbpassword string
-    	Database password
-  -dbport int
-    	Database port (default 5432)
-  -dbuser string
-    	Database username (default "sdetest")
-  -memprofile string
-    	File to write memory profile to
-  -sdedirectory string
-    	Directory containing an unzipped EVE SDE YAML dump (default "./sde")
-  ```
-
-## Profiling
-
-`eve-sdeloader` accepts `-cpuprofile` and `-memprofile` flags to dump profiling
-output from `runtime/pprof` into pprof files that can be consumed by other
-tools.
-
-# Installing 
+# Installing
 
 `go get github.com/lflux/eve-sdeloader` should install the tool. If this fails, check out the repository under your `$GOPATH` and use [dep](https://github.com/golang/dep) to fetch the dependencies:
 
@@ -65,10 +29,67 @@ CREATE ROLE sdetest LOGIN;
 CREATE DATABASE sdtest OWNER sdetest;
 ```
 
+# Usage
+
+```shell
+$ cd /tmp
+$ unzip ~/Downloads/sde-20170818-TRANQUILITY.zip
+$ curl -O  https://raw.githubusercontent.com/fuzzysteve/yamlloader/master/invVolumes1.csv
+$ curl -O https://raw.githubusercontent.com/fuzzysteve/yamlloader/master/invVolumes2.csv
+$ gsed -i -e 's/radius: 0.0059e18/radius: 0.0059e\+18/' sde/fsd/universe/wormhole/G-R00031/G-C00311/constellation.static
+$ eve-sdeloader
+```
+
+By default `eve-sdeloader` will try to import SDE files from under `./sde` and `./invVolumes{1,2}.csv` to the database `sdetest` on `localhost` with the user `sdetest`. This is all overridable with CLI flags:
+
+```
+Usage of ./eve-sdeloader:
+  -cpuprofile string
+    	File to write cpu profile to
+  -dbhost string
+    	Database host (default "localhost")
+  -dbname string
+    	Database name (default "sdetest")
+  -dbpassword string
+    	Database password
+  -dbport int
+    	Database port (default 5432)
+  -dbuser string
+    	Database username (default "sdetest")
+  -invvoldirectory string
+    	Directory containing invVolumes{1,2}.csv (default ".")
+  -memprofile string
+    	File to write memory profile to
+  -nobsd
+    	Disable importing of BSD directory
+  -nouniverse
+    	Disable importing of universe data
+  -sdedirectory string
+    	Directory containing an unzipped EVE SDE YAML dump (default "./sde")
+  -single-file string
+    	Import only a single FSD file
+```
+
+# Current status
+
+More or less done. A full import currently takes about 7 minutes on a Macbook Pro (to contrast with 48 minutes for the python importer). The [TODO](TODO.md) file attempts to keep track of project status.
+
+Currently tested on Go 1.9 with Postgres 9.6 on OSX 10.12 (Sierra), but it probably works all the way back to Postgres 8.4 and should work fine on Linux.
+
 # Differences from the Python importer
 - Negative 0 floats are imported as `-0`
-- mapCelestialStatistics.radius rounds correctly in the go importer (`31406.9` gets imported as `31407`) instead of being truncated (in reality, this should be a `double precision` in the database and not `bigint`)
+- `invtraits` has different traitids due to insertion order.
+- `trntranslations` has more tranlsations
 
+# Profiling
+
+`eve-sdeloader` accepts `-cpuprofile` and `-memprofile` flags to dump profiling
+output from `runtime/pprof` into pprof files that can be consumed by other
+tools.
+
+# Issues
+
+Please raise issues on [Github](https://github.com/lflux/eve-sdeloader/issues).
 
 # License
 
