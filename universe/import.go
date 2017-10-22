@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	"math"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -28,13 +27,13 @@ type CelestialStatistics struct {
 	EscapeVelocity *float64 `yaml:"escapeVelocity"`
 	Fragmented     *bool
 	Life           *float64
-	Locked         bool
+	Locked         *bool
 	Luminosity     *float64
 	MassDust       *float64 `yaml:"massDust"`
 	MassGas        *float64 `yaml:"massGas"`
 	OrbitPeriod    *float64 `yaml:"orbitPeriod"`
 	OrbitRadius    *float64 `yaml:"orbitRadius"`
-	Pressure       *int64
+	Pressure       *float64
 	Radius         *float64
 	RotationRate   *float64 `yaml:"rotationRate"`
 	SpectralClass  *string  `yaml:"spectralClass"`
@@ -80,14 +79,21 @@ func distance(a, b []float64) float64 {
 
 func insertCelestialStatistics(stmt *sql.Stmt, id int64, stats CelestialStatistics) error {
 	var err error
-	var radius *float64
-	// This is bug compatibility with the python importer, since it truncates
-	// instead of rounding or inserting the float
+	var radius *int64
+	var pressure *int64
+	// This is bug compatibility with the python importer, which rounds radius.
 	// https://github.com/fuzzysteve/yamlloader/issues/12
 	if stats.Radius != nil {
-		r := math.Trunc(*stats.Radius)
+		r := utils.Round(*stats.Radius)
 		radius = &r
 	}
+
+	// This rounds as well.
+	if stats.Pressure != nil {
+		p := utils.Round(*stats.Pressure)
+		pressure = &p
+	}
+
 	_, err = stmt.Exec(
 		id,
 		stats.Temperature,
@@ -106,7 +112,7 @@ func insertCelestialStatistics(stmt *sql.Stmt, id int64, stats CelestialStatisti
 		stats.OrbitPeriod,
 		stats.RotationRate,
 		stats.Locked,
-		stats.Pressure,
+		pressure,
 		radius,
 		nil,
 	)

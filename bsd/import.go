@@ -15,6 +15,8 @@ import (
 
 	"github.com/lib/pq"
 	"gopkg.in/yaml.v2"
+
+	"github.com/lflux/eve-sdeloader/utils"
 )
 
 type Importer struct {
@@ -77,13 +79,6 @@ func (i *Importer) statement(tx *sql.Tx, tableName string, keys []string) (*sql.
 	return stmt, nil
 }
 
-func round(val float64) int {
-	if val < 0 {
-		return int(val - 0.5)
-	}
-	return int(val + 0.5)
-}
-
 func (i *Importer) importToTable(tableName string, r io.Reader) error {
 	i.statements = make(map[string]*sql.Stmt)
 
@@ -126,7 +121,7 @@ func (i *Importer) importToTable(tableName string, r io.Reader) error {
 				if err != nil {
 					return err
 				}
-				vals = append(vals, round(f))
+				vals = append(vals, utils.Round(f))
 			} else {
 				vals = append(vals, v)
 			}
