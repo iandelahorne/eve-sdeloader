@@ -2,30 +2,9 @@ package inventory
 
 import (
 	"database/sql"
-	"fmt"
 	"io"
-	"strings"
 
 	"github.com/lflux/eve-sdeloader/utils"
-)
-
-var (
-	invCols = []string{
-		"typeid",
-		"groupid",
-		"typename",
-		"description",
-		"mass",
-		"volume",
-		"capacity",
-		"portionsize",
-		"raceid",
-		"published",
-		"marketgroupid",
-		"graphicid",
-		"iconid",
-		"soundid",
-	}
 )
 
 var TypeIDs map[string]*Type
@@ -53,11 +32,28 @@ func InsertBonuses(stmt, insertTranslations *sql.Stmt, typeID string, skillID in
 }
 
 func InsertInvTypeStatement(tx *sql.Tx) (*sql.Stmt, error) {
-	// TODO investigate if we can perform multiple CopyIn in the same transaction
-	// return txn.Prepare(pq.CopyIn("invtypes", invCols...))
+	stmt := `INSERT INTO invtypes (
+	typeid,
+	groupid,
+	typename,
+	description,
+	mass,
+	volume,
+	capacity,
+	portionsize,
+	raceid,
+	baseprice,
+	published,
+	marketgroupid,
+	graphicid,
+	iconid,
+	soundid
+) VALUES (
+	$1, $2, $3, $4, $5,
+	$6, $7, $8, $9, $10,
+	$11, $12, $13, $14, $15)`
 
-	return tx.Prepare(fmt.Sprintf(`INSERT INTO invtypes (%s) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)`,
-		strings.Join(invCols, ",")))
+	return tx.Prepare(stmt)
 }
 
 func InsertCertMasteryStatement(tx *sql.Tx) (*sql.Stmt, error) {
@@ -115,6 +111,7 @@ func Import(db *sql.DB, r io.Reader) error {
 			entry.Capacity,
 			entry.PortionSize,
 			entry.RaceID,
+			entry.BasePrice,
 			entry.Published,
 			entry.MarketGroupID,
 			entry.GraphicID,
@@ -146,7 +143,6 @@ func Import(db *sql.DB, r io.Reader) error {
 			if err != nil {
 				return err
 			}
-
 		}
 
 		if len(entry.Name) > 0 {
