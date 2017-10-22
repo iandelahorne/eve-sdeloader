@@ -13,5 +13,5 @@ being parsed as `0.0` in python
 # Tables needing fixes
 invtraits
 invvolumes
-stastations
+mapcelestialstatistics
 trntranslations

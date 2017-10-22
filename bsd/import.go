@@ -10,6 +10,7 @@ import (
 	"os"
 	"path"
 	"sort"
+	"strconv"
 	"strings"
 
 	"github.com/lib/pq"
@@ -76,6 +77,13 @@ func (i *Importer) statement(tx *sql.Tx, tableName string, keys []string) (*sql.
 	return stmt, nil
 }
 
+func round(val float64) int {
+	if val < 0 {
+		return int(val - 0.5)
+	}
+	return int(val + 0.5)
+}
+
 func (i *Importer) importToTable(tableName string, r io.Reader) error {
 	i.statements = make(map[string]*sql.Stmt)
 
@@ -109,7 +117,19 @@ func (i *Importer) importToTable(tableName string, r io.Reader) error {
 			v := row[k]
 			key := i.fixPostgresColumns(k)
 			dbKeys = append(dbKeys, pq.QuoteIdentifier(key))
-			vals = append(vals, v)
+			// XXX this is to handle the case of stastations.security, which is
+			// an integer in the database but a float in the yaml.
+			// See https://github.com/fuzzysteve/yamlloader/issues/13
+			if tableName == "stastations" && k == "security" {
+				var f float64
+				f, err = strconv.ParseFloat(v, 64)
+				if err != nil {
+					return err
+				}
+				vals = append(vals, round(f))
+			} else {
+				vals = append(vals, v)
+			}
 		}
 		stmt, err := i.statement(tx, tableName, dbKeys)
 		if err != nil {
