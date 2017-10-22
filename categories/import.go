@@ -9,7 +9,7 @@ import (
 
 type Category struct {
 	Name      map[string]string
-	IconID    int `yaml:"iconID"`
+	IconID    *int `yaml:"iconID"`
 	Published bool
 }
 
