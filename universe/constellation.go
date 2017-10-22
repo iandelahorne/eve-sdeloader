@@ -90,6 +90,7 @@ func (r *Region) ImportConstellation(path string) error {
 		r.RegionID,
 		nil,
 		// XXX This should be c.Center but the python importer uses the region center.
+		// https://github.com/fuzzysteve/yamlloader/issues/11
 		r.Center[0],
 		r.Center[1],
 		r.Center[2],

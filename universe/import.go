@@ -81,6 +81,9 @@ func distance(a, b []float64) float64 {
 func insertCelestialStatistics(stmt *sql.Stmt, id int64, stats CelestialStatistics) error {
 	var err error
 	var radius *float64
+	// This is bug compatibility with the python importer, since it truncates
+	// instead of rounding or inserting the float
+	// https://github.com/fuzzysteve/yamlloader/issues/12
 	if stats.Radius != nil {
 		r := math.Trunc(*stats.Radius)
 		radius = &r
