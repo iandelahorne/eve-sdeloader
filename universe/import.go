@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"math"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -34,7 +35,7 @@ type CelestialStatistics struct {
 	OrbitPeriod    *float64 `yaml:"orbitPeriod"`
 	OrbitRadius    *float64 `yaml:"orbitRadius"`
 	Pressure       *int64
-	Radius         *int64
+	Radius         *float64
 	RotationRate   *float64 `yaml:"rotationRate"`
 	SpectralClass  *string  `yaml:"spectralClass"`
 	SurfaceGravity *float64 `yaml:"surfaceGravity"`
@@ -79,6 +80,11 @@ func distance(a, b []float64) float64 {
 
 func insertCelestialStatistics(stmt *sql.Stmt, id int64, stats CelestialStatistics) error {
 	var err error
+	var radius *float64
+	if stats.Radius != nil {
+		r := math.Trunc(*stats.Radius)
+		radius = &r
+	}
 	_, err = stmt.Exec(
 		id,
 		stats.Temperature,
@@ -98,7 +104,7 @@ func insertCelestialStatistics(stmt *sql.Stmt, id int64, stats CelestialStatisti
 		stats.RotationRate,
 		stats.Locked,
 		stats.Pressure,
-		stats.Radius,
+		radius,
 		nil,
 	)
 	return err
