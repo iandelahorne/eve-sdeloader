@@ -84,7 +84,7 @@ func (i *Importer) importToTable(tableName string, r io.Reader) error {
 		return err
 	}
 
-	rows := make([]map[string]interface{}, 0)
+	rows := make([]map[string]string, 0)
 	err = yaml.Unmarshal(buf, &rows)
 	if err != nil {
 		return err
