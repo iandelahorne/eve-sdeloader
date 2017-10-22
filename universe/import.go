@@ -113,6 +113,23 @@ func insertCelestialStatistics(stmt *sql.Stmt, id int64, stats CelestialStatisti
 	return err
 }
 
+func fixStationNames(db *sql.DB) error {
+	stmt := `
+UPDATE
+	staStations
+SET
+	stationName = (
+		SELECT
+			itemName
+		FROM
+			invNames
+		WHERE
+			staStations.stationID = itemID
+	)
+`
+	_, err := db.Exec(stmt)
+	return err
+}
 func Import(db *sql.DB, regionPath, invNamePath string) error {
 	regions, err := filepath.Glob(filepath.Join(regionPath, "*", "*", "region.staticdata"))
 
@@ -145,5 +162,10 @@ func Import(db *sql.DB, regionPath, invNamePath string) error {
 		}
 	}
 
-	return FixMapJumps(db)
+	err = FixMapJumps(db)
+	if err != nil {
+		return err
+	}
+
+	return fixStationNames(db)
 }
