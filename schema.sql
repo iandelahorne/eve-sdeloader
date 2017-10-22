@@ -1408,7 +1408,8 @@ CREATE TABLE staservices (
 
 CREATE TABLE stastations (
     stationid bigint NOT NULL,
-    security double precision,
+    -- this is a double precision in the yaml, see https://github.com/fuzzysteve/yamlloader/issues/13
+    security integer,
     dockingcostpervolume double precision,
     maxshipvolumedockable double precision,
     officerentalcost integer,
