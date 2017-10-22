@@ -23,6 +23,7 @@ import (
 	"github.com/lflux/eve-sdeloader/skins"
 	"github.com/lflux/eve-sdeloader/universe"
 	"github.com/lflux/eve-sdeloader/utils"
+	"github.com/lflux/eve-sdeloader/volumes"
 
 	_ "github.com/lib/pq"
 )
@@ -33,7 +34,7 @@ var (
 	cpuprofile, memprofile             string
 	dbUser, dbName, dbHost, dbPassword string
 	dbPort                             int
-	sdeDirectory                       string
+	invVolDirectory, sdeDirectory      string
 	noBsd, noUniverse                  bool
 	singleFile                         string
 	fsdImporters                       = map[string]Importer{
@@ -60,6 +61,7 @@ func init() {
 	flag.StringVar(&dbName, "dbname", "sdetest", "Database name")
 	flag.StringVar(&dbPassword, "dbpassword", "", "Database password")
 	flag.StringVar(&sdeDirectory, "sdedirectory", "./sde", "Directory containing an unzipped EVE SDE YAML dump")
+	flag.StringVar(&invVolDirectory, "invvoldirectory", ".", "Directory containing invVolumes{1,2}.csv")
 	flag.BoolVar(&noBsd, "nobsd", false, "Disable importing of BSD directory")
 	flag.BoolVar(&noUniverse, "nouniverse", false, "Disable importing of universe data")
 	flag.StringVar(&singleFile, "single-file", "", "Import only a single FSD file")
@@ -136,6 +138,14 @@ func main() {
 			filepath.Join(sdeDirectory, "bsd", "invNames.yaml"))
 		if err != nil {
 			log.Fatalf("Error importing universe: %s", err)
+		}
+		err = volumes.ImportVolume1(db, filepath.Join(invVolDirectory, "invVolumes1.csv"))
+		if err != nil {
+			log.Fatalf("Error importing volumes 1: %s", err)
+		}
+		err = volumes.ImportVolume2(db, filepath.Join(invVolDirectory, "invVolumes2.csv"))
+		if err != nil {
+			log.Fatalf("Error importing volumes 2: %s", err)
 		}
 	}
 	log.Println("Import finished")

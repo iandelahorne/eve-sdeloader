@@ -12,6 +12,3 @@ being parsed as `0.0` in python
 
 `invtraits` has different traitids due to insertion order.
 `trntranslations` has more translations than
-
-# Tables needing fixes
-invvolumes
