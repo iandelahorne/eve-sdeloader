@@ -130,7 +130,10 @@ func (i *Importer) importToTable(tableName string, r io.Reader) error {
 
 func (i *Importer) importFile(root, fileName string) error {
 	parts := strings.Split(fileName, ".")
-	tableName := strings.ToLower(parts[0])
+	tableName := parts[0]
+	if !i.dontLowerCase {
+		tableName = strings.ToLower(tableName)
+	}
 
 	log.Printf("Importing %s into %s", fileName, tableName)
 	f, err := os.Open(path.Join(root, fileName))
@@ -150,6 +153,7 @@ func (i *Importer) Import(root, singleFile string) error {
 	if i.DB == nil {
 		return errors.New("Nil database pointer")
 	}
+	i.dontLowerCase = true
 	files, err := ioutil.ReadDir(root)
 	if err != nil {
 		return err
