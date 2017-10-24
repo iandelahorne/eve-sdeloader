@@ -1,10 +1,4 @@
---
--- PostgreSQL database dump
---
-
--- Dumped from database version 9.6.3
--- Dumped by pg_dump version 9.6.3
-
+-- generated with pg_dump --clean --schema-only --no-owner --if-exists sdeyaml > schema.sql
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -62,806 +56,805 @@ DROP INDEX IF EXISTS public."items_IX_OwnerLocation";
 DROP INDEX IF EXISTS public."invUniqueNames_IX_GroupName";
 DROP INDEX IF EXISTS public."industryActivitySkills_idx1";
 DROP INDEX IF EXISTS public."industryActivityMaterials_idx1";
-ALTER TABLE IF EXISTS ONLY public.warcombatzonesystems DROP CONSTRAINT warcombatzonesystems_pkey;
-ALTER TABLE IF EXISTS ONLY public.warcombatzones DROP CONSTRAINT warcombatzones_pkey;
-ALTER TABLE IF EXISTS ONLY public.trntranslations DROP CONSTRAINT trntranslations_pkey;
-ALTER TABLE IF EXISTS ONLY public.trntranslationlanguages DROP CONSTRAINT trntranslationlanguages_pkey;
-ALTER TABLE IF EXISTS ONLY public.trntranslationcolumns DROP CONSTRAINT trntranslationcolumns_pkey;
-ALTER TABLE IF EXISTS ONLY public.translationtables DROP CONSTRAINT translationtables_pkey;
-ALTER TABLE IF EXISTS ONLY public.stastationtypes DROP CONSTRAINT stastationtypes_pkey;
-ALTER TABLE IF EXISTS ONLY public.stastations DROP CONSTRAINT stastations_pkey;
-ALTER TABLE IF EXISTS ONLY public.staservices DROP CONSTRAINT staservices_pkey;
-ALTER TABLE IF EXISTS ONLY public.staoperationservices DROP CONSTRAINT staoperationservices_pkey;
-ALTER TABLE IF EXISTS ONLY public.staoperations DROP CONSTRAINT staoperations_pkey;
+ALTER TABLE IF EXISTS ONLY public."warCombatZones" DROP CONSTRAINT "warCombatZones_pkey";
+ALTER TABLE IF EXISTS ONLY public."warCombatZoneSystems" DROP CONSTRAINT "warCombatZoneSystems_pkey";
+ALTER TABLE IF EXISTS ONLY public."trnTranslations" DROP CONSTRAINT "trnTranslations_pkey";
+ALTER TABLE IF EXISTS ONLY public."trnTranslationLanguages" DROP CONSTRAINT "trnTranslationLanguages_pkey";
+ALTER TABLE IF EXISTS ONLY public."trnTranslationColumns" DROP CONSTRAINT "trnTranslationColumns_pkey";
+ALTER TABLE IF EXISTS ONLY public."translationTables" DROP CONSTRAINT "translationTables_pkey";
+ALTER TABLE IF EXISTS ONLY public."staStations" DROP CONSTRAINT "staStations_pkey";
+ALTER TABLE IF EXISTS ONLY public."staStationTypes" DROP CONSTRAINT "staStationTypes_pkey";
+ALTER TABLE IF EXISTS ONLY public."staServices" DROP CONSTRAINT "staServices_pkey";
+ALTER TABLE IF EXISTS ONLY public."staOperations" DROP CONSTRAINT "staOperations_pkey";
+ALTER TABLE IF EXISTS ONLY public."staOperationServices" DROP CONSTRAINT "staOperationServices_pkey";
 ALTER TABLE IF EXISTS ONLY public.skins DROP CONSTRAINT skins_pkey;
-ALTER TABLE IF EXISTS ONLY public.skinmaterials DROP CONSTRAINT skinmaterials_pkey;
-ALTER TABLE IF EXISTS ONLY public.skinlicense DROP CONSTRAINT skinlicense_pkey;
-ALTER TABLE IF EXISTS ONLY public.raminstallationtypecontents DROP CONSTRAINT raminstallationtypecontents_pkey;
-ALTER TABLE IF EXISTS ONLY public.ramassemblylinetypes DROP CONSTRAINT ramassemblylinetypes_pkey;
-ALTER TABLE IF EXISTS ONLY public.ramassemblylinetypedetailpergroup DROP CONSTRAINT ramassemblylinetypedetailpergroup_pkey;
-ALTER TABLE IF EXISTS ONLY public.ramassemblylinetypedetailpercategory DROP CONSTRAINT ramassemblylinetypedetailpercategory_pkey;
-ALTER TABLE IF EXISTS ONLY public.ramassemblylinestations DROP CONSTRAINT ramassemblylinestations_pkey;
-ALTER TABLE IF EXISTS ONLY public.ramactivities DROP CONSTRAINT ramactivities_pkey;
-ALTER TABLE IF EXISTS ONLY public.planetschematicstypemap DROP CONSTRAINT planetschematicstypemap_pkey;
-ALTER TABLE IF EXISTS ONLY public.planetschematicspinmap DROP CONSTRAINT planetschematicspinmap_pkey;
-ALTER TABLE IF EXISTS ONLY public.planetschematics DROP CONSTRAINT planetschematics_pkey;
-ALTER TABLE IF EXISTS ONLY public.mapuniverse DROP CONSTRAINT mapuniverse_pkey;
-ALTER TABLE IF EXISTS ONLY public.mapsolarsystems DROP CONSTRAINT mapsolarsystems_pkey;
-ALTER TABLE IF EXISTS ONLY public.mapsolarsystemjumps DROP CONSTRAINT mapsolarsystemjumps_pkey;
-ALTER TABLE IF EXISTS ONLY public.mapregions DROP CONSTRAINT mapregions_pkey;
-ALTER TABLE IF EXISTS ONLY public.mapregionjumps DROP CONSTRAINT mapregionjumps_pkey;
-ALTER TABLE IF EXISTS ONLY public.maplocationwormholeclasses DROP CONSTRAINT maplocationwormholeclasses_pkey;
-ALTER TABLE IF EXISTS ONLY public.maplocationscenes DROP CONSTRAINT maplocationscenes_pkey;
-ALTER TABLE IF EXISTS ONLY public.maplandmarks DROP CONSTRAINT maplandmarks_pkey;
-ALTER TABLE IF EXISTS ONLY public.mapjumps DROP CONSTRAINT mapjumps_pkey;
-ALTER TABLE IF EXISTS ONLY public.mapdenormalize DROP CONSTRAINT mapdenormalize_pkey;
-ALTER TABLE IF EXISTS ONLY public.mapconstellations DROP CONSTRAINT mapconstellations_pkey;
-ALTER TABLE IF EXISTS ONLY public.mapconstellationjumps DROP CONSTRAINT mapconstellationjumps_pkey;
-ALTER TABLE IF EXISTS ONLY public.mapcelestialstatistics DROP CONSTRAINT mapcelestialstatistics_pkey;
-ALTER TABLE IF EXISTS ONLY public.invvolumes DROP CONSTRAINT invvolumes_pkey;
-ALTER TABLE IF EXISTS ONLY public.invuniquenames DROP CONSTRAINT invuniquenames_pkey;
-ALTER TABLE IF EXISTS ONLY public.invtypes DROP CONSTRAINT invtypes_pkey;
-ALTER TABLE IF EXISTS ONLY public.invtypereactions DROP CONSTRAINT invtypereactions_pkey;
-ALTER TABLE IF EXISTS ONLY public.invtypematerials DROP CONSTRAINT invtypematerials_pkey;
-ALTER TABLE IF EXISTS ONLY public.invtraits DROP CONSTRAINT invtraits_pkey;
-ALTER TABLE IF EXISTS ONLY public.invpositions DROP CONSTRAINT invpositions_pkey;
-ALTER TABLE IF EXISTS ONLY public.invnames DROP CONSTRAINT invnames_pkey;
-ALTER TABLE IF EXISTS ONLY public.invmetatypes DROP CONSTRAINT invmetatypes_pkey;
-ALTER TABLE IF EXISTS ONLY public.invmetagroups DROP CONSTRAINT invmetagroups_pkey;
-ALTER TABLE IF EXISTS ONLY public.invmarketgroups DROP CONSTRAINT invmarketgroups_pkey;
-ALTER TABLE IF EXISTS ONLY public.invitems DROP CONSTRAINT invitems_pkey;
-ALTER TABLE IF EXISTS ONLY public.invgroups DROP CONSTRAINT invgroups_pkey;
-ALTER TABLE IF EXISTS ONLY public.invflags DROP CONSTRAINT invflags_pkey;
-ALTER TABLE IF EXISTS ONLY public.invcontroltowerresources DROP CONSTRAINT invcontroltowerresources_pkey;
-ALTER TABLE IF EXISTS ONLY public.invcontroltowerresourcepurposes DROP CONSTRAINT invcontroltowerresourcepurposes_pkey;
-ALTER TABLE IF EXISTS ONLY public.invcontrabandtypes DROP CONSTRAINT invcontrabandtypes_pkey;
-ALTER TABLE IF EXISTS ONLY public.invcategories DROP CONSTRAINT invcategories_pkey;
-ALTER TABLE IF EXISTS ONLY public.industryblueprints DROP CONSTRAINT industryblueprints_pkey;
-ALTER TABLE IF EXISTS ONLY public.industryactivity DROP CONSTRAINT industryactivity_pkey;
-ALTER TABLE IF EXISTS ONLY public.eveunits DROP CONSTRAINT eveunits_pkey;
-ALTER TABLE IF EXISTS ONLY public.eveicons DROP CONSTRAINT eveicons_pkey;
-ALTER TABLE IF EXISTS ONLY public.evegraphics DROP CONSTRAINT evegraphics_pkey;
-ALTER TABLE IF EXISTS ONLY public.dgmtypeeffects DROP CONSTRAINT dgmtypeeffects_pkey;
-ALTER TABLE IF EXISTS ONLY public.dgmtypeattributes DROP CONSTRAINT dgmtypeattributes_pkey;
-ALTER TABLE IF EXISTS ONLY public.dgmexpressions DROP CONSTRAINT dgmexpressions_pkey;
-ALTER TABLE IF EXISTS ONLY public.dgmeffects DROP CONSTRAINT dgmeffects_pkey;
-ALTER TABLE IF EXISTS ONLY public.dgmattributetypes DROP CONSTRAINT dgmattributetypes_pkey;
-ALTER TABLE IF EXISTS ONLY public.dgmattributecategories DROP CONSTRAINT dgmattributecategories_pkey;
-ALTER TABLE IF EXISTS ONLY public.crpnpcdivisions DROP CONSTRAINT crpnpcdivisions_pkey;
-ALTER TABLE IF EXISTS ONLY public.crpnpccorporationtrades DROP CONSTRAINT crpnpccorporationtrades_pkey;
-ALTER TABLE IF EXISTS ONLY public.crpnpccorporations DROP CONSTRAINT crpnpccorporations_pkey;
-ALTER TABLE IF EXISTS ONLY public.crpnpccorporationresearchfields DROP CONSTRAINT crpnpccorporationresearchfields_pkey;
-ALTER TABLE IF EXISTS ONLY public.crpnpccorporationdivisions DROP CONSTRAINT crpnpccorporationdivisions_pkey;
-ALTER TABLE IF EXISTS ONLY public.crpactivities DROP CONSTRAINT crpactivities_pkey;
-ALTER TABLE IF EXISTS ONLY public.chrraces DROP CONSTRAINT chrraces_pkey;
-ALTER TABLE IF EXISTS ONLY public.chrfactions DROP CONSTRAINT chrfactions_pkey;
-ALTER TABLE IF EXISTS ONLY public.chrbloodlines DROP CONSTRAINT chrbloodlines_pkey;
-ALTER TABLE IF EXISTS ONLY public.chrattributes DROP CONSTRAINT chrattributes_pkey;
-ALTER TABLE IF EXISTS ONLY public.chrancestries DROP CONSTRAINT chrancestries_pkey;
-ALTER TABLE IF EXISTS ONLY public.certcerts DROP CONSTRAINT certcerts_pkey;
-ALTER TABLE IF EXISTS ONLY public.agtresearchagents DROP CONSTRAINT agtresearchagents_pkey;
-ALTER TABLE IF EXISTS ONLY public.agtagenttypes DROP CONSTRAINT agtagenttypes_pkey;
-ALTER TABLE IF EXISTS ONLY public.agtagents DROP CONSTRAINT agtagents_pkey;
-ALTER TABLE IF EXISTS public.invtraits ALTER COLUMN traitid DROP DEFAULT;
-DROP TABLE IF EXISTS public.warcombatzonesystems;
-DROP TABLE IF EXISTS public.warcombatzones;
-DROP TABLE IF EXISTS public.trntranslations;
-DROP TABLE IF EXISTS public.trntranslationlanguages;
-DROP TABLE IF EXISTS public.trntranslationcolumns;
-DROP TABLE IF EXISTS public.translationtables;
-DROP TABLE IF EXISTS public.stastationtypes;
-DROP TABLE IF EXISTS public.stastations;
-DROP TABLE IF EXISTS public.staservices;
-DROP TABLE IF EXISTS public.staoperationservices;
-DROP TABLE IF EXISTS public.staoperations;
-DROP TABLE IF EXISTS public.skinship;
+ALTER TABLE IF EXISTS ONLY public."skinMaterials" DROP CONSTRAINT "skinMaterials_pkey";
+ALTER TABLE IF EXISTS ONLY public."skinLicense" DROP CONSTRAINT "skinLicense_pkey";
+ALTER TABLE IF EXISTS ONLY public."ramInstallationTypeContents" DROP CONSTRAINT "ramInstallationTypeContents_pkey";
+ALTER TABLE IF EXISTS ONLY public."ramAssemblyLineTypes" DROP CONSTRAINT "ramAssemblyLineTypes_pkey";
+ALTER TABLE IF EXISTS ONLY public."ramAssemblyLineTypeDetailPerGroup" DROP CONSTRAINT "ramAssemblyLineTypeDetailPerGroup_pkey";
+ALTER TABLE IF EXISTS ONLY public."ramAssemblyLineTypeDetailPerCategory" DROP CONSTRAINT "ramAssemblyLineTypeDetailPerCategory_pkey";
+ALTER TABLE IF EXISTS ONLY public."ramAssemblyLineStations" DROP CONSTRAINT "ramAssemblyLineStations_pkey";
+ALTER TABLE IF EXISTS ONLY public."ramActivities" DROP CONSTRAINT "ramActivities_pkey";
+ALTER TABLE IF EXISTS ONLY public."planetSchematics" DROP CONSTRAINT "planetSchematics_pkey";
+ALTER TABLE IF EXISTS ONLY public."planetSchematicsTypeMap" DROP CONSTRAINT "planetSchematicsTypeMap_pkey";
+ALTER TABLE IF EXISTS ONLY public."planetSchematicsPinMap" DROP CONSTRAINT "planetSchematicsPinMap_pkey";
+ALTER TABLE IF EXISTS ONLY public."mapUniverse" DROP CONSTRAINT "mapUniverse_pkey";
+ALTER TABLE IF EXISTS ONLY public."mapSolarSystems" DROP CONSTRAINT "mapSolarSystems_pkey";
+ALTER TABLE IF EXISTS ONLY public."mapSolarSystemJumps" DROP CONSTRAINT "mapSolarSystemJumps_pkey";
+ALTER TABLE IF EXISTS ONLY public."mapRegions" DROP CONSTRAINT "mapRegions_pkey";
+ALTER TABLE IF EXISTS ONLY public."mapRegionJumps" DROP CONSTRAINT "mapRegionJumps_pkey";
+ALTER TABLE IF EXISTS ONLY public."mapLocationWormholeClasses" DROP CONSTRAINT "mapLocationWormholeClasses_pkey";
+ALTER TABLE IF EXISTS ONLY public."mapLocationScenes" DROP CONSTRAINT "mapLocationScenes_pkey";
+ALTER TABLE IF EXISTS ONLY public."mapLandmarks" DROP CONSTRAINT "mapLandmarks_pkey";
+ALTER TABLE IF EXISTS ONLY public."mapJumps" DROP CONSTRAINT "mapJumps_pkey";
+ALTER TABLE IF EXISTS ONLY public."mapDenormalize" DROP CONSTRAINT "mapDenormalize_pkey";
+ALTER TABLE IF EXISTS ONLY public."mapConstellations" DROP CONSTRAINT "mapConstellations_pkey";
+ALTER TABLE IF EXISTS ONLY public."mapConstellationJumps" DROP CONSTRAINT "mapConstellationJumps_pkey";
+ALTER TABLE IF EXISTS ONLY public."mapCelestialStatistics" DROP CONSTRAINT "mapCelestialStatistics_pkey";
+ALTER TABLE IF EXISTS ONLY public."invVolumes" DROP CONSTRAINT "invVolumes_pkey";
+ALTER TABLE IF EXISTS ONLY public."invUniqueNames" DROP CONSTRAINT "invUniqueNames_pkey";
+ALTER TABLE IF EXISTS ONLY public."invTypes" DROP CONSTRAINT "invTypes_pkey";
+ALTER TABLE IF EXISTS ONLY public."invTypeReactions" DROP CONSTRAINT "invTypeReactions_pkey";
+ALTER TABLE IF EXISTS ONLY public."invTypeMaterials" DROP CONSTRAINT "invTypeMaterials_pkey";
+ALTER TABLE IF EXISTS ONLY public."invTraits" DROP CONSTRAINT "invTraits_pkey";
+ALTER TABLE IF EXISTS ONLY public."invPositions" DROP CONSTRAINT "invPositions_pkey";
+ALTER TABLE IF EXISTS ONLY public."invNames" DROP CONSTRAINT "invNames_pkey";
+ALTER TABLE IF EXISTS ONLY public."invMetaTypes" DROP CONSTRAINT "invMetaTypes_pkey";
+ALTER TABLE IF EXISTS ONLY public."invMetaGroups" DROP CONSTRAINT "invMetaGroups_pkey";
+ALTER TABLE IF EXISTS ONLY public."invMarketGroups" DROP CONSTRAINT "invMarketGroups_pkey";
+ALTER TABLE IF EXISTS ONLY public."invItems" DROP CONSTRAINT "invItems_pkey";
+ALTER TABLE IF EXISTS ONLY public."invGroups" DROP CONSTRAINT "invGroups_pkey";
+ALTER TABLE IF EXISTS ONLY public."invFlags" DROP CONSTRAINT "invFlags_pkey";
+ALTER TABLE IF EXISTS ONLY public."invControlTowerResources" DROP CONSTRAINT "invControlTowerResources_pkey";
+ALTER TABLE IF EXISTS ONLY public."invControlTowerResourcePurposes" DROP CONSTRAINT "invControlTowerResourcePurposes_pkey";
+ALTER TABLE IF EXISTS ONLY public."invContrabandTypes" DROP CONSTRAINT "invContrabandTypes_pkey";
+ALTER TABLE IF EXISTS ONLY public."invCategories" DROP CONSTRAINT "invCategories_pkey";
+ALTER TABLE IF EXISTS ONLY public."industryBlueprints" DROP CONSTRAINT "industryBlueprints_pkey";
+ALTER TABLE IF EXISTS ONLY public."industryActivity" DROP CONSTRAINT "industryActivity_pkey";
+ALTER TABLE IF EXISTS ONLY public."eveUnits" DROP CONSTRAINT "eveUnits_pkey";
+ALTER TABLE IF EXISTS ONLY public."eveIcons" DROP CONSTRAINT "eveIcons_pkey";
+ALTER TABLE IF EXISTS ONLY public."eveGraphics" DROP CONSTRAINT "eveGraphics_pkey";
+ALTER TABLE IF EXISTS ONLY public."dgmTypeEffects" DROP CONSTRAINT "dgmTypeEffects_pkey";
+ALTER TABLE IF EXISTS ONLY public."dgmTypeAttributes" DROP CONSTRAINT "dgmTypeAttributes_pkey";
+ALTER TABLE IF EXISTS ONLY public."dgmExpressions" DROP CONSTRAINT "dgmExpressions_pkey";
+ALTER TABLE IF EXISTS ONLY public."dgmEffects" DROP CONSTRAINT "dgmEffects_pkey";
+ALTER TABLE IF EXISTS ONLY public."dgmAttributeTypes" DROP CONSTRAINT "dgmAttributeTypes_pkey";
+ALTER TABLE IF EXISTS ONLY public."dgmAttributeCategories" DROP CONSTRAINT "dgmAttributeCategories_pkey";
+ALTER TABLE IF EXISTS ONLY public."crpNPCDivisions" DROP CONSTRAINT "crpNPCDivisions_pkey";
+ALTER TABLE IF EXISTS ONLY public."crpNPCCorporations" DROP CONSTRAINT "crpNPCCorporations_pkey";
+ALTER TABLE IF EXISTS ONLY public."crpNPCCorporationTrades" DROP CONSTRAINT "crpNPCCorporationTrades_pkey";
+ALTER TABLE IF EXISTS ONLY public."crpNPCCorporationResearchFields" DROP CONSTRAINT "crpNPCCorporationResearchFields_pkey";
+ALTER TABLE IF EXISTS ONLY public."crpNPCCorporationDivisions" DROP CONSTRAINT "crpNPCCorporationDivisions_pkey";
+ALTER TABLE IF EXISTS ONLY public."crpActivities" DROP CONSTRAINT "crpActivities_pkey";
+ALTER TABLE IF EXISTS ONLY public."chrRaces" DROP CONSTRAINT "chrRaces_pkey";
+ALTER TABLE IF EXISTS ONLY public."chrFactions" DROP CONSTRAINT "chrFactions_pkey";
+ALTER TABLE IF EXISTS ONLY public."chrBloodlines" DROP CONSTRAINT "chrBloodlines_pkey";
+ALTER TABLE IF EXISTS ONLY public."chrAttributes" DROP CONSTRAINT "chrAttributes_pkey";
+ALTER TABLE IF EXISTS ONLY public."chrAncestries" DROP CONSTRAINT "chrAncestries_pkey";
+ALTER TABLE IF EXISTS ONLY public."certCerts" DROP CONSTRAINT "certCerts_pkey";
+ALTER TABLE IF EXISTS ONLY public."agtResearchAgents" DROP CONSTRAINT "agtResearchAgents_pkey";
+ALTER TABLE IF EXISTS ONLY public."agtAgents" DROP CONSTRAINT "agtAgents_pkey";
+ALTER TABLE IF EXISTS ONLY public."agtAgentTypes" DROP CONSTRAINT "agtAgentTypes_pkey";
+ALTER TABLE IF EXISTS public."invTraits" ALTER COLUMN "traitID" DROP DEFAULT;
+DROP TABLE IF EXISTS public."warCombatZones";
+DROP TABLE IF EXISTS public."warCombatZoneSystems";
+DROP TABLE IF EXISTS public."trnTranslations";
+DROP TABLE IF EXISTS public."trnTranslationLanguages";
+DROP TABLE IF EXISTS public."trnTranslationColumns";
+DROP TABLE IF EXISTS public."translationTables";
+DROP TABLE IF EXISTS public."staStations";
+DROP TABLE IF EXISTS public."staStationTypes";
+DROP TABLE IF EXISTS public."staServices";
+DROP TABLE IF EXISTS public."staOperations";
+DROP TABLE IF EXISTS public."staOperationServices";
 DROP TABLE IF EXISTS public.skins;
-DROP TABLE IF EXISTS public.skinmaterials;
-DROP TABLE IF EXISTS public.skinlicense;
-DROP TABLE IF EXISTS public.raminstallationtypecontents;
-DROP TABLE IF EXISTS public.ramassemblylinetypes;
-DROP TABLE IF EXISTS public.ramassemblylinetypedetailpergroup;
-DROP TABLE IF EXISTS public.ramassemblylinetypedetailpercategory;
-DROP TABLE IF EXISTS public.ramassemblylinestations;
-DROP TABLE IF EXISTS public.ramactivities;
-DROP TABLE IF EXISTS public.planetschematicstypemap;
-DROP TABLE IF EXISTS public.planetschematicspinmap;
-DROP TABLE IF EXISTS public.planetschematics;
-DROP TABLE IF EXISTS public.mapuniverse;
-DROP TABLE IF EXISTS public.mapsolarsystems;
-DROP TABLE IF EXISTS public.mapsolarsystemjumps;
-DROP TABLE IF EXISTS public.mapregions;
-DROP TABLE IF EXISTS public.mapregionjumps;
-DROP TABLE IF EXISTS public.maplocationwormholeclasses;
-DROP TABLE IF EXISTS public.maplocationscenes;
-DROP TABLE IF EXISTS public.maplandmarks;
-DROP TABLE IF EXISTS public.mapjumps;
-DROP TABLE IF EXISTS public.mapdenormalize;
-DROP TABLE IF EXISTS public.mapconstellations;
-DROP TABLE IF EXISTS public.mapconstellationjumps;
-DROP TABLE IF EXISTS public.mapcelestialstatistics;
-DROP TABLE IF EXISTS public.invvolumes;
-DROP TABLE IF EXISTS public.invuniquenames;
-DROP TABLE IF EXISTS public.invtypes;
-DROP TABLE IF EXISTS public.invtypereactions;
-DROP TABLE IF EXISTS public.invtypematerials;
-DROP SEQUENCE IF EXISTS public.invtraits_traitid_seq;
-DROP TABLE IF EXISTS public.invtraits;
-DROP TABLE IF EXISTS public.invpositions;
-DROP TABLE IF EXISTS public.invnames;
-DROP TABLE IF EXISTS public.invmetatypes;
-DROP TABLE IF EXISTS public.invmetagroups;
-DROP TABLE IF EXISTS public.invmarketgroups;
-DROP TABLE IF EXISTS public.invitems;
-DROP TABLE IF EXISTS public.invgroups;
-DROP TABLE IF EXISTS public.invflags;
-DROP TABLE IF EXISTS public.invcontroltowerresources;
-DROP TABLE IF EXISTS public.invcontroltowerresourcepurposes;
-DROP TABLE IF EXISTS public.invcontrabandtypes;
-DROP TABLE IF EXISTS public.invcategories;
-DROP TABLE IF EXISTS public.industryblueprints;
-DROP TABLE IF EXISTS public.industryactivityskills;
-DROP TABLE IF EXISTS public.industryactivityraces;
-DROP TABLE IF EXISTS public.industryactivityproducts;
-DROP TABLE IF EXISTS public.industryactivityprobabilities;
-DROP TABLE IF EXISTS public.industryactivitymaterials;
-DROP TABLE IF EXISTS public.industryactivity;
-DROP TABLE IF EXISTS public.eveunits;
-DROP TABLE IF EXISTS public.eveicons;
-DROP TABLE IF EXISTS public.evegraphics;
-DROP TABLE IF EXISTS public.dgmtypeeffects;
-DROP TABLE IF EXISTS public.dgmtypeattributes;
-DROP TABLE IF EXISTS public.dgmexpressions;
-DROP TABLE IF EXISTS public.dgmeffects;
-DROP TABLE IF EXISTS public.dgmattributetypes;
-DROP TABLE IF EXISTS public.dgmattributecategories;
-DROP TABLE IF EXISTS public.crpnpcdivisions;
-DROP TABLE IF EXISTS public.crpnpccorporationtrades;
-DROP TABLE IF EXISTS public.crpnpccorporations;
-DROP TABLE IF EXISTS public.crpnpccorporationresearchfields;
-DROP TABLE IF EXISTS public.crpnpccorporationdivisions;
-DROP TABLE IF EXISTS public.crpactivities;
-DROP TABLE IF EXISTS public.chrraces;
-DROP TABLE IF EXISTS public.chrfactions;
-DROP TABLE IF EXISTS public.chrbloodlines;
-DROP TABLE IF EXISTS public.chrattributes;
-DROP TABLE IF EXISTS public.chrancestries;
-DROP TABLE IF EXISTS public.certskills;
-DROP TABLE IF EXISTS public.certmasteries;
-DROP TABLE IF EXISTS public.certcerts;
-DROP TABLE IF EXISTS public.agtresearchagents;
-DROP TABLE IF EXISTS public.agtagenttypes;
-DROP TABLE IF EXISTS public.agtagents;
-
+DROP TABLE IF EXISTS public."skinShip";
+DROP TABLE IF EXISTS public."skinMaterials";
+DROP TABLE IF EXISTS public."skinLicense";
+DROP TABLE IF EXISTS public."ramInstallationTypeContents";
+DROP TABLE IF EXISTS public."ramAssemblyLineTypes";
+DROP TABLE IF EXISTS public."ramAssemblyLineTypeDetailPerGroup";
+DROP TABLE IF EXISTS public."ramAssemblyLineTypeDetailPerCategory";
+DROP TABLE IF EXISTS public."ramAssemblyLineStations";
+DROP TABLE IF EXISTS public."ramActivities";
+DROP TABLE IF EXISTS public."planetSchematicsTypeMap";
+DROP TABLE IF EXISTS public."planetSchematicsPinMap";
+DROP TABLE IF EXISTS public."planetSchematics";
+DROP TABLE IF EXISTS public."mapUniverse";
+DROP TABLE IF EXISTS public."mapSolarSystems";
+DROP TABLE IF EXISTS public."mapSolarSystemJumps";
+DROP TABLE IF EXISTS public."mapRegions";
+DROP TABLE IF EXISTS public."mapRegionJumps";
+DROP TABLE IF EXISTS public."mapLocationWormholeClasses";
+DROP TABLE IF EXISTS public."mapLocationScenes";
+DROP TABLE IF EXISTS public."mapLandmarks";
+DROP TABLE IF EXISTS public."mapJumps";
+DROP TABLE IF EXISTS public."mapDenormalize";
+DROP TABLE IF EXISTS public."mapConstellations";
+DROP TABLE IF EXISTS public."mapConstellationJumps";
+DROP TABLE IF EXISTS public."mapCelestialStatistics";
+DROP TABLE IF EXISTS public."invVolumes";
+DROP TABLE IF EXISTS public."invUniqueNames";
+DROP TABLE IF EXISTS public."invTypes";
+DROP TABLE IF EXISTS public."invTypeReactions";
+DROP TABLE IF EXISTS public."invTypeMaterials";
+DROP SEQUENCE IF EXISTS public."invTraits_traitID_seq";
+DROP TABLE IF EXISTS public."invTraits";
+DROP TABLE IF EXISTS public."invPositions";
+DROP TABLE IF EXISTS public."invNames";
+DROP TABLE IF EXISTS public."invMetaTypes";
+DROP TABLE IF EXISTS public."invMetaGroups";
+DROP TABLE IF EXISTS public."invMarketGroups";
+DROP TABLE IF EXISTS public."invItems";
+DROP TABLE IF EXISTS public."invGroups";
+DROP TABLE IF EXISTS public."invFlags";
+DROP TABLE IF EXISTS public."invControlTowerResources";
+DROP TABLE IF EXISTS public."invControlTowerResourcePurposes";
+DROP TABLE IF EXISTS public."invContrabandTypes";
+DROP TABLE IF EXISTS public."invCategories";
+DROP TABLE IF EXISTS public."industryBlueprints";
+DROP TABLE IF EXISTS public."industryActivitySkills";
+DROP TABLE IF EXISTS public."industryActivityRaces";
+DROP TABLE IF EXISTS public."industryActivityProducts";
+DROP TABLE IF EXISTS public."industryActivityProbabilities";
+DROP TABLE IF EXISTS public."industryActivityMaterials";
+DROP TABLE IF EXISTS public."industryActivity";
+DROP TABLE IF EXISTS public."eveUnits";
+DROP TABLE IF EXISTS public."eveIcons";
+DROP TABLE IF EXISTS public."eveGraphics";
+DROP TABLE IF EXISTS public."dgmTypeEffects";
+DROP TABLE IF EXISTS public."dgmTypeAttributes";
+DROP TABLE IF EXISTS public."dgmExpressions";
+DROP TABLE IF EXISTS public."dgmEffects";
+DROP TABLE IF EXISTS public."dgmAttributeTypes";
+DROP TABLE IF EXISTS public."dgmAttributeCategories";
+DROP TABLE IF EXISTS public."crpNPCDivisions";
+DROP TABLE IF EXISTS public."crpNPCCorporations";
+DROP TABLE IF EXISTS public."crpNPCCorporationTrades";
+DROP TABLE IF EXISTS public."crpNPCCorporationResearchFields";
+DROP TABLE IF EXISTS public."crpNPCCorporationDivisions";
+DROP TABLE IF EXISTS public."crpActivities";
+DROP TABLE IF EXISTS public."chrRaces";
+DROP TABLE IF EXISTS public."chrFactions";
+DROP TABLE IF EXISTS public."chrBloodlines";
+DROP TABLE IF EXISTS public."chrAttributes";
+DROP TABLE IF EXISTS public."chrAncestries";
+DROP TABLE IF EXISTS public."certSkills";
+DROP TABLE IF EXISTS public."certMasteries";
+DROP TABLE IF EXISTS public."certCerts";
+DROP TABLE IF EXISTS public."agtResearchAgents";
+DROP TABLE IF EXISTS public."agtAgents";
+DROP TABLE IF EXISTS public."agtAgentTypes";
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 SET search_path = public, pg_catalog;
-
 SET default_tablespace = '';
-
 SET default_with_oids = false;
 
 --
--- Name: agtagents; Type: TABLE; Schema: public; Owner: -
+-- Name: agtAgentTypes; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE agtagents (
-    agentid integer NOT NULL,
-    divisionid integer,
-    corporationid integer,
-    locationid integer,
+CREATE TABLE "agtAgentTypes" (
+    "agentTypeID" integer NOT NULL,
+    "agentType" character varying(50)
+);
+
+
+--
+-- Name: agtAgents; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE "agtAgents" (
+    "agentID" integer NOT NULL,
+    "divisionID" integer,
+    "corporationID" integer,
+    "locationID" integer,
     level integer,
     quality integer,
-    agenttypeid integer,
-    islocator boolean
+    "agentTypeID" integer,
+    "isLocator" boolean
 );
 
 
 --
--- Name: agtagenttypes; Type: TABLE; Schema: public; Owner: -
+-- Name: agtResearchAgents; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE agtagenttypes (
-    agenttypeid integer NOT NULL,
-    agenttype character varying(50)
+CREATE TABLE "agtResearchAgents" (
+    "agentID" integer NOT NULL,
+    "typeID" integer NOT NULL
 );
 
 
 --
--- Name: agtresearchagents; Type: TABLE; Schema: public; Owner: -
+-- Name: certCerts; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE agtresearchagents (
-    agentid integer NOT NULL,
-    typeid integer NOT NULL
-);
-
-
---
--- Name: certcerts; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE certcerts (
-    certid integer NOT NULL,
+CREATE TABLE "certCerts" (
+    "certID" integer NOT NULL,
     description text,
-    groupid integer,
+    "groupID" integer,
     name character varying(255)
 );
 
 
 --
--- Name: certmasteries; Type: TABLE; Schema: public; Owner: -
+-- Name: certMasteries; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE certmasteries (
-    typeid integer,
-    masterylevel integer,
-    certid integer
+CREATE TABLE "certMasteries" (
+    "typeID" integer,
+    "masteryLevel" integer,
+    "certID" integer
 );
 
 
 --
--- Name: certskills; Type: TABLE; Schema: public; Owner: -
+-- Name: certSkills; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE certskills (
-    certid integer,
-    skillid integer,
-    certlevelint integer,
-    skilllevel integer,
-    certleveltext character varying(8)
+CREATE TABLE "certSkills" (
+    "certID" integer,
+    "skillID" integer,
+    "certLevelInt" integer,
+    "skillLevel" integer,
+    "certLevelText" character varying(8)
 );
 
 
 --
--- Name: chrancestries; Type: TABLE; Schema: public; Owner: -
+-- Name: chrAncestries; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE chrancestries (
-    ancestryid integer NOT NULL,
-    ancestryname character varying(100),
-    bloodlineid integer,
+CREATE TABLE "chrAncestries" (
+    "ancestryID" integer NOT NULL,
+    "ancestryName" character varying(100),
+    "bloodlineID" integer,
     description character varying(1000),
     perception integer,
     willpower integer,
     charisma integer,
     memory integer,
     intelligence integer,
-    iconid integer,
-    shortdescription character varying(500)
+    "iconID" integer,
+    "shortDescription" character varying(500)
 );
 
 
 --
--- Name: chrattributes; Type: TABLE; Schema: public; Owner: -
+-- Name: chrAttributes; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE chrattributes (
-    attributeid integer NOT NULL,
-    attributename character varying(100),
+CREATE TABLE "chrAttributes" (
+    "attributeID" integer NOT NULL,
+    "attributeName" character varying(100),
     description character varying(1000),
-    iconid integer,
-    shortdescription character varying(500),
+    "iconID" integer,
+    "shortDescription" character varying(500),
     notes character varying(500)
 );
 
 
 --
--- Name: chrbloodlines; Type: TABLE; Schema: public; Owner: -
+-- Name: chrBloodlines; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE chrbloodlines (
-    bloodlineid integer NOT NULL,
-    bloodlinename character varying(100),
-    raceid integer,
+CREATE TABLE "chrBloodlines" (
+    "bloodlineID" integer NOT NULL,
+    "bloodlineName" character varying(100),
+    "raceID" integer,
     description character varying(1000),
-    maledescription character varying(1000),
-    femaledescription character varying(1000),
-    shiptypeid integer,
-    corporationid integer,
+    "maleDescription" character varying(1000),
+    "femaleDescription" character varying(1000),
+    "shipTypeID" integer,
+    "corporationID" integer,
     perception integer,
     willpower integer,
     charisma integer,
     memory integer,
     intelligence integer,
-    iconid integer,
-    shortdescription character varying(500),
-    shortmaledescription character varying(500),
-    shortfemaledescription character varying(500)
+    "iconID" integer,
+    "shortDescription" character varying(500),
+    "shortMaleDescription" character varying(500),
+    "shortFemaleDescription" character varying(500)
 );
 
 
 --
--- Name: chrfactions; Type: TABLE; Schema: public; Owner: -
+-- Name: chrFactions; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE chrfactions (
-    factionid integer NOT NULL,
-    factionname character varying(100),
+CREATE TABLE "chrFactions" (
+    "factionID" integer NOT NULL,
+    "factionName" character varying(100),
     description character varying(1000),
-    raceids integer,
-    solarsystemid integer,
-    corporationid integer,
-    sizefactor double precision,
-    stationcount integer,
-    stationsystemcount integer,
-    militiacorporationid integer,
-    iconid integer
+    "raceIDs" integer,
+    "solarSystemID" integer,
+    "corporationID" integer,
+    "sizeFactor" double precision,
+    "stationCount" integer,
+    "stationSystemCount" integer,
+    "militiaCorporationID" integer,
+    "iconID" integer
 );
 
 
 --
--- Name: chrraces; Type: TABLE; Schema: public; Owner: -
+-- Name: chrRaces; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE chrraces (
-    raceid integer NOT NULL,
-    racename character varying(100),
+CREATE TABLE "chrRaces" (
+    "raceID" integer NOT NULL,
+    "raceName" character varying(100),
     description character varying(1000),
-    iconid integer,
-    shortdescription character varying(500)
+    "iconID" integer,
+    "shortDescription" character varying(500)
 );
 
 
 --
--- Name: crpactivities; Type: TABLE; Schema: public; Owner: -
+-- Name: crpActivities; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE crpactivities (
-    activityid integer NOT NULL,
-    activityname character varying(100),
+CREATE TABLE "crpActivities" (
+    "activityID" integer NOT NULL,
+    "activityName" character varying(100),
     description character varying(1000)
 );
 
 
 --
--- Name: crpnpccorporationdivisions; Type: TABLE; Schema: public; Owner: -
+-- Name: crpNPCCorporationDivisions; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE crpnpccorporationdivisions (
-    corporationid integer NOT NULL,
-    divisionid integer NOT NULL,
+CREATE TABLE "crpNPCCorporationDivisions" (
+    "corporationID" integer NOT NULL,
+    "divisionID" integer NOT NULL,
     size integer
 );
 
 
 --
--- Name: crpnpccorporationresearchfields; Type: TABLE; Schema: public; Owner: -
+-- Name: crpNPCCorporationResearchFields; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE crpnpccorporationresearchfields (
-    skillid integer NOT NULL,
-    corporationid integer NOT NULL
+CREATE TABLE "crpNPCCorporationResearchFields" (
+    "skillID" integer NOT NULL,
+    "corporationID" integer NOT NULL
 );
 
 
 --
--- Name: crpnpccorporations; Type: TABLE; Schema: public; Owner: -
+-- Name: crpNPCCorporationTrades; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE crpnpccorporations (
-    corporationid integer NOT NULL,
-    size varchar,
-    extent varchar,
-    solarsystemid integer,
-    investorid1 integer,
-    investorshares1 integer,
-    investorid2 integer,
-    investorshares2 integer,
-    investorid3 integer,
-    investorshares3 integer,
-    investorid4 integer,
-    investorshares4 integer,
-    friendid integer,
-    enemyid integer,
-    publicshares integer,
-    initialprice integer,
-    minsecurity double precision,
+CREATE TABLE "crpNPCCorporationTrades" (
+    "corporationID" integer NOT NULL,
+    "typeID" integer NOT NULL
+);
+
+
+--
+-- Name: crpNPCCorporations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE "crpNPCCorporations" (
+    "corporationID" integer NOT NULL,
+    size character(1),
+    extent character(1),
+    "solarSystemID" integer,
+    "investorID1" integer,
+    "investorShares1" integer,
+    "investorID2" integer,
+    "investorShares2" integer,
+    "investorID3" integer,
+    "investorShares3" integer,
+    "investorID4" integer,
+    "investorShares4" integer,
+    "friendID" integer,
+    "enemyID" integer,
+    "publicShares" integer,
+    "initialPrice" integer,
+    "minSecurity" double precision,
     scattered boolean,
     fringe integer,
     corridor integer,
     hub integer,
     border integer,
-    factionid integer,
-    sizefactor double precision,
-    stationcount integer,
-    stationsystemcount integer,
-    description text,
-    iconid integer
+    "factionID" integer,
+    "sizeFactor" double precision,
+    "stationCount" integer,
+    "stationSystemCount" integer,
+    description character varying(4000),
+    "iconID" integer
 );
 
 
 --
--- Name: crpnpccorporationtrades; Type: TABLE; Schema: public; Owner: -
+-- Name: crpNPCDivisions; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE crpnpccorporationtrades (
-    corporationid integer NOT NULL,
-    typeid integer NOT NULL
-);
-
-
---
--- Name: crpnpcdivisions; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE crpnpcdivisions (
-    divisionid integer NOT NULL,
-    divisionname character varying(100),
+CREATE TABLE "crpNPCDivisions" (
+    "divisionID" integer NOT NULL,
+    "divisionName" character varying(100),
     description character varying(1000),
-    leadertype character varying(100)
+    "leaderType" character varying(100)
 );
 
 
 --
--- Name: dgmattributecategories; Type: TABLE; Schema: public; Owner: -
+-- Name: dgmAttributeCategories; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE dgmattributecategories (
-    categoryid integer NOT NULL,
-    categoryname character varying(50),
-    categorydescription character varying(200)
+CREATE TABLE "dgmAttributeCategories" (
+    "categoryID" integer NOT NULL,
+    "categoryName" character varying(50),
+    "categoryDescription" character varying(200)
 );
 
 
 --
--- Name: dgmattributetypes; Type: TABLE; Schema: public; Owner: -
+-- Name: dgmAttributeTypes; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE dgmattributetypes (
-    attributeid integer NOT NULL,
-    attributename character varying(100),
+CREATE TABLE "dgmAttributeTypes" (
+    "attributeID" integer NOT NULL,
+    "attributeName" character varying(100),
     description character varying(1000),
-    iconid integer,
-    defaultvalue double precision,
+    "iconID" integer,
+    "defaultValue" double precision,
     published boolean,
-    displayname character varying(150),
-    unitid integer,
+    "displayName" character varying(150),
+    "unitID" integer,
     stackable boolean,
-    highisgood boolean,
-    categoryid integer
+    "highIsGood" boolean,
+    "categoryID" integer
 );
 
 
 --
--- Name: dgmeffects; Type: TABLE; Schema: public; Owner: -
+-- Name: dgmEffects; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE dgmeffects (
-    effectid integer NOT NULL,
-    effectname character varying(400),
-    effectcategory integer,
-    preexpression integer,
-    postexpression integer,
+CREATE TABLE "dgmEffects" (
+    "effectID" integer NOT NULL,
+    "effectName" character varying(400),
+    "effectCategory" integer,
+    "preExpression" integer,
+    "postExpression" integer,
     description character varying(1000),
     guid character varying(60),
-    iconid integer,
-    isoffensive boolean,
-    isassistance boolean,
-    durationattributeid integer,
-    trackingspeedattributeid integer,
-    dischargeattributeid integer,
-    rangeattributeid integer,
-    falloffattributeid integer,
-    disallowautorepeat boolean,
+    "iconID" integer,
+    "isOffensive" boolean,
+    "isAssistance" boolean,
+    "durationAttributeID" integer,
+    "trackingSpeedAttributeID" integer,
+    "dischargeAttributeID" integer,
+    "rangeAttributeID" integer,
+    "falloffAttributeID" integer,
+    "disallowAutoRepeat" boolean,
     published boolean,
-    displayname character varying(100),
-    iswarpsafe boolean,
-    rangechance boolean,
-    electronicchance boolean,
-    propulsionchance boolean,
+    "displayName" character varying(100),
+    "isWarpSafe" boolean,
+    "rangeChance" boolean,
+    "electronicChance" boolean,
+    "propulsionChance" boolean,
     distribution integer,
-    sfxname character varying(20),
-    npcusagechanceattributeid integer,
-    npcactivationchanceattributeid integer,
-    fittingusagechanceattributeid integer,
-    modifierinfo text
+    "sfxName" character varying(20),
+    "npcUsageChanceAttributeID" integer,
+    "npcActivationChanceAttributeID" integer,
+    "fittingUsageChanceAttributeID" integer,
+    "modifierInfo" text
 );
 
 
 --
--- Name: dgmexpressions; Type: TABLE; Schema: public; Owner: -
+-- Name: dgmExpressions; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE dgmexpressions (
-    expressionid integer NOT NULL,
-    operandid integer,
+CREATE TABLE "dgmExpressions" (
+    "expressionID" integer NOT NULL,
+    "operandID" integer,
     arg1 integer,
     arg2 integer,
-    expressionvalue character varying(100),
+    "expressionValue" character varying(100),
     description character varying(1000),
-    expressionname character varying(500),
-    expressiontypeid integer,
-    expressiongroupid integer,
-    expressionattributeid integer
+    "expressionName" character varying(500),
+    "expressionTypeID" integer,
+    "expressionGroupID" integer,
+    "expressionAttributeID" integer
 );
 
 
 --
--- Name: dgmtypeattributes; Type: TABLE; Schema: public; Owner: -
+-- Name: dgmTypeAttributes; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE dgmtypeattributes (
-    typeid integer NOT NULL,
-    attributeid integer NOT NULL,
-    valueint integer,
-    valuefloat double precision
+CREATE TABLE "dgmTypeAttributes" (
+    "typeID" integer NOT NULL,
+    "attributeID" integer NOT NULL,
+    "valueInt" integer,
+    "valueFloat" double precision
 );
 
 
 --
--- Name: dgmtypeeffects; Type: TABLE; Schema: public; Owner: -
+-- Name: dgmTypeEffects; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE dgmtypeeffects (
-    typeid integer NOT NULL,
-    effectid integer NOT NULL,
-    isdefault boolean
+CREATE TABLE "dgmTypeEffects" (
+    "typeID" integer NOT NULL,
+    "effectID" integer NOT NULL,
+    "isDefault" boolean
 );
 
 
 --
--- Name: evegraphics; Type: TABLE; Schema: public; Owner: -
+-- Name: eveGraphics; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE evegraphics (
-    graphicid integer NOT NULL,
-    soffactionname character varying(100),
-    graphicfile character varying(100),
-    sofhullname character varying(100),
-    sofracename character varying(100),
+CREATE TABLE "eveGraphics" (
+    "graphicID" integer NOT NULL,
+    "sofFactionName" character varying(100),
+    "graphicFile" character varying(100),
+    "sofHullName" character varying(100),
+    "sofRaceName" character varying(100),
     description text
 );
 
 
 --
--- Name: eveicons; Type: TABLE; Schema: public; Owner: -
+-- Name: eveIcons; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE eveicons (
-    iconid integer NOT NULL,
-    iconfile character varying(500),
+CREATE TABLE "eveIcons" (
+    "iconID" integer NOT NULL,
+    "iconFile" character varying(500),
     description text
 );
 
 
 --
--- Name: eveunits; Type: TABLE; Schema: public; Owner: -
+-- Name: eveUnits; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE eveunits (
-    unitid integer NOT NULL,
-    unitname character varying(100),
-    displayname character varying(50),
+CREATE TABLE "eveUnits" (
+    "unitID" integer NOT NULL,
+    "unitName" character varying(100),
+    "displayName" character varying(50),
     description character varying(1000)
 );
 
 
 --
--- Name: industryactivity; Type: TABLE; Schema: public; Owner: -
+-- Name: industryActivity; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE industryactivity (
-    typeid integer NOT NULL,
-    activityid integer NOT NULL,
+CREATE TABLE "industryActivity" (
+    "typeID" integer NOT NULL,
+    "activityID" integer NOT NULL,
     "time" integer
 );
 
 
 --
--- Name: industryactivitymaterials; Type: TABLE; Schema: public; Owner: -
+-- Name: industryActivityMaterials; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE industryactivitymaterials (
-    typeid integer,
-    activityid integer,
-    materialtypeid integer,
+CREATE TABLE "industryActivityMaterials" (
+    "typeID" integer,
+    "activityID" integer,
+    "materialTypeID" integer,
     quantity integer
 );
 
 
 --
--- Name: industryactivityprobabilities; Type: TABLE; Schema: public; Owner: -
+-- Name: industryActivityProbabilities; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE industryactivityprobabilities (
-    typeid integer,
-    activityid integer,
-    producttypeid integer,
+CREATE TABLE "industryActivityProbabilities" (
+    "typeID" integer,
+    "activityID" integer,
+    "productTypeID" integer,
     probability numeric(3,2)
 );
 
 
 --
--- Name: industryactivityproducts; Type: TABLE; Schema: public; Owner: -
+-- Name: industryActivityProducts; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE industryactivityproducts (
-    typeid integer,
-    activityid integer,
-    producttypeid integer,
+CREATE TABLE "industryActivityProducts" (
+    "typeID" integer,
+    "activityID" integer,
+    "productTypeID" integer,
     quantity integer
 );
 
 
 --
--- Name: industryactivityraces; Type: TABLE; Schema: public; Owner: -
+-- Name: industryActivityRaces; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE industryactivityraces (
-    typeid integer,
-    activityid integer,
-    producttypeid integer,
-    raceid integer
+CREATE TABLE "industryActivityRaces" (
+    "typeID" integer,
+    "activityID" integer,
+    "productTypeID" integer,
+    "raceID" integer
 );
 
 
 --
--- Name: industryactivityskills; Type: TABLE; Schema: public; Owner: -
+-- Name: industryActivitySkills; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE industryactivityskills (
-    typeid integer,
-    activityid integer,
-    skillid integer,
+CREATE TABLE "industryActivitySkills" (
+    "typeID" integer,
+    "activityID" integer,
+    "skillID" integer,
     level integer
 );
 
 
 --
--- Name: industryblueprints; Type: TABLE; Schema: public; Owner: -
+-- Name: industryBlueprints; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE industryblueprints (
-    typeid integer NOT NULL,
-    maxproductionlimit integer
+CREATE TABLE "industryBlueprints" (
+    "typeID" integer NOT NULL,
+    "maxProductionLimit" integer
 );
 
 
 --
--- Name: invcategories; Type: TABLE; Schema: public; Owner: -
+-- Name: invCategories; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE invcategories (
-    categoryid integer NOT NULL,
-    categoryname character varying(100),
-    iconid integer,
+CREATE TABLE "invCategories" (
+    "categoryID" integer NOT NULL,
+    "categoryName" character varying(100),
+    "iconID" integer,
     published boolean
 );
 
 
 --
--- Name: invcontrabandtypes; Type: TABLE; Schema: public; Owner: -
+-- Name: invContrabandTypes; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE invcontrabandtypes (
-    factionid integer NOT NULL,
-    typeid integer NOT NULL,
-    standingloss double precision,
-    confiscateminsec double precision,
-    finebyvalue double precision,
-    attackminsec double precision
+CREATE TABLE "invContrabandTypes" (
+    "factionID" integer NOT NULL,
+    "typeID" integer NOT NULL,
+    "standingLoss" double precision,
+    "confiscateMinSec" double precision,
+    "fineByValue" double precision,
+    "attackMinSec" double precision
 );
 
 
 --
--- Name: invcontroltowerresourcepurposes; Type: TABLE; Schema: public; Owner: -
+-- Name: invControlTowerResourcePurposes; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE invcontroltowerresourcepurposes (
+CREATE TABLE "invControlTowerResourcePurposes" (
     purpose integer NOT NULL,
-    purposetext character varying(100)
+    "purposeText" character varying(100)
 );
 
 
 --
--- Name: invcontroltowerresources; Type: TABLE; Schema: public; Owner: -
+-- Name: invControlTowerResources; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE invcontroltowerresources (
-    controltowertypeid integer NOT NULL,
-    resourcetypeid integer NOT NULL,
+CREATE TABLE "invControlTowerResources" (
+    "controlTowerTypeID" integer NOT NULL,
+    "resourceTypeID" integer NOT NULL,
     purpose integer,
     quantity integer,
-    minsecuritylevel double precision,
-    factionid integer
+    "minSecurityLevel" double precision,
+    "factionID" integer
 );
 
 
 --
--- Name: invflags; Type: TABLE; Schema: public; Owner: -
+-- Name: invFlags; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE invflags (
-    flagid integer NOT NULL,
-    flagname character varying(200),
-    flagtext character varying(100),
-    orderid integer
+CREATE TABLE "invFlags" (
+    "flagID" integer NOT NULL,
+    "flagName" character varying(200),
+    "flagText" character varying(100),
+    "orderID" integer
 );
 
 
 --
--- Name: invgroups; Type: TABLE; Schema: public; Owner: -
+-- Name: invGroups; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE invgroups (
-    groupid integer NOT NULL,
-    categoryid integer,
-    groupname character varying(100),
-    iconid integer,
-    usebaseprice boolean,
+CREATE TABLE "invGroups" (
+    "groupID" integer NOT NULL,
+    "categoryID" integer,
+    "groupName" character varying(100),
+    "iconID" integer,
+    "useBasePrice" boolean,
     anchored boolean,
     anchorable boolean,
-    fittablenonsingleton boolean,
+    "fittableNonSingleton" boolean,
     published boolean
 );
 
 
 --
--- Name: invitems; Type: TABLE; Schema: public; Owner: -
+-- Name: invItems; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE invitems (
-    itemid integer NOT NULL,
-    typeid integer NOT NULL,
-    ownerid integer NOT NULL,
-    locationid integer NOT NULL,
-    flagid integer NOT NULL,
+CREATE TABLE "invItems" (
+    "itemID" integer NOT NULL,
+    "typeID" integer NOT NULL,
+    "ownerID" integer NOT NULL,
+    "locationID" integer NOT NULL,
+    "flagID" integer NOT NULL,
     quantity integer NOT NULL
 );
 
 
 --
--- Name: invmarketgroups; Type: TABLE; Schema: public; Owner: -
+-- Name: invMarketGroups; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE invmarketgroups (
-    marketgroupid integer NOT NULL,
-    parentgroupid integer,
-    marketgroupname character varying(100),
+CREATE TABLE "invMarketGroups" (
+    "marketGroupID" integer NOT NULL,
+    "parentGroupID" integer,
+    "marketGroupName" character varying(100),
     description character varying(3000),
-    iconid integer,
-    hastypes boolean
+    "iconID" integer,
+    "hasTypes" boolean
 );
 
 
 --
--- Name: invmetagroups; Type: TABLE; Schema: public; Owner: -
+-- Name: invMetaGroups; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE invmetagroups (
-    metagroupid integer NOT NULL,
-    metagroupname character varying(100),
+CREATE TABLE "invMetaGroups" (
+    "metaGroupID" integer NOT NULL,
+    "metaGroupName" character varying(100),
     description character varying(1000),
-    iconid integer
+    "iconID" integer
 );
 
 
 --
--- Name: invmetatypes; Type: TABLE; Schema: public; Owner: -
+-- Name: invMetaTypes; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE invmetatypes (
-    typeid integer NOT NULL,
-    parenttypeid integer,
-    metagroupid integer
+CREATE TABLE "invMetaTypes" (
+    "typeID" integer NOT NULL,
+    "parentTypeID" integer,
+    "metaGroupID" integer
 );
 
 
 --
--- Name: invnames; Type: TABLE; Schema: public; Owner: -
+-- Name: invNames; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE invnames (
-    itemid integer NOT NULL,
-    itemname character varying(200) NOT NULL
+CREATE TABLE "invNames" (
+    "itemID" integer NOT NULL,
+    "itemName" character varying(200) NOT NULL
 );
 
 
 --
--- Name: invpositions; Type: TABLE; Schema: public; Owner: -
+-- Name: invPositions; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE invpositions (
-    itemid integer NOT NULL,
+CREATE TABLE "invPositions" (
+    "itemID" integer NOT NULL,
     x double precision NOT NULL,
     y double precision NOT NULL,
     z double precision NOT NULL,
@@ -872,24 +865,24 @@ CREATE TABLE invpositions (
 
 
 --
--- Name: invtraits; Type: TABLE; Schema: public; Owner: -
+-- Name: invTraits; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE invtraits (
-    traitid integer NOT NULL,
-    typeid integer,
-    skillid integer,
+CREATE TABLE "invTraits" (
+    "traitID" integer NOT NULL,
+    "typeID" integer,
+    "skillID" integer,
     bonus double precision,
-    bonustext text,
-    unitid integer
+    "bonusText" text,
+    "unitID" integer
 );
 
 
 --
--- Name: invtraits_traitid_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: invTraits_traitID_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE invtraits_traitid_seq
+CREATE SEQUENCE "invTraits_traitID_seq"
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -898,100 +891,100 @@ CREATE SEQUENCE invtraits_traitid_seq
 
 
 --
--- Name: invtraits_traitid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: invTraits_traitID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE invtraits_traitid_seq OWNED BY invtraits.traitid;
+ALTER SEQUENCE "invTraits_traitID_seq" OWNED BY "invTraits"."traitID";
 
 
 --
--- Name: invtypematerials; Type: TABLE; Schema: public; Owner: -
+-- Name: invTypeMaterials; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE invtypematerials (
-    typeid integer NOT NULL,
-    materialtypeid integer NOT NULL,
+CREATE TABLE "invTypeMaterials" (
+    "typeID" integer NOT NULL,
+    "materialTypeID" integer NOT NULL,
     quantity integer NOT NULL
 );
 
 
 --
--- Name: invtypereactions; Type: TABLE; Schema: public; Owner: -
+-- Name: invTypeReactions; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE invtypereactions (
-    reactiontypeid integer NOT NULL,
+CREATE TABLE "invTypeReactions" (
+    "reactionTypeID" integer NOT NULL,
     input boolean NOT NULL,
-    typeid integer NOT NULL,
+    "typeID" integer NOT NULL,
     quantity integer
 );
 
 
 --
--- Name: invtypes; Type: TABLE; Schema: public; Owner: -
+-- Name: invTypes; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE invtypes (
-    typeid integer NOT NULL,
-    groupid integer,
-    typename character varying(100),
+CREATE TABLE "invTypes" (
+    "typeID" integer NOT NULL,
+    "groupID" integer,
+    "typeName" character varying(100),
     description text,
     mass double precision,
     volume double precision,
     capacity double precision,
-    portionsize integer,
-    raceid integer,
-    baseprice numeric(19,4),
+    "portionSize" integer,
+    "raceID" integer,
+    "basePrice" numeric(19,4),
     published boolean,
-    marketgroupid integer,
-    iconid integer,
-    soundid integer,
-    graphicid integer
+    "marketGroupID" integer,
+    "iconID" integer,
+    "soundID" integer,
+    "graphicID" integer
 );
 
 
 --
--- Name: invuniquenames; Type: TABLE; Schema: public; Owner: -
+-- Name: invUniqueNames; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE invuniquenames (
-    itemid integer NOT NULL,
-    itemname character varying(200) NOT NULL,
-    groupid integer
+CREATE TABLE "invUniqueNames" (
+    "itemID" integer NOT NULL,
+    "itemName" character varying(200) NOT NULL,
+    "groupID" integer
 );
 
 
 --
--- Name: invvolumes; Type: TABLE; Schema: public; Owner: -
+-- Name: invVolumes; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE invvolumes (
-    typeid integer NOT NULL,
+CREATE TABLE "invVolumes" (
+    "typeID" integer NOT NULL,
     volume integer
 );
 
 
 --
--- Name: mapcelestialstatistics; Type: TABLE; Schema: public; Owner: -
+-- Name: mapCelestialStatistics; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE mapcelestialstatistics (
-    celestialid integer NOT NULL,
+CREATE TABLE "mapCelestialStatistics" (
+    "celestialID" integer NOT NULL,
     temperature double precision,
-    spectralclass character varying(10),
+    "spectralClass" character varying(10),
     luminosity double precision,
     age double precision,
     life double precision,
-    orbitradius double precision,
+    "orbitRadius" double precision,
     eccentricity double precision,
-    massdust double precision,
-    massgas double precision,
+    "massDust" double precision,
+    "massGas" double precision,
     fragmented boolean,
     density double precision,
-    surfacegravity double precision,
-    escapevelocity double precision,
-    orbitperiod double precision,
-    rotationrate double precision,
+    "surfaceGravity" double precision,
+    "escapeVelocity" double precision,
+    "orbitPeriod" double precision,
+    "rotationRate" double precision,
     locked boolean,
     pressure double precision,
     radius double precision,
@@ -1000,171 +993,171 @@ CREATE TABLE mapcelestialstatistics (
 
 
 --
--- Name: mapconstellationjumps; Type: TABLE; Schema: public; Owner: -
+-- Name: mapConstellationJumps; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE mapconstellationjumps (
-    fromregionid integer,
-    fromconstellationid integer NOT NULL,
-    toconstellationid integer NOT NULL,
-    toregionid integer
+CREATE TABLE "mapConstellationJumps" (
+    "fromRegionID" integer,
+    "fromConstellationID" integer NOT NULL,
+    "toConstellationID" integer NOT NULL,
+    "toRegionID" integer
 );
 
 
 --
--- Name: mapconstellations; Type: TABLE; Schema: public; Owner: -
+-- Name: mapConstellations; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE mapconstellations (
-    regionid integer,
-    constellationid integer NOT NULL,
-    constellationname character varying(100),
+CREATE TABLE "mapConstellations" (
+    "regionID" integer,
+    "constellationID" integer NOT NULL,
+    "constellationName" character varying(100),
     x double precision,
     y double precision,
     z double precision,
     "xMin" double precision,
     "xMax" double precision,
-    ymin double precision,
-    ymax double precision,
-    zmin double precision,
-    zmax double precision,
-    factionid integer,
+    "yMin" double precision,
+    "yMax" double precision,
+    "zMin" double precision,
+    "zMax" double precision,
+    "factionID" integer,
     radius double precision
 );
 
 
 --
--- Name: mapdenormalize; Type: TABLE; Schema: public; Owner: -
+-- Name: mapDenormalize; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE mapdenormalize (
-    itemid integer NOT NULL,
-    typeid integer,
-    groupid integer,
-    solarsystemid integer,
-    constellationid integer,
-    regionid integer,
-    orbitid integer,
+CREATE TABLE "mapDenormalize" (
+    "itemID" integer NOT NULL,
+    "typeID" integer,
+    "groupID" integer,
+    "solarSystemID" integer,
+    "constellationID" integer,
+    "regionID" integer,
+    "orbitID" integer,
     x double precision,
     y double precision,
     z double precision,
     radius double precision,
-    itemname character varying(100),
+    "itemName" character varying(100),
     security double precision,
-    celestialindex integer,
-    orbitindex integer
+    "celestialIndex" integer,
+    "orbitIndex" integer
 );
 
 
 --
--- Name: mapjumps; Type: TABLE; Schema: public; Owner: -
+-- Name: mapJumps; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE mapjumps (
-    stargateid integer NOT NULL,
-    destinationid integer
+CREATE TABLE "mapJumps" (
+    "stargateID" integer NOT NULL,
+    "destinationID" integer
 );
 
 
 --
--- Name: maplandmarks; Type: TABLE; Schema: public; Owner: -
+-- Name: mapLandmarks; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE maplandmarks (
-    landmarkid integer NOT NULL,
-    landmarkname character varying(100),
+CREATE TABLE "mapLandmarks" (
+    "landmarkID" integer NOT NULL,
+    "landmarkName" character varying(100),
     description text,
-    locationid integer,
+    "locationID" integer,
     x double precision,
     y double precision,
     z double precision,
-    iconid integer
+    "iconID" integer
 );
 
 
 --
--- Name: maplocationscenes; Type: TABLE; Schema: public; Owner: -
+-- Name: mapLocationScenes; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE maplocationscenes (
-    locationid integer NOT NULL,
-    graphicid integer
+CREATE TABLE "mapLocationScenes" (
+    "locationID" integer NOT NULL,
+    "graphicID" integer
 );
 
 
 --
--- Name: maplocationwormholeclasses; Type: TABLE; Schema: public; Owner: -
+-- Name: mapLocationWormholeClasses; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE maplocationwormholeclasses (
-    locationid integer NOT NULL,
-    wormholeclassid integer
+CREATE TABLE "mapLocationWormholeClasses" (
+    "locationID" integer NOT NULL,
+    "wormholeClassID" integer
 );
 
 
 --
--- Name: mapregionjumps; Type: TABLE; Schema: public; Owner: -
+-- Name: mapRegionJumps; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE mapregionjumps (
-    fromregionid integer NOT NULL,
-    toregionid integer NOT NULL
+CREATE TABLE "mapRegionJumps" (
+    "fromRegionID" integer NOT NULL,
+    "toRegionID" integer NOT NULL
 );
 
 
 --
--- Name: mapregions; Type: TABLE; Schema: public; Owner: -
+-- Name: mapRegions; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE mapregions (
-    regionid integer NOT NULL,
-    regionname character varying(100),
+CREATE TABLE "mapRegions" (
+    "regionID" integer NOT NULL,
+    "regionName" character varying(100),
     x double precision,
     y double precision,
     z double precision,
     "xMin" double precision,
     "xMax" double precision,
-    ymin double precision,
-    ymax double precision,
-    zmin double precision,
-    zmax double precision,
-    factionid integer,
+    "yMin" double precision,
+    "yMax" double precision,
+    "zMin" double precision,
+    "zMax" double precision,
+    "factionID" integer,
     radius double precision
 );
 
 
 --
--- Name: mapsolarsystemjumps; Type: TABLE; Schema: public; Owner: -
+-- Name: mapSolarSystemJumps; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE mapsolarsystemjumps (
-    fromregionid integer,
-    fromconstellationid integer,
-    fromsolarsystemid integer NOT NULL,
-    tosolarsystemid integer NOT NULL,
-    toconstellationid integer,
-    toregionid integer
+CREATE TABLE "mapSolarSystemJumps" (
+    "fromRegionID" integer,
+    "fromConstellationID" integer,
+    "fromSolarSystemID" integer NOT NULL,
+    "toSolarSystemID" integer NOT NULL,
+    "toConstellationID" integer,
+    "toRegionID" integer
 );
 
 
 --
--- Name: mapsolarsystems; Type: TABLE; Schema: public; Owner: -
+-- Name: mapSolarSystems; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE mapsolarsystems (
-    regionid integer,
-    constellationid integer,
-    solarsystemid integer NOT NULL,
-    solarsystemname character varying(100),
+CREATE TABLE "mapSolarSystems" (
+    "regionID" integer,
+    "constellationID" integer,
+    "solarSystemID" integer NOT NULL,
+    "solarSystemName" character varying(100),
     x double precision,
     y double precision,
     z double precision,
     "xMin" double precision,
     "xMax" double precision,
-    ymin double precision,
-    ymax double precision,
-    zmin double precision,
-    zmax double precision,
+    "yMin" double precision,
+    "yMax" double precision,
+    "zMin" double precision,
+    "zMax" double precision,
     luminosity double precision,
     border boolean,
     fringe boolean,
@@ -1174,167 +1167,177 @@ CREATE TABLE mapsolarsystems (
     regional boolean,
     constellation boolean,
     security double precision,
-    factionid integer,
+    "factionID" integer,
     radius double precision,
-    suntypeid integer,
-    securityclass character varying(2)
+    "sunTypeID" integer,
+    "securityClass" character varying(2)
 );
 
 
 --
--- Name: mapuniverse; Type: TABLE; Schema: public; Owner: -
+-- Name: mapUniverse; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE mapuniverse (
-    universeid integer NOT NULL,
-    universename character varying(100),
+CREATE TABLE "mapUniverse" (
+    "universeID" integer NOT NULL,
+    "universeName" character varying(100),
     x double precision,
     y double precision,
     z double precision,
-    x_min double precision,
-    x_max double precision,
-    y_min double precision,
-    y_max double precision,
-    z_min double precision,
-    z_max double precision,
+    "xMin" double precision,
+    "xMax" double precision,
+    "yMin" double precision,
+    "yMax" double precision,
+    "zMin" double precision,
+    "zMax" double precision,
     radius double precision
 );
 
 
 --
--- Name: planetschematics; Type: TABLE; Schema: public; Owner: -
+-- Name: planetSchematics; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE planetschematics (
-    schematicid integer NOT NULL,
-    schematicname character varying(255),
-    cycletime integer
+CREATE TABLE "planetSchematics" (
+    "schematicID" integer NOT NULL,
+    "schematicName" character varying(255),
+    "cycleTime" integer
 );
 
 
 --
--- Name: planetschematicspinmap; Type: TABLE; Schema: public; Owner: -
+-- Name: planetSchematicsPinMap; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE planetschematicspinmap (
-    schematicid integer NOT NULL,
-    pintypeid integer NOT NULL
+CREATE TABLE "planetSchematicsPinMap" (
+    "schematicID" integer NOT NULL,
+    "pinTypeID" integer NOT NULL
 );
 
 
 --
--- Name: planetschematicstypemap; Type: TABLE; Schema: public; Owner: -
+-- Name: planetSchematicsTypeMap; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE planetschematicstypemap (
-    schematicid integer NOT NULL,
-    typeid integer NOT NULL,
+CREATE TABLE "planetSchematicsTypeMap" (
+    "schematicID" integer NOT NULL,
+    "typeID" integer NOT NULL,
     quantity integer,
-    isinput boolean
+    "isInput" boolean
 );
 
 
 --
--- Name: ramactivities; Type: TABLE; Schema: public; Owner: -
+-- Name: ramActivities; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE ramactivities (
-    activityid integer NOT NULL,
-    activityname character varying(100),
-    iconno character varying(5),
+CREATE TABLE "ramActivities" (
+    "activityID" integer NOT NULL,
+    "activityName" character varying(100),
+    "iconNo" character varying(5),
     description character varying(1000),
     published boolean
 );
 
 
 --
--- Name: ramassemblylinestations; Type: TABLE; Schema: public; Owner: -
+-- Name: ramAssemblyLineStations; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE ramassemblylinestations (
-    stationid integer NOT NULL,
-    assemblylinetypeid integer NOT NULL,
+CREATE TABLE "ramAssemblyLineStations" (
+    "stationID" integer NOT NULL,
+    "assemblyLineTypeID" integer NOT NULL,
     quantity integer,
-    stationtypeid integer,
-    ownerid integer,
-    solarsystemid integer,
-    regionid integer
+    "stationTypeID" integer,
+    "ownerID" integer,
+    "solarSystemID" integer,
+    "regionID" integer
 );
 
 
 --
--- Name: ramassemblylinetypedetailpercategory; Type: TABLE; Schema: public; Owner: -
+-- Name: ramAssemblyLineTypeDetailPerCategory; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE ramassemblylinetypedetailpercategory (
-    assemblylinetypeid integer NOT NULL,
-    categoryid integer NOT NULL,
-    timemultiplier double precision,
-    materialmultiplier double precision,
-    costmultiplier double precision
+CREATE TABLE "ramAssemblyLineTypeDetailPerCategory" (
+    "assemblyLineTypeID" integer NOT NULL,
+    "categoryID" integer NOT NULL,
+    "timeMultiplier" double precision,
+    "materialMultiplier" double precision,
+    "costMultiplier" double precision
 );
 
 
 --
--- Name: ramassemblylinetypedetailpergroup; Type: TABLE; Schema: public; Owner: -
+-- Name: ramAssemblyLineTypeDetailPerGroup; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE ramassemblylinetypedetailpergroup (
-    assemblylinetypeid integer NOT NULL,
-    groupid integer NOT NULL,
-    timemultiplier double precision,
-    materialmultiplier double precision,
-    costmultiplier double precision
+CREATE TABLE "ramAssemblyLineTypeDetailPerGroup" (
+    "assemblyLineTypeID" integer NOT NULL,
+    "groupID" integer NOT NULL,
+    "timeMultiplier" double precision,
+    "materialMultiplier" double precision,
+    "costMultiplier" double precision
 );
 
 
 --
--- Name: ramassemblylinetypes; Type: TABLE; Schema: public; Owner: -
+-- Name: ramAssemblyLineTypes; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE ramassemblylinetypes (
-    assemblylinetypeid integer NOT NULL,
-    assemblylinetypename character varying(100),
+CREATE TABLE "ramAssemblyLineTypes" (
+    "assemblyLineTypeID" integer NOT NULL,
+    "assemblyLineTypeName" character varying(100),
     description character varying(1000),
-    basetimemultiplier double precision,
-    basematerialmultiplier double precision,
-    basecostmultiplier double precision,
+    "baseTimeMultiplier" double precision,
+    "baseMaterialMultiplier" double precision,
+    "baseCostMultiplier" double precision,
     volume double precision,
-    activityid integer,
-    mincostperhour double precision
+    "activityID" integer,
+    "minCostPerHour" double precision
 );
 
 
 --
--- Name: raminstallationtypecontents; Type: TABLE; Schema: public; Owner: -
+-- Name: ramInstallationTypeContents; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE raminstallationtypecontents (
-    installationtypeid integer NOT NULL,
-    assemblylinetypeid integer NOT NULL,
+CREATE TABLE "ramInstallationTypeContents" (
+    "installationTypeID" integer NOT NULL,
+    "assemblyLineTypeID" integer NOT NULL,
     quantity integer
 );
 
 
 --
--- Name: skinlicense; Type: TABLE; Schema: public; Owner: -
+-- Name: skinLicense; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE skinlicense (
-    licensetypeid integer NOT NULL,
+CREATE TABLE "skinLicense" (
+    "licenseTypeID" integer NOT NULL,
     duration integer,
-    skinid integer
+    "skinID" integer
 );
 
 
 --
--- Name: skinmaterials; Type: TABLE; Schema: public; Owner: -
+-- Name: skinMaterials; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE skinmaterials (
-    skinmaterialid integer NOT NULL,
-    displaynameid integer,
-    materialsetid integer
+CREATE TABLE "skinMaterials" (
+    "skinMaterialID" integer NOT NULL,
+    "displayNameID" integer,
+    "materialSetID" integer
+);
+
+
+--
+-- Name: skinShip; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE "skinShip" (
+    "skinID" integer,
+    "typeID" integer
 );
 
 
@@ -1343,731 +1346,721 @@ CREATE TABLE skinmaterials (
 --
 
 CREATE TABLE skins (
-    skinid integer NOT NULL,
-    internalname character varying(70),
-    skinmaterialid integer
+    "skinID" integer NOT NULL,
+    "internalName" character varying(70),
+    "skinMaterialID" integer
 );
 
 
 --
--- Name: skinship; Type: TABLE; Schema: public; Owner: -
+-- Name: staOperationServices; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE skinship (
-    skinid integer,
-    typeid integer
+CREATE TABLE "staOperationServices" (
+    "operationID" integer NOT NULL,
+    "serviceID" integer NOT NULL
 );
 
 
 --
--- Name: staoperations; Type: TABLE; Schema: public; Owner: -
+-- Name: staOperations; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE staoperations (
-    activityid integer,
-    operationid integer NOT NULL,
-    operationname character varying(100),
+CREATE TABLE "staOperations" (
+    "activityID" integer,
+    "operationID" integer NOT NULL,
+    "operationName" character varying(100),
     description character varying(1000),
     fringe integer,
     corridor integer,
     hub integer,
     border integer,
     ratio integer,
-    caldaristationtypeid integer,
-    minmatarstationtypeid integer,
-    amarrstationtypeid integer,
-    gallentestationtypeid integer,
-    jovestationtypeid integer
+    "caldariStationTypeID" integer,
+    "minmatarStationTypeID" integer,
+    "amarrStationTypeID" integer,
+    "gallenteStationTypeID" integer,
+    "joveStationTypeID" integer
 );
 
 
 --
--- Name: staoperationservices; Type: TABLE; Schema: public; Owner: -
+-- Name: staServices; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE staoperationservices (
-    operationid integer NOT NULL,
-    serviceid integer NOT NULL
-);
-
-
---
--- Name: staservices; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE staservices (
-    serviceid integer NOT NULL,
-    servicename character varying(100),
+CREATE TABLE "staServices" (
+    "serviceID" integer NOT NULL,
+    "serviceName" character varying(100),
     description character varying(1000)
 );
 
 
 --
--- Name: stastations; Type: TABLE; Schema: public; Owner: -
+-- Name: staStationTypes; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE stastations (
-    stationid bigint NOT NULL,
-    security double precision,
-    dockingcostpervolume double precision,
-    maxshipvolumedockable double precision,
-    officerentalcost integer,
-    operationid integer,
-    stationtypeid integer,
-    corporationid integer,
-    solarsystemid integer,
-    constellationid integer,
-    regionid integer,
-    stationname character varying(100),
-    x double precision,
-    y double precision,
-    z double precision,
-    reprocessingefficiency double precision,
-    reprocessingstationstake double precision,
-    reprocessinghangarflag integer
-);
-
-
---
--- Name: stastationtypes; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE stastationtypes (
-    stationtypeid integer NOT NULL,
-    dockentryx double precision,
-    dockentryy double precision,
-    dockentryz double precision,
-    dockorientationx double precision,
-    dockorientationy double precision,
-    dockorientationz double precision,
-    operationid integer,
-    officeslots integer,
-    reprocessingefficiency double precision,
+CREATE TABLE "staStationTypes" (
+    "stationTypeID" integer NOT NULL,
+    "dockEntryX" double precision,
+    "dockEntryY" double precision,
+    "dockEntryZ" double precision,
+    "dockOrientationX" double precision,
+    "dockOrientationY" double precision,
+    "dockOrientationZ" double precision,
+    "operationID" integer,
+    "officeSlots" integer,
+    "reprocessingEfficiency" double precision,
     conquerable boolean
 );
 
 
 --
--- Name: translationtables; Type: TABLE; Schema: public; Owner: -
+-- Name: staStations; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE translationtables (
-    sourcetable character varying(200) NOT NULL,
-    destinationtable character varying(200),
-    translatedkey character varying(200) NOT NULL,
-    tcgroupid integer,
-    tcid integer
+CREATE TABLE "staStations" (
+    "stationID" bigint NOT NULL,
+    security double precision,
+    "dockingCostPerVolume" double precision,
+    "maxShipVolumeDockable" double precision,
+    "officeRentalCost" integer,
+    "operationID" integer,
+    "stationTypeID" integer,
+    "corporationID" integer,
+    "solarSystemID" integer,
+    "constellationID" integer,
+    "regionID" integer,
+    "stationName" character varying(100),
+    x double precision,
+    y double precision,
+    z double precision,
+    "reprocessingEfficiency" double precision,
+    "reprocessingStationsTake" double precision,
+    "reprocessingHangarFlag" integer
 );
 
 
 --
--- Name: trntranslationcolumns; Type: TABLE; Schema: public; Owner: -
+-- Name: translationTables; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE trntranslationcolumns (
-    tcgroupid integer,
-    tcid integer NOT NULL,
-    tablename character varying(256) NOT NULL,
-    columnname character varying(128) NOT NULL,
-    masterid character varying(128)
+CREATE TABLE "translationTables" (
+    "sourceTable" character varying(200) NOT NULL,
+    "destinationTable" character varying(200),
+    "translatedKey" character varying(200) NOT NULL,
+    "tcGroupID" integer,
+    "tcID" integer
 );
 
 
 --
--- Name: trntranslationlanguages; Type: TABLE; Schema: public; Owner: -
+-- Name: trnTranslationColumns; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE trntranslationlanguages (
-    numericlanguageid integer NOT NULL,
-    languageid character varying(50),
-    languagename character varying(200)
+CREATE TABLE "trnTranslationColumns" (
+    "tcGroupID" integer,
+    "tcID" integer NOT NULL,
+    "tableName" character varying(256) NOT NULL,
+    "columnName" character varying(128) NOT NULL,
+    "masterID" character varying(128)
 );
 
 
 --
--- Name: trntranslations; Type: TABLE; Schema: public; Owner: -
+-- Name: trnTranslationLanguages; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE trntranslations (
-    tcid integer NOT NULL,
-    keyid integer NOT NULL,
-    languageid character varying(50) NOT NULL,
+CREATE TABLE "trnTranslationLanguages" (
+    "numericLanguageID" integer NOT NULL,
+    "languageID" character varying(50),
+    "languageName" character varying(200)
+);
+
+
+--
+-- Name: trnTranslations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE "trnTranslations" (
+    "tcID" integer NOT NULL,
+    "keyID" integer NOT NULL,
+    "languageID" character varying(50) NOT NULL,
     text text NOT NULL
 );
 
 
 --
--- Name: warcombatzones; Type: TABLE; Schema: public; Owner: -
+-- Name: warCombatZoneSystems; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE warcombatzones (
-    combatzoneid integer NOT NULL,
-    combatzonename character varying(100),
-    factionid integer,
-    centersystemid integer,
+CREATE TABLE "warCombatZoneSystems" (
+    "solarSystemID" integer NOT NULL,
+    "combatZoneID" integer
+);
+
+
+--
+-- Name: warCombatZones; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE "warCombatZones" (
+    "combatZoneID" integer NOT NULL,
+    "combatZoneName" character varying(100),
+    "factionID" integer,
+    "centerSystemID" integer,
     description character varying(500)
 );
 
 
 --
--- Name: warcombatzonesystems; Type: TABLE; Schema: public; Owner: -
+-- Name: invTraits traitID; Type: DEFAULT; Schema: public; Owner: -
 --
 
-CREATE TABLE warcombatzonesystems (
-    solarsystemid integer NOT NULL,
-    combatzoneid integer
-);
+ALTER TABLE ONLY "invTraits" ALTER COLUMN "traitID" SET DEFAULT nextval('"invTraits_traitID_seq"'::regclass);
 
 
 --
--- Name: invtraits traitid; Type: DEFAULT; Schema: public; Owner: -
+-- Name: agtAgentTypes agtAgentTypes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY invtraits ALTER COLUMN traitid SET DEFAULT nextval('invtraits_traitid_seq'::regclass);
+ALTER TABLE ONLY "agtAgentTypes"
+    ADD CONSTRAINT "agtAgentTypes_pkey" PRIMARY KEY ("agentTypeID");
 
 
 --
--- Name: agtagents agtagents_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: agtAgents agtAgents_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY agtagents
-    ADD CONSTRAINT agtagents_pkey PRIMARY KEY (agentid);
+ALTER TABLE ONLY "agtAgents"
+    ADD CONSTRAINT "agtAgents_pkey" PRIMARY KEY ("agentID");
 
 
 --
--- Name: agtagenttypes agtagenttypes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: agtResearchAgents agtResearchAgents_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY agtagenttypes
-    ADD CONSTRAINT agtagenttypes_pkey PRIMARY KEY (agenttypeid);
+ALTER TABLE ONLY "agtResearchAgents"
+    ADD CONSTRAINT "agtResearchAgents_pkey" PRIMARY KEY ("agentID", "typeID");
 
 
 --
--- Name: agtresearchagents agtresearchagents_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: certCerts certCerts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY agtresearchagents
-    ADD CONSTRAINT agtresearchagents_pkey PRIMARY KEY (agentid, typeid);
+ALTER TABLE ONLY "certCerts"
+    ADD CONSTRAINT "certCerts_pkey" PRIMARY KEY ("certID");
 
 
 --
--- Name: certcerts certcerts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: chrAncestries chrAncestries_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY certcerts
-    ADD CONSTRAINT certcerts_pkey PRIMARY KEY (certid);
+ALTER TABLE ONLY "chrAncestries"
+    ADD CONSTRAINT "chrAncestries_pkey" PRIMARY KEY ("ancestryID");
 
 
 --
--- Name: chrancestries chrancestries_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: chrAttributes chrAttributes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY chrancestries
-    ADD CONSTRAINT chrancestries_pkey PRIMARY KEY (ancestryid);
+ALTER TABLE ONLY "chrAttributes"
+    ADD CONSTRAINT "chrAttributes_pkey" PRIMARY KEY ("attributeID");
 
 
 --
--- Name: chrattributes chrattributes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: chrBloodlines chrBloodlines_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY chrattributes
-    ADD CONSTRAINT chrattributes_pkey PRIMARY KEY (attributeid);
+ALTER TABLE ONLY "chrBloodlines"
+    ADD CONSTRAINT "chrBloodlines_pkey" PRIMARY KEY ("bloodlineID");
 
 
 --
--- Name: chrbloodlines chrbloodlines_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: chrFactions chrFactions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY chrbloodlines
-    ADD CONSTRAINT chrbloodlines_pkey PRIMARY KEY (bloodlineid);
+ALTER TABLE ONLY "chrFactions"
+    ADD CONSTRAINT "chrFactions_pkey" PRIMARY KEY ("factionID");
 
 
 --
--- Name: chrfactions chrfactions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: chrRaces chrRaces_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY chrfactions
-    ADD CONSTRAINT chrfactions_pkey PRIMARY KEY (factionid);
+ALTER TABLE ONLY "chrRaces"
+    ADD CONSTRAINT "chrRaces_pkey" PRIMARY KEY ("raceID");
 
 
 --
--- Name: chrraces chrraces_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: crpActivities crpActivities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY chrraces
-    ADD CONSTRAINT chrraces_pkey PRIMARY KEY (raceid);
+ALTER TABLE ONLY "crpActivities"
+    ADD CONSTRAINT "crpActivities_pkey" PRIMARY KEY ("activityID");
 
 
 --
--- Name: crpactivities crpactivities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: crpNPCCorporationDivisions crpNPCCorporationDivisions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY crpactivities
-    ADD CONSTRAINT crpactivities_pkey PRIMARY KEY (activityid);
+ALTER TABLE ONLY "crpNPCCorporationDivisions"
+    ADD CONSTRAINT "crpNPCCorporationDivisions_pkey" PRIMARY KEY ("corporationID", "divisionID");
 
 
 --
--- Name: crpnpccorporationdivisions crpnpccorporationdivisions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: crpNPCCorporationResearchFields crpNPCCorporationResearchFields_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY crpnpccorporationdivisions
-    ADD CONSTRAINT crpnpccorporationdivisions_pkey PRIMARY KEY (corporationid, divisionid);
+ALTER TABLE ONLY "crpNPCCorporationResearchFields"
+    ADD CONSTRAINT "crpNPCCorporationResearchFields_pkey" PRIMARY KEY ("skillID", "corporationID");
 
 
 --
--- Name: crpnpccorporationresearchfields crpnpccorporationresearchfields_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: crpNPCCorporationTrades crpNPCCorporationTrades_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY crpnpccorporationresearchfields
-    ADD CONSTRAINT crpnpccorporationresearchfields_pkey PRIMARY KEY (skillid, corporationid);
+ALTER TABLE ONLY "crpNPCCorporationTrades"
+    ADD CONSTRAINT "crpNPCCorporationTrades_pkey" PRIMARY KEY ("corporationID", "typeID");
 
 
 --
--- Name: crpnpccorporations crpnpccorporations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: crpNPCCorporations crpNPCCorporations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY crpnpccorporations
-    ADD CONSTRAINT crpnpccorporations_pkey PRIMARY KEY (corporationid);
+ALTER TABLE ONLY "crpNPCCorporations"
+    ADD CONSTRAINT "crpNPCCorporations_pkey" PRIMARY KEY ("corporationID");
 
 
 --
--- Name: crpnpccorporationtrades crpnpccorporationtrades_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: crpNPCDivisions crpNPCDivisions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY crpnpccorporationtrades
-    ADD CONSTRAINT crpnpccorporationtrades_pkey PRIMARY KEY (corporationid, typeid);
+ALTER TABLE ONLY "crpNPCDivisions"
+    ADD CONSTRAINT "crpNPCDivisions_pkey" PRIMARY KEY ("divisionID");
 
 
 --
--- Name: crpnpcdivisions crpnpcdivisions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: dgmAttributeCategories dgmAttributeCategories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY crpnpcdivisions
-    ADD CONSTRAINT crpnpcdivisions_pkey PRIMARY KEY (divisionid);
+ALTER TABLE ONLY "dgmAttributeCategories"
+    ADD CONSTRAINT "dgmAttributeCategories_pkey" PRIMARY KEY ("categoryID");
 
 
 --
--- Name: dgmattributecategories dgmattributecategories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: dgmAttributeTypes dgmAttributeTypes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY dgmattributecategories
-    ADD CONSTRAINT dgmattributecategories_pkey PRIMARY KEY (categoryid);
+ALTER TABLE ONLY "dgmAttributeTypes"
+    ADD CONSTRAINT "dgmAttributeTypes_pkey" PRIMARY KEY ("attributeID");
 
 
 --
--- Name: dgmattributetypes dgmattributetypes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: dgmEffects dgmEffects_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY dgmattributetypes
-    ADD CONSTRAINT dgmattributetypes_pkey PRIMARY KEY (attributeid);
+ALTER TABLE ONLY "dgmEffects"
+    ADD CONSTRAINT "dgmEffects_pkey" PRIMARY KEY ("effectID");
 
 
 --
--- Name: dgmeffects dgmeffects_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: dgmExpressions dgmExpressions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY dgmeffects
-    ADD CONSTRAINT dgmeffects_pkey PRIMARY KEY (effectid);
+ALTER TABLE ONLY "dgmExpressions"
+    ADD CONSTRAINT "dgmExpressions_pkey" PRIMARY KEY ("expressionID");
 
 
 --
--- Name: dgmexpressions dgmexpressions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: dgmTypeAttributes dgmTypeAttributes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY dgmexpressions
-    ADD CONSTRAINT dgmexpressions_pkey PRIMARY KEY (expressionid);
+ALTER TABLE ONLY "dgmTypeAttributes"
+    ADD CONSTRAINT "dgmTypeAttributes_pkey" PRIMARY KEY ("typeID", "attributeID");
 
 
 --
--- Name: dgmtypeattributes dgmtypeattributes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: dgmTypeEffects dgmTypeEffects_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY dgmtypeattributes
-    ADD CONSTRAINT dgmtypeattributes_pkey PRIMARY KEY (typeid, attributeid);
+ALTER TABLE ONLY "dgmTypeEffects"
+    ADD CONSTRAINT "dgmTypeEffects_pkey" PRIMARY KEY ("typeID", "effectID");
 
 
 --
--- Name: dgmtypeeffects dgmtypeeffects_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: eveGraphics eveGraphics_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY dgmtypeeffects
-    ADD CONSTRAINT dgmtypeeffects_pkey PRIMARY KEY (typeid, effectid);
+ALTER TABLE ONLY "eveGraphics"
+    ADD CONSTRAINT "eveGraphics_pkey" PRIMARY KEY ("graphicID");
 
 
 --
--- Name: evegraphics evegraphics_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: eveIcons eveIcons_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY evegraphics
-    ADD CONSTRAINT evegraphics_pkey PRIMARY KEY (graphicid);
+ALTER TABLE ONLY "eveIcons"
+    ADD CONSTRAINT "eveIcons_pkey" PRIMARY KEY ("iconID");
 
 
 --
--- Name: eveicons eveicons_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: eveUnits eveUnits_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY eveicons
-    ADD CONSTRAINT eveicons_pkey PRIMARY KEY (iconid);
+ALTER TABLE ONLY "eveUnits"
+    ADD CONSTRAINT "eveUnits_pkey" PRIMARY KEY ("unitID");
 
 
 --
--- Name: eveunits eveunits_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: industryActivity industryActivity_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY eveunits
-    ADD CONSTRAINT eveunits_pkey PRIMARY KEY (unitid);
+ALTER TABLE ONLY "industryActivity"
+    ADD CONSTRAINT "industryActivity_pkey" PRIMARY KEY ("typeID", "activityID");
 
 
 --
--- Name: industryactivity industryactivity_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: industryBlueprints industryBlueprints_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY industryactivity
-    ADD CONSTRAINT industryactivity_pkey PRIMARY KEY (typeid, activityid);
+ALTER TABLE ONLY "industryBlueprints"
+    ADD CONSTRAINT "industryBlueprints_pkey" PRIMARY KEY ("typeID");
 
 
 --
--- Name: industryblueprints industryblueprints_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: invCategories invCategories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY industryblueprints
-    ADD CONSTRAINT industryblueprints_pkey PRIMARY KEY (typeid);
+ALTER TABLE ONLY "invCategories"
+    ADD CONSTRAINT "invCategories_pkey" PRIMARY KEY ("categoryID");
 
 
 --
--- Name: invcategories invcategories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: invContrabandTypes invContrabandTypes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY invcategories
-    ADD CONSTRAINT invcategories_pkey PRIMARY KEY (categoryid);
+ALTER TABLE ONLY "invContrabandTypes"
+    ADD CONSTRAINT "invContrabandTypes_pkey" PRIMARY KEY ("factionID", "typeID");
 
 
 --
--- Name: invcontrabandtypes invcontrabandtypes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: invControlTowerResourcePurposes invControlTowerResourcePurposes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY invcontrabandtypes
-    ADD CONSTRAINT invcontrabandtypes_pkey PRIMARY KEY (factionid, typeid);
+ALTER TABLE ONLY "invControlTowerResourcePurposes"
+    ADD CONSTRAINT "invControlTowerResourcePurposes_pkey" PRIMARY KEY (purpose);
 
 
 --
--- Name: invcontroltowerresourcepurposes invcontroltowerresourcepurposes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: invControlTowerResources invControlTowerResources_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY invcontroltowerresourcepurposes
-    ADD CONSTRAINT invcontroltowerresourcepurposes_pkey PRIMARY KEY (purpose);
+ALTER TABLE ONLY "invControlTowerResources"
+    ADD CONSTRAINT "invControlTowerResources_pkey" PRIMARY KEY ("controlTowerTypeID", "resourceTypeID");
 
 
 --
--- Name: invcontroltowerresources invcontroltowerresources_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: invFlags invFlags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY invcontroltowerresources
-    ADD CONSTRAINT invcontroltowerresources_pkey PRIMARY KEY (controltowertypeid, resourcetypeid);
+ALTER TABLE ONLY "invFlags"
+    ADD CONSTRAINT "invFlags_pkey" PRIMARY KEY ("flagID");
 
 
 --
--- Name: invflags invflags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: invGroups invGroups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY invflags
-    ADD CONSTRAINT invflags_pkey PRIMARY KEY (flagid);
+ALTER TABLE ONLY "invGroups"
+    ADD CONSTRAINT "invGroups_pkey" PRIMARY KEY ("groupID");
 
 
 --
--- Name: invgroups invgroups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: invItems invItems_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY invgroups
-    ADD CONSTRAINT invgroups_pkey PRIMARY KEY (groupid);
+ALTER TABLE ONLY "invItems"
+    ADD CONSTRAINT "invItems_pkey" PRIMARY KEY ("itemID");
 
 
 --
--- Name: invitems invitems_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: invMarketGroups invMarketGroups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY invitems
-    ADD CONSTRAINT invitems_pkey PRIMARY KEY (itemid);
+ALTER TABLE ONLY "invMarketGroups"
+    ADD CONSTRAINT "invMarketGroups_pkey" PRIMARY KEY ("marketGroupID");
 
 
 --
--- Name: invmarketgroups invmarketgroups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: invMetaGroups invMetaGroups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY invmarketgroups
-    ADD CONSTRAINT invmarketgroups_pkey PRIMARY KEY (marketgroupid);
+ALTER TABLE ONLY "invMetaGroups"
+    ADD CONSTRAINT "invMetaGroups_pkey" PRIMARY KEY ("metaGroupID");
 
 
 --
--- Name: invmetagroups invmetagroups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: invMetaTypes invMetaTypes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY invmetagroups
-    ADD CONSTRAINT invmetagroups_pkey PRIMARY KEY (metagroupid);
+ALTER TABLE ONLY "invMetaTypes"
+    ADD CONSTRAINT "invMetaTypes_pkey" PRIMARY KEY ("typeID");
 
 
 --
--- Name: invmetatypes invmetatypes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: invNames invNames_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY invmetatypes
-    ADD CONSTRAINT invmetatypes_pkey PRIMARY KEY (typeid);
+ALTER TABLE ONLY "invNames"
+    ADD CONSTRAINT "invNames_pkey" PRIMARY KEY ("itemID");
 
 
 --
--- Name: invnames invnames_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: invPositions invPositions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY invnames
-    ADD CONSTRAINT invnames_pkey PRIMARY KEY (itemid);
+ALTER TABLE ONLY "invPositions"
+    ADD CONSTRAINT "invPositions_pkey" PRIMARY KEY ("itemID");
 
 
 --
--- Name: invpositions invpositions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: invTraits invTraits_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY invpositions
-    ADD CONSTRAINT invpositions_pkey PRIMARY KEY (itemid);
+ALTER TABLE ONLY "invTraits"
+    ADD CONSTRAINT "invTraits_pkey" PRIMARY KEY ("traitID");
 
 
 --
--- Name: invtraits invtraits_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: invTypeMaterials invTypeMaterials_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY invtraits
-    ADD CONSTRAINT invtraits_pkey PRIMARY KEY (traitid);
+ALTER TABLE ONLY "invTypeMaterials"
+    ADD CONSTRAINT "invTypeMaterials_pkey" PRIMARY KEY ("typeID", "materialTypeID");
 
 
 --
--- Name: invtypematerials invtypematerials_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: invTypeReactions invTypeReactions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY invtypematerials
-    ADD CONSTRAINT invtypematerials_pkey PRIMARY KEY (typeid, materialtypeid);
+ALTER TABLE ONLY "invTypeReactions"
+    ADD CONSTRAINT "invTypeReactions_pkey" PRIMARY KEY ("reactionTypeID", input, "typeID");
 
 
 --
--- Name: invtypereactions invtypereactions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: invTypes invTypes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY invtypereactions
-    ADD CONSTRAINT invtypereactions_pkey PRIMARY KEY (reactiontypeid, input, typeid);
+ALTER TABLE ONLY "invTypes"
+    ADD CONSTRAINT "invTypes_pkey" PRIMARY KEY ("typeID");
 
 
 --
--- Name: invtypes invtypes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: invUniqueNames invUniqueNames_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY invtypes
-    ADD CONSTRAINT invtypes_pkey PRIMARY KEY (typeid);
+ALTER TABLE ONLY "invUniqueNames"
+    ADD CONSTRAINT "invUniqueNames_pkey" PRIMARY KEY ("itemID");
 
 
 --
--- Name: invuniquenames invuniquenames_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: invVolumes invVolumes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY invuniquenames
-    ADD CONSTRAINT invuniquenames_pkey PRIMARY KEY (itemid);
+ALTER TABLE ONLY "invVolumes"
+    ADD CONSTRAINT "invVolumes_pkey" PRIMARY KEY ("typeID");
 
 
 --
--- Name: invvolumes invvolumes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: mapCelestialStatistics mapCelestialStatistics_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY invvolumes
-    ADD CONSTRAINT invvolumes_pkey PRIMARY KEY (typeid);
+ALTER TABLE ONLY "mapCelestialStatistics"
+    ADD CONSTRAINT "mapCelestialStatistics_pkey" PRIMARY KEY ("celestialID");
 
 
 --
--- Name: mapcelestialstatistics mapcelestialstatistics_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: mapConstellationJumps mapConstellationJumps_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY mapcelestialstatistics
-    ADD CONSTRAINT mapcelestialstatistics_pkey PRIMARY KEY (celestialid);
+ALTER TABLE ONLY "mapConstellationJumps"
+    ADD CONSTRAINT "mapConstellationJumps_pkey" PRIMARY KEY ("fromConstellationID", "toConstellationID");
 
 
 --
--- Name: mapconstellationjumps mapconstellationjumps_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: mapConstellations mapConstellations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY mapconstellationjumps
-    ADD CONSTRAINT mapconstellationjumps_pkey PRIMARY KEY (fromconstellationid, toconstellationid);
+ALTER TABLE ONLY "mapConstellations"
+    ADD CONSTRAINT "mapConstellations_pkey" PRIMARY KEY ("constellationID");
 
 
 --
--- Name: mapconstellations mapconstellations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: mapDenormalize mapDenormalize_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY mapconstellations
-    ADD CONSTRAINT mapconstellations_pkey PRIMARY KEY (constellationid);
+ALTER TABLE ONLY "mapDenormalize"
+    ADD CONSTRAINT "mapDenormalize_pkey" PRIMARY KEY ("itemID");
 
 
 --
--- Name: mapdenormalize mapdenormalize_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: mapJumps mapJumps_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY mapdenormalize
-    ADD CONSTRAINT mapdenormalize_pkey PRIMARY KEY (itemid);
+ALTER TABLE ONLY "mapJumps"
+    ADD CONSTRAINT "mapJumps_pkey" PRIMARY KEY ("stargateID");
 
 
 --
--- Name: mapjumps mapjumps_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: mapLandmarks mapLandmarks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY mapjumps
-    ADD CONSTRAINT mapjumps_pkey PRIMARY KEY (stargateid);
+ALTER TABLE ONLY "mapLandmarks"
+    ADD CONSTRAINT "mapLandmarks_pkey" PRIMARY KEY ("landmarkID");
 
 
 --
--- Name: maplandmarks maplandmarks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: mapLocationScenes mapLocationScenes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY maplandmarks
-    ADD CONSTRAINT maplandmarks_pkey PRIMARY KEY (landmarkid);
+ALTER TABLE ONLY "mapLocationScenes"
+    ADD CONSTRAINT "mapLocationScenes_pkey" PRIMARY KEY ("locationID");
 
 
 --
--- Name: maplocationscenes maplocationscenes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: mapLocationWormholeClasses mapLocationWormholeClasses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY maplocationscenes
-    ADD CONSTRAINT maplocationscenes_pkey PRIMARY KEY (locationid);
+ALTER TABLE ONLY "mapLocationWormholeClasses"
+    ADD CONSTRAINT "mapLocationWormholeClasses_pkey" PRIMARY KEY ("locationID");
 
 
 --
--- Name: maplocationwormholeclasses maplocationwormholeclasses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: mapRegionJumps mapRegionJumps_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY maplocationwormholeclasses
-    ADD CONSTRAINT maplocationwormholeclasses_pkey PRIMARY KEY (locationid);
+ALTER TABLE ONLY "mapRegionJumps"
+    ADD CONSTRAINT "mapRegionJumps_pkey" PRIMARY KEY ("fromRegionID", "toRegionID");
 
 
 --
--- Name: mapregionjumps mapregionjumps_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: mapRegions mapRegions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY mapregionjumps
-    ADD CONSTRAINT mapregionjumps_pkey PRIMARY KEY (fromregionid, toregionid);
+ALTER TABLE ONLY "mapRegions"
+    ADD CONSTRAINT "mapRegions_pkey" PRIMARY KEY ("regionID");
 
 
 --
--- Name: mapregions mapregions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: mapSolarSystemJumps mapSolarSystemJumps_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY mapregions
-    ADD CONSTRAINT mapregions_pkey PRIMARY KEY (regionid);
+ALTER TABLE ONLY "mapSolarSystemJumps"
+    ADD CONSTRAINT "mapSolarSystemJumps_pkey" PRIMARY KEY ("fromSolarSystemID", "toSolarSystemID");
 
 
 --
--- Name: mapsolarsystemjumps mapsolarsystemjumps_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: mapSolarSystems mapSolarSystems_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY mapsolarsystemjumps
-    ADD CONSTRAINT mapsolarsystemjumps_pkey PRIMARY KEY (fromsolarsystemid, tosolarsystemid);
+ALTER TABLE ONLY "mapSolarSystems"
+    ADD CONSTRAINT "mapSolarSystems_pkey" PRIMARY KEY ("solarSystemID");
 
 
 --
--- Name: mapsolarsystems mapsolarsystems_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: mapUniverse mapUniverse_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY mapsolarsystems
-    ADD CONSTRAINT mapsolarsystems_pkey PRIMARY KEY (solarsystemid);
+ALTER TABLE ONLY "mapUniverse"
+    ADD CONSTRAINT "mapUniverse_pkey" PRIMARY KEY ("universeID");
 
 
 --
--- Name: mapuniverse mapuniverse_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: planetSchematicsPinMap planetSchematicsPinMap_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY mapuniverse
-    ADD CONSTRAINT mapuniverse_pkey PRIMARY KEY (universeid);
+ALTER TABLE ONLY "planetSchematicsPinMap"
+    ADD CONSTRAINT "planetSchematicsPinMap_pkey" PRIMARY KEY ("schematicID", "pinTypeID");
 
 
 --
--- Name: planetschematics planetschematics_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: planetSchematicsTypeMap planetSchematicsTypeMap_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY planetschematics
-    ADD CONSTRAINT planetschematics_pkey PRIMARY KEY (schematicid);
+ALTER TABLE ONLY "planetSchematicsTypeMap"
+    ADD CONSTRAINT "planetSchematicsTypeMap_pkey" PRIMARY KEY ("schematicID", "typeID");
 
 
 --
--- Name: planetschematicspinmap planetschematicspinmap_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: planetSchematics planetSchematics_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY planetschematicspinmap
-    ADD CONSTRAINT planetschematicspinmap_pkey PRIMARY KEY (schematicid, pintypeid);
+ALTER TABLE ONLY "planetSchematics"
+    ADD CONSTRAINT "planetSchematics_pkey" PRIMARY KEY ("schematicID");
 
 
 --
--- Name: planetschematicstypemap planetschematicstypemap_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: ramActivities ramActivities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY planetschematicstypemap
-    ADD CONSTRAINT planetschematicstypemap_pkey PRIMARY KEY (schematicid, typeid);
+ALTER TABLE ONLY "ramActivities"
+    ADD CONSTRAINT "ramActivities_pkey" PRIMARY KEY ("activityID");
 
 
 --
--- Name: ramactivities ramactivities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: ramAssemblyLineStations ramAssemblyLineStations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY ramactivities
-    ADD CONSTRAINT ramactivities_pkey PRIMARY KEY (activityid);
+ALTER TABLE ONLY "ramAssemblyLineStations"
+    ADD CONSTRAINT "ramAssemblyLineStations_pkey" PRIMARY KEY ("stationID", "assemblyLineTypeID");
 
 
 --
--- Name: ramassemblylinestations ramassemblylinestations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: ramAssemblyLineTypeDetailPerCategory ramAssemblyLineTypeDetailPerCategory_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY ramassemblylinestations
-    ADD CONSTRAINT ramassemblylinestations_pkey PRIMARY KEY (stationid, assemblylinetypeid);
+ALTER TABLE ONLY "ramAssemblyLineTypeDetailPerCategory"
+    ADD CONSTRAINT "ramAssemblyLineTypeDetailPerCategory_pkey" PRIMARY KEY ("assemblyLineTypeID", "categoryID");
 
 
 --
--- Name: ramassemblylinetypedetailpercategory ramassemblylinetypedetailpercategory_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: ramAssemblyLineTypeDetailPerGroup ramAssemblyLineTypeDetailPerGroup_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY ramassemblylinetypedetailpercategory
-    ADD CONSTRAINT ramassemblylinetypedetailpercategory_pkey PRIMARY KEY (assemblylinetypeid, categoryid);
+ALTER TABLE ONLY "ramAssemblyLineTypeDetailPerGroup"
+    ADD CONSTRAINT "ramAssemblyLineTypeDetailPerGroup_pkey" PRIMARY KEY ("assemblyLineTypeID", "groupID");
 
 
 --
--- Name: ramassemblylinetypedetailpergroup ramassemblylinetypedetailpergroup_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: ramAssemblyLineTypes ramAssemblyLineTypes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY ramassemblylinetypedetailpergroup
-    ADD CONSTRAINT ramassemblylinetypedetailpergroup_pkey PRIMARY KEY (assemblylinetypeid, groupid);
+ALTER TABLE ONLY "ramAssemblyLineTypes"
+    ADD CONSTRAINT "ramAssemblyLineTypes_pkey" PRIMARY KEY ("assemblyLineTypeID");
 
 
 --
--- Name: ramassemblylinetypes ramassemblylinetypes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: ramInstallationTypeContents ramInstallationTypeContents_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY ramassemblylinetypes
-    ADD CONSTRAINT ramassemblylinetypes_pkey PRIMARY KEY (assemblylinetypeid);
+ALTER TABLE ONLY "ramInstallationTypeContents"
+    ADD CONSTRAINT "ramInstallationTypeContents_pkey" PRIMARY KEY ("installationTypeID", "assemblyLineTypeID");
 
 
 --
--- Name: raminstallationtypecontents raminstallationtypecontents_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: skinLicense skinLicense_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY raminstallationtypecontents
-    ADD CONSTRAINT raminstallationtypecontents_pkey PRIMARY KEY (installationtypeid, assemblylinetypeid);
+ALTER TABLE ONLY "skinLicense"
+    ADD CONSTRAINT "skinLicense_pkey" PRIMARY KEY ("licenseTypeID");
 
 
 --
--- Name: skinlicense skinlicense_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: skinMaterials skinMaterials_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY skinlicense
-    ADD CONSTRAINT skinlicense_pkey PRIMARY KEY (licensetypeid);
-
-
---
--- Name: skinmaterials skinmaterials_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY skinmaterials
-    ADD CONSTRAINT skinmaterials_pkey PRIMARY KEY (skinmaterialid);
+ALTER TABLE ONLY "skinMaterials"
+    ADD CONSTRAINT "skinMaterials_pkey" PRIMARY KEY ("skinMaterialID");
 
 
 --
@@ -2075,414 +2068,414 @@ ALTER TABLE ONLY skinmaterials
 --
 
 ALTER TABLE ONLY skins
-    ADD CONSTRAINT skins_pkey PRIMARY KEY (skinid);
+    ADD CONSTRAINT skins_pkey PRIMARY KEY ("skinID");
 
 
 --
--- Name: staoperations staoperations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: staOperationServices staOperationServices_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY staoperations
-    ADD CONSTRAINT staoperations_pkey PRIMARY KEY (operationid);
-
-
---
--- Name: staoperationservices staoperationservices_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY staoperationservices
-    ADD CONSTRAINT staoperationservices_pkey PRIMARY KEY (operationid, serviceid);
+ALTER TABLE ONLY "staOperationServices"
+    ADD CONSTRAINT "staOperationServices_pkey" PRIMARY KEY ("operationID", "serviceID");
 
 
 --
--- Name: staservices staservices_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: staOperations staOperations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY staservices
-    ADD CONSTRAINT staservices_pkey PRIMARY KEY (serviceid);
-
-
---
--- Name: stastations stastations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY stastations
-    ADD CONSTRAINT stastations_pkey PRIMARY KEY (stationid);
+ALTER TABLE ONLY "staOperations"
+    ADD CONSTRAINT "staOperations_pkey" PRIMARY KEY ("operationID");
 
 
 --
--- Name: stastationtypes stastationtypes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: staServices staServices_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY stastationtypes
-    ADD CONSTRAINT stastationtypes_pkey PRIMARY KEY (stationtypeid);
-
-
---
--- Name: translationtables translationtables_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY translationtables
-    ADD CONSTRAINT translationtables_pkey PRIMARY KEY (sourcetable, translatedkey);
+ALTER TABLE ONLY "staServices"
+    ADD CONSTRAINT "staServices_pkey" PRIMARY KEY ("serviceID");
 
 
 --
--- Name: trntranslationcolumns trntranslationcolumns_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: staStationTypes staStationTypes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY trntranslationcolumns
-    ADD CONSTRAINT trntranslationcolumns_pkey PRIMARY KEY (tcid);
-
-
---
--- Name: trntranslationlanguages trntranslationlanguages_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY trntranslationlanguages
-    ADD CONSTRAINT trntranslationlanguages_pkey PRIMARY KEY (numericlanguageid);
+ALTER TABLE ONLY "staStationTypes"
+    ADD CONSTRAINT "staStationTypes_pkey" PRIMARY KEY ("stationTypeID");
 
 
 --
--- Name: trntranslations trntranslations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: staStations staStations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY trntranslations
-    ADD CONSTRAINT trntranslations_pkey PRIMARY KEY (tcid, keyid, languageid);
-
-
---
--- Name: warcombatzones warcombatzones_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY warcombatzones
-    ADD CONSTRAINT warcombatzones_pkey PRIMARY KEY (combatzoneid);
+ALTER TABLE ONLY "staStations"
+    ADD CONSTRAINT "staStations_pkey" PRIMARY KEY ("stationID");
 
 
 --
--- Name: warcombatzonesystems warcombatzonesystems_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: translationTables translationTables_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY warcombatzonesystems
-    ADD CONSTRAINT warcombatzonesystems_pkey PRIMARY KEY (solarsystemid);
+ALTER TABLE ONLY "translationTables"
+    ADD CONSTRAINT "translationTables_pkey" PRIMARY KEY ("sourceTable", "translatedKey");
+
+
+--
+-- Name: trnTranslationColumns trnTranslationColumns_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "trnTranslationColumns"
+    ADD CONSTRAINT "trnTranslationColumns_pkey" PRIMARY KEY ("tcID");
+
+
+--
+-- Name: trnTranslationLanguages trnTranslationLanguages_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "trnTranslationLanguages"
+    ADD CONSTRAINT "trnTranslationLanguages_pkey" PRIMARY KEY ("numericLanguageID");
+
+
+--
+-- Name: trnTranslations trnTranslations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "trnTranslations"
+    ADD CONSTRAINT "trnTranslations_pkey" PRIMARY KEY ("tcID", "keyID", "languageID");
+
+
+--
+-- Name: warCombatZoneSystems warCombatZoneSystems_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "warCombatZoneSystems"
+    ADD CONSTRAINT "warCombatZoneSystems_pkey" PRIMARY KEY ("solarSystemID");
+
+
+--
+-- Name: warCombatZones warCombatZones_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "warCombatZones"
+    ADD CONSTRAINT "warCombatZones_pkey" PRIMARY KEY ("combatZoneID");
 
 
 --
 -- Name: industryActivityMaterials_idx1; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "industryActivityMaterials_idx1" ON industryactivitymaterials USING btree (typeid, activityid);
+CREATE INDEX "industryActivityMaterials_idx1" ON "industryActivityMaterials" USING btree ("typeID", "activityID");
 
 
 --
 -- Name: industryActivitySkills_idx1; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "industryActivitySkills_idx1" ON industryactivityskills USING btree (typeid, activityid);
+CREATE INDEX "industryActivitySkills_idx1" ON "industryActivitySkills" USING btree ("typeID", "activityID");
 
 
 --
 -- Name: invUniqueNames_IX_GroupName; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "invUniqueNames_IX_GroupName" ON invuniquenames USING btree (groupid, itemname);
+CREATE INDEX "invUniqueNames_IX_GroupName" ON "invUniqueNames" USING btree ("groupID", "itemName");
 
 
 --
 -- Name: items_IX_OwnerLocation; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "items_IX_OwnerLocation" ON invitems USING btree (ownerid, locationid);
+CREATE INDEX "items_IX_OwnerLocation" ON "invItems" USING btree ("ownerID", "locationID");
 
 
 --
 -- Name: ix_agtAgents_corporationID; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "ix_agtAgents_corporationID" ON agtagents USING btree (corporationid);
+CREATE INDEX "ix_agtAgents_corporationID" ON "agtAgents" USING btree ("corporationID");
 
 
 --
 -- Name: ix_agtAgents_locationID; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "ix_agtAgents_locationID" ON agtagents USING btree (locationid);
+CREATE INDEX "ix_agtAgents_locationID" ON "agtAgents" USING btree ("locationID");
 
 
 --
 -- Name: ix_agtResearchAgents_typeID; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "ix_agtResearchAgents_typeID" ON agtresearchagents USING btree (typeid);
+CREATE INDEX "ix_agtResearchAgents_typeID" ON "agtResearchAgents" USING btree ("typeID");
 
 
 --
 -- Name: ix_certSkills_skillID; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "ix_certSkills_skillID" ON certskills USING btree (skillid);
+CREATE INDEX "ix_certSkills_skillID" ON "certSkills" USING btree ("skillID");
 
 
 --
 -- Name: ix_dgmTypeAttributes_attributeID; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "ix_dgmTypeAttributes_attributeID" ON dgmtypeattributes USING btree (attributeid);
+CREATE INDEX "ix_dgmTypeAttributes_attributeID" ON "dgmTypeAttributes" USING btree ("attributeID");
 
 
 --
 -- Name: ix_industryActivityMaterials_typeID; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "ix_industryActivityMaterials_typeID" ON industryactivitymaterials USING btree (typeid);
+CREATE INDEX "ix_industryActivityMaterials_typeID" ON "industryActivityMaterials" USING btree ("typeID");
 
 
 --
 -- Name: ix_industryActivityProbabilities_productTypeID; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "ix_industryActivityProbabilities_productTypeID" ON industryactivityprobabilities USING btree (producttypeid);
+CREATE INDEX "ix_industryActivityProbabilities_productTypeID" ON "industryActivityProbabilities" USING btree ("productTypeID");
 
 
 --
 -- Name: ix_industryActivityProbabilities_typeID; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "ix_industryActivityProbabilities_typeID" ON industryactivityprobabilities USING btree (typeid);
+CREATE INDEX "ix_industryActivityProbabilities_typeID" ON "industryActivityProbabilities" USING btree ("typeID");
 
 
 --
 -- Name: ix_industryActivityProducts_productTypeID; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "ix_industryActivityProducts_productTypeID" ON industryactivityproducts USING btree (producttypeid);
+CREATE INDEX "ix_industryActivityProducts_productTypeID" ON "industryActivityProducts" USING btree ("productTypeID");
 
 
 --
 -- Name: ix_industryActivityProducts_typeID; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "ix_industryActivityProducts_typeID" ON industryactivityproducts USING btree (typeid);
+CREATE INDEX "ix_industryActivityProducts_typeID" ON "industryActivityProducts" USING btree ("typeID");
 
 
 --
 -- Name: ix_industryActivityRaces_productTypeID; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "ix_industryActivityRaces_productTypeID" ON industryactivityraces USING btree (producttypeid);
+CREATE INDEX "ix_industryActivityRaces_productTypeID" ON "industryActivityRaces" USING btree ("productTypeID");
 
 
 --
 -- Name: ix_industryActivityRaces_typeID; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "ix_industryActivityRaces_typeID" ON industryactivityraces USING btree (typeid);
+CREATE INDEX "ix_industryActivityRaces_typeID" ON "industryActivityRaces" USING btree ("typeID");
 
 
 --
 -- Name: ix_industryActivitySkills_skillID; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "ix_industryActivitySkills_skillID" ON industryactivityskills USING btree (skillid);
+CREATE INDEX "ix_industryActivitySkills_skillID" ON "industryActivitySkills" USING btree ("skillID");
 
 
 --
 -- Name: ix_industryActivitySkills_typeID; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "ix_industryActivitySkills_typeID" ON industryactivityskills USING btree (typeid);
+CREATE INDEX "ix_industryActivitySkills_typeID" ON "industryActivitySkills" USING btree ("typeID");
 
 
 --
 -- Name: ix_industryActivity_activityID; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "ix_industryActivity_activityID" ON industryactivity USING btree (activityid);
+CREATE INDEX "ix_industryActivity_activityID" ON "industryActivity" USING btree ("activityID");
 
 
 --
 -- Name: ix_invContrabandTypes_typeID; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "ix_invContrabandTypes_typeID" ON invcontrabandtypes USING btree (typeid);
+CREATE INDEX "ix_invContrabandTypes_typeID" ON "invContrabandTypes" USING btree ("typeID");
 
 
 --
 -- Name: ix_invGroups_categoryID; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "ix_invGroups_categoryID" ON invgroups USING btree (categoryid);
+CREATE INDEX "ix_invGroups_categoryID" ON "invGroups" USING btree ("categoryID");
 
 
 --
 -- Name: ix_invItems_locationID; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "ix_invItems_locationID" ON invitems USING btree (locationid);
+CREATE INDEX "ix_invItems_locationID" ON "invItems" USING btree ("locationID");
 
 
 --
 -- Name: ix_invTypes_groupID; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "ix_invTypes_groupID" ON invtypes USING btree (groupid);
+CREATE INDEX "ix_invTypes_groupID" ON "invTypes" USING btree ("groupID");
 
 
 --
 -- Name: ix_invUniqueNames_itemName; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX "ix_invUniqueNames_itemName" ON invuniquenames USING btree (itemname);
+CREATE UNIQUE INDEX "ix_invUniqueNames_itemName" ON "invUniqueNames" USING btree ("itemName");
 
 
 --
 -- Name: ix_mapDenormalize_constellationID; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "ix_mapDenormalize_constellationID" ON mapdenormalize USING btree (constellationid);
+CREATE INDEX "ix_mapDenormalize_constellationID" ON "mapDenormalize" USING btree ("constellationID");
 
 
 --
 -- Name: ix_mapDenormalize_orbitID; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "ix_mapDenormalize_orbitID" ON mapdenormalize USING btree (orbitid);
+CREATE INDEX "ix_mapDenormalize_orbitID" ON "mapDenormalize" USING btree ("orbitID");
 
 
 --
 -- Name: ix_mapDenormalize_regionID; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "ix_mapDenormalize_regionID" ON mapdenormalize USING btree (regionid);
+CREATE INDEX "ix_mapDenormalize_regionID" ON "mapDenormalize" USING btree ("regionID");
 
 
 --
 -- Name: ix_mapDenormalize_solarSystemID; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "ix_mapDenormalize_solarSystemID" ON mapdenormalize USING btree (solarsystemid);
+CREATE INDEX "ix_mapDenormalize_solarSystemID" ON "mapDenormalize" USING btree ("solarSystemID");
 
 
 --
 -- Name: ix_mapDenormalize_typeID; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "ix_mapDenormalize_typeID" ON mapdenormalize USING btree (typeid);
+CREATE INDEX "ix_mapDenormalize_typeID" ON "mapDenormalize" USING btree ("typeID");
 
 
 --
 -- Name: ix_mapSolarSystems_constellationID; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "ix_mapSolarSystems_constellationID" ON mapsolarsystems USING btree (constellationid);
+CREATE INDEX "ix_mapSolarSystems_constellationID" ON "mapSolarSystems" USING btree ("constellationID");
 
 
 --
 -- Name: ix_mapSolarSystems_regionID; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "ix_mapSolarSystems_regionID" ON mapsolarsystems USING btree (regionid);
+CREATE INDEX "ix_mapSolarSystems_regionID" ON "mapSolarSystems" USING btree ("regionID");
 
 
 --
 -- Name: ix_mapSolarSystems_security; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "ix_mapSolarSystems_security" ON mapsolarsystems USING btree (security);
+CREATE INDEX "ix_mapSolarSystems_security" ON "mapSolarSystems" USING btree (security);
 
 
 --
 -- Name: ix_ramAssemblyLineStations_ownerID; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "ix_ramAssemblyLineStations_ownerID" ON ramassemblylinestations USING btree (ownerid);
+CREATE INDEX "ix_ramAssemblyLineStations_ownerID" ON "ramAssemblyLineStations" USING btree ("ownerID");
 
 
 --
 -- Name: ix_ramAssemblyLineStations_regionID; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "ix_ramAssemblyLineStations_regionID" ON ramassemblylinestations USING btree (regionid);
+CREATE INDEX "ix_ramAssemblyLineStations_regionID" ON "ramAssemblyLineStations" USING btree ("regionID");
 
 
 --
 -- Name: ix_ramAssemblyLineStations_solarSystemID; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "ix_ramAssemblyLineStations_solarSystemID" ON ramassemblylinestations USING btree (solarsystemid);
+CREATE INDEX "ix_ramAssemblyLineStations_solarSystemID" ON "ramAssemblyLineStations" USING btree ("solarSystemID");
 
 
 --
 -- Name: ix_skinShip_skinID; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "ix_skinShip_skinID" ON skinship USING btree (skinid);
+CREATE INDEX "ix_skinShip_skinID" ON "skinShip" USING btree ("skinID");
 
 
 --
 -- Name: ix_skinShip_typeID; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "ix_skinShip_typeID" ON skinship USING btree (typeid);
+CREATE INDEX "ix_skinShip_typeID" ON "skinShip" USING btree ("typeID");
 
 
 --
 -- Name: ix_staStations_constellationID; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "ix_staStations_constellationID" ON stastations USING btree (constellationid);
+CREATE INDEX "ix_staStations_constellationID" ON "staStations" USING btree ("constellationID");
 
 
 --
 -- Name: ix_staStations_corporationID; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "ix_staStations_corporationID" ON stastations USING btree (corporationid);
+CREATE INDEX "ix_staStations_corporationID" ON "staStations" USING btree ("corporationID");
 
 
 --
 -- Name: ix_staStations_operationID; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "ix_staStations_operationID" ON stastations USING btree (operationid);
+CREATE INDEX "ix_staStations_operationID" ON "staStations" USING btree ("operationID");
 
 
 --
 -- Name: ix_staStations_regionID; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "ix_staStations_regionID" ON stastations USING btree (regionid);
+CREATE INDEX "ix_staStations_regionID" ON "staStations" USING btree ("regionID");
 
 
 --
 -- Name: ix_staStations_solarSystemID; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "ix_staStations_solarSystemID" ON stastations USING btree (solarsystemid);
+CREATE INDEX "ix_staStations_solarSystemID" ON "staStations" USING btree ("solarSystemID");
 
 
 --
 -- Name: ix_staStations_stationTypeID; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "ix_staStations_stationTypeID" ON stastations USING btree (stationtypeid);
+CREATE INDEX "ix_staStations_stationTypeID" ON "staStations" USING btree ("stationTypeID");
 
 
 --
 -- Name: mapDenormalize_IX_groupConstellation; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "mapDenormalize_IX_groupConstellation" ON mapdenormalize USING btree (groupid, constellationid);
+CREATE INDEX "mapDenormalize_IX_groupConstellation" ON "mapDenormalize" USING btree ("groupID", "constellationID");
 
 
 --
 -- Name: mapDenormalize_IX_groupRegion; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "mapDenormalize_IX_groupRegion" ON mapdenormalize USING btree (groupid, regionid);
+CREATE INDEX "mapDenormalize_IX_groupRegion" ON "mapDenormalize" USING btree ("groupID", "regionID");
 
 
 --
 -- Name: mapDenormalize_IX_groupSystem; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "mapDenormalize_IX_groupSystem" ON mapdenormalize USING btree (groupid, solarsystemid);
+CREATE INDEX "mapDenormalize_IX_groupSystem" ON "mapDenormalize" USING btree ("groupID", "solarSystemID");
