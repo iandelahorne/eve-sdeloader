@@ -14,7 +14,7 @@ type Category struct {
 }
 
 func InsertCategoryStmt(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO invcategories VALUES ($1, $2, $3, $4)`)
+	return tx.Prepare(`INSERT INTO "invCategories" VALUES ($1, $2, $3, $4)`)
 }
 
 func Import(db *sql.DB, r io.Reader) error {

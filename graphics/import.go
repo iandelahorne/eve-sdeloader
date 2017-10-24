@@ -17,7 +17,7 @@ type Graphic struct {
 }
 
 func InsertGraphicStmt(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO evegraphics VALUES ($1, $2, $3, $4, $5, $6)`)
+	return tx.Prepare(`INSERT INTO "eveGraphics" VALUES ($1, $2, $3, $4, $5, $6)`)
 }
 
 func Import(db *sql.DB, r io.Reader) error {

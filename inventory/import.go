@@ -32,22 +32,22 @@ func InsertBonuses(stmt, insertTranslations *sql.Stmt, typeID string, skillID in
 }
 
 func InsertInvTypeStatement(tx *sql.Tx) (*sql.Stmt, error) {
-	stmt := `INSERT INTO invtypes (
-	typeid,
-	groupid,
-	typename,
-	description,
-	mass,
-	volume,
-	capacity,
-	portionsize,
-	raceid,
-	baseprice,
-	published,
-	marketgroupid,
-	graphicid,
-	iconid,
-	soundid
+	stmt := `INSERT INTO "invTypes" (
+	"typeID",
+	"groupID",
+	"typeName",
+	"description",
+	"mass",
+	"volume",
+	"capacity",
+	"portionSize",
+	"raceID",
+	"basePrice",
+	"published",
+	"marketGroupID",
+	"graphicID",
+	"iconID",
+	"soundID"
 ) VALUES (
 	$1, $2, $3, $4, $5,
 	$6, $7, $8, $9, $10,
@@ -57,11 +57,11 @@ func InsertInvTypeStatement(tx *sql.Tx) (*sql.Stmt, error) {
 }
 
 func InsertCertMasteryStatement(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO certmasteries (typeid, masterylevel, certid) VALUES ($1, $2, $3)`)
+	return tx.Prepare(`INSERT INTO "certMasteries" ("typeID", "masteryLevel", "certID") VALUES ($1, $2, $3)`)
 }
 
 func InsertTraitStatement(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO invtraits (typeid, skillid, bonus, unitid, bonustext) VALUES ($1, $2, $3, $4, $5) RETURNING traitid`)
+	return tx.Prepare(`INSERT INTO "invTraits" ("typeID", "skillID", bonus, "unitID", "bonusText") VALUES ($1, $2, $3, $4, $5) RETURNING "traitID"`)
 }
 
 // Import imports from a reader containing typeID YAML to the table `invtypes`

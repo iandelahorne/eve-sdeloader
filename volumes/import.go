@@ -6,21 +6,21 @@ import (
 	"os"
 )
 
-const vol1Stmt = `INSERT INTO invvolumes (
-	typeid,
+const vol1Stmt = `INSERT INTO "invVolumes" (
+	"typeID",
 	volume
 )
 SELECT
-	typeid,
+	"typeID",
 	$1
 FROM
-	invTypes
+	"invTypes"
 WHERE
-	groupid = $2
+	"groupID" = $2
 `
 
-const vol2Stmt = `INSERT INTO invvolumes (
-	typeid,
+const vol2Stmt = `INSERT INTO "invVolumes" (
+	"typeID",
 	volume
 ) VALUES (
 	$1, $2

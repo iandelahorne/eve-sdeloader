@@ -8,7 +8,7 @@ import (
 )
 
 func InsertGroupStmt(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO invgroups VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`)
+	return tx.Prepare(`INSERT INTO "invGroups" VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`)
 }
 
 func Import(db *sql.DB, r io.Reader) error {

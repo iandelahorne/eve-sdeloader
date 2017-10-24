@@ -3,41 +3,79 @@ package universe
 import "database/sql"
 
 func InsertRegionStmt(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO mapregions (regionid, regionname, x,y,z, "xMax", ymax, zmax, "xMin", ymin, zmin, factionid) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`)
-}
-
-func InsertMapLocationScenesStmt(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO maplocationscenes (locationid, graphicid) VALUES ($1, $2)`)
-}
-
-func InsertMapWHClassesStmt(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO maplocationwormholeclasses (locationid, wormholeclassid) VALUES ($1, $2)`)
-}
-
-func InsertConstellationsStmt(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO mapConstellations (regionid, constellationid, constellationname, x,y,z, "xMax", ymax, zmax, "xMin", ymin, zmin, radius, factionid) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)`)
-}
-
-func InsertMapJumpStmt(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO mapJumps (stargateid, destinationid) VALUES ($1, $2)`)
-}
-
-func InsertSolarSystemStmt(tx *sql.Tx) (*sql.Stmt, error) {
 	stmt := `
-INSERT INTO mapSolarSystems (
-	regionid,
-	constellationid,
-	solarsystemid,
-	solarsystemname,
+INSERT INTO "mapRegions" (
+	"regionID",
+	"regionName",
 	x,
 	y,
 	z,
 	"xMax",
-	ymax,
-	zmax,
+	"yMax",
+	"zMax",
 	"xMin",
-	ymin,
-	zmin,
+	"yMin",
+	"zMin",
+	"factionID")
+VALUES (
+	$1, $2, $3, $4, $5,
+	$6, $7, $8, $9, $10,
+	$11, $12)`
+	return tx.Prepare(stmt)
+}
+
+func InsertMapLocationScenesStmt(tx *sql.Tx) (*sql.Stmt, error) {
+	return tx.Prepare(`INSERT INTO "mapLocationScenes" ("locationID", "graphicID") VALUES ($1, $2)`)
+}
+
+func InsertMapWHClassesStmt(tx *sql.Tx) (*sql.Stmt, error) {
+	return tx.Prepare(`INSERT INTO "mapLocationWormholeClasses" ("locationID", "wormholeClassID") VALUES ($1, $2)`)
+}
+
+func InsertConstellationsStmt(tx *sql.Tx) (*sql.Stmt, error) {
+	stmt := `
+INSERT INTO "mapConstellations" (
+	"regionID",
+	"constellationID",
+	"constellationName",
+	x,
+	y,
+	z,
+	"xMax",
+	"yMax",
+	"zMax",
+	"xMin",
+	"yMin",
+	"zMin",
+	radius,
+	"factionID")
+VALUES (
+	$1, $2, $3, $4, $5,
+	$6, $7, $8, $9, $10,
+	$11, $12, $13, $14)`
+	return tx.Prepare(stmt)
+}
+
+func InsertMapJumpStmt(tx *sql.Tx) (*sql.Stmt, error) {
+	return tx.Prepare(`INSERT INTO "mapJumps" ("stargateID", "destinationID") VALUES ($1, $2)`)
+}
+
+func InsertSolarSystemStmt(tx *sql.Tx) (*sql.Stmt, error) {
+	stmt := `
+INSERT INTO "mapSolarSystems" (
+	"regionID",
+	"constellationID",
+	"solarSystemID",
+	"solarSystemName",
+	x,
+	y,
+	z,
+	"xMax",
+	"yMax",
+	"zMax",
+	"xMin",
+	"yMin",
+	"zMin",
 	luminosity,
 	border,
 	fringe,
@@ -46,10 +84,10 @@ INSERT INTO mapSolarSystems (
 	international,
 	regional,
 	security,
-	factionid,
+	"factionID",
 	radius,
-	suntypeid,
-	securityclass) 
+	"sunTypeID",
+	"securityClass") 
 VALUES (
 	$1, $2, $3, $4, $5,
 	$6, $7, $8, $9, $10,
@@ -62,23 +100,23 @@ VALUES (
 
 func InsertCelestialStatsStmt(tx *sql.Tx) (*sql.Stmt, error) {
 	stmt := `
-INSERT INTO mapCelestialStatistics (
-	celestialid,
+INSERT INTO "mapCelestialStatistics" (
+	"celestialID",
 	temperature,
-	spectralclass,
+	"spectralClass",
 	luminosity,
 	age,
 	life,
-	orbitradius,
+	"orbitRadius",
 	eccentricity,
-	massdust,
-	massgas,
+	"massDust",
+	"massGas",
 	fragmented,
 	density,
-	surfacegravity,
-	escapevelocity,
-	orbitperiod,
-	rotationrate,
+	"surfaceGravity",
+	"escapeVelocity",
+	"orbitPeriod",
+	"rotationRate",
 	locked,
 	pressure,
 	radius,
@@ -94,22 +132,22 @@ INSERT INTO mapCelestialStatistics (
 
 func InsertOrbitalDenormStmt(tx *sql.Tx) (*sql.Stmt, error) {
 	const stmt = `
-INSERT INTO mapDenormalize (
-	itemID,
-	typeID,
-	groupID,
-	solarSystemID,
-	constellationID,
-	regionID,
-	orbitID,
-	x,
-	y,
-	z,
-	radius,
-	itemName,
-	security,
-	celestialIndex,
-	orbitIndex
+INSERT INTO "mapDenormalize" (
+	"itemID",
+	"typeID",
+	"groupID",
+	"solarSystemID",
+	"constellationID",
+	"regionID",
+	"orbitID",
+	"x",
+	"y",
+	"z",
+	"radius",
+	"itemName",
+	"security",
+	"celestialIndex",
+	"orbitIndex"
 ) VALUES (
 	$1, $2, $3, $4, $5,
 	$6, $7, $8, $9, $10,

@@ -20,7 +20,7 @@ func Import(db *sql.DB, r io.Reader) error {
 		return err
 	}
 
-	stmt, err := tx.Prepare(`INSERT INTO eveicons (iconid, iconfile, description) VALUES ($1, $2, $3)`)
+	stmt, err := tx.Prepare(`INSERT INTO "eveIcons" ("iconID", "iconFile", "description") VALUES ($1, $2, $3)`)
 	if err != nil {
 		return err
 	}

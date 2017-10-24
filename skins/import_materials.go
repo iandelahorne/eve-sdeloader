@@ -14,7 +14,7 @@ type SkinMaterial struct {
 }
 
 func InsertMaterialStmt(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO skinmaterials VALUES ($1, $2, $3)`)
+	return tx.Prepare(`INSERT INTO "skinMaterials" VALUES ($1, $2, $3)`)
 }
 
 func ImportMaterials(db *sql.DB, r io.Reader) error {

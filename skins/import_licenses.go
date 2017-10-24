@@ -14,7 +14,7 @@ type SkinLicense struct {
 }
 
 func InsertLicenseStmt(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO skinlicense VALUES ($1, $2, $3)`)
+	return tx.Prepare(`INSERT INTO "skinLicense" VALUES ($1, $2, $3)`)
 }
 
 func ImportLicenses(db *sql.DB, r io.Reader) error {

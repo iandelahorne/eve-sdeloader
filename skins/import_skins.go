@@ -22,7 +22,7 @@ func InsertSkinStmt(tx *sql.Tx) (*sql.Stmt, error) {
 }
 
 func InsertSkinShipStmt(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO skinship VALUES ($1, $2)`)
+	return tx.Prepare(`INSERT INTO "skinShip" VALUES ($1, $2)`)
 }
 func ImportSkins(db *sql.DB, r io.Reader) error {
 

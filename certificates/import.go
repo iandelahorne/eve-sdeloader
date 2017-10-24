@@ -24,11 +24,11 @@ type Certificate struct {
 }
 
 func InsertCertCertsStmt(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO certcerts (certid, description, groupid, name) VALUES ($1, $2, $3, $4)`)
+	return tx.Prepare(`INSERT INTO "certCerts" ("certID", description, "groupID", name) VALUES ($1, $2, $3, $4)`)
 }
 
 func InsertCertSkillsStmt(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO certskills (certid, skillid, certlevelint, certleveltext, skilllevel) VALUES ($1, $2, $3, $4, $5)`)
+	return tx.Prepare(`INSERT INTO "certSkills" ("certID", "skillID", "certLevelInt", "certLevelText", "skillLevel") VALUES ($1, $2, $3, $4, $5)`)
 }
 
 func Import(db *sql.DB, r io.Reader) error {

@@ -107,17 +107,16 @@ func insertCelestialStatistics(stmt *sql.Stmt, id int64, stats CelestialStatisti
 func fixStationNames(db *sql.DB) error {
 	stmt := `
 UPDATE
-	staStations
+	"staStations"
 SET
-	stationName = (
+	"stationName" = (
 		SELECT
-			itemName
+			"itemName"
 		FROM
-			invNames
+			"invNames"
 		WHERE
-			staStations.stationID = itemID
-	)
-`
+			"staStations"."stationID" = "itemID"
+	)`
 	_, err := db.Exec(stmt)
 	return err
 }
