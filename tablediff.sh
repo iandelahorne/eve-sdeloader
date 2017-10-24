@@ -1,7 +1,7 @@
 #!/usr/local/bin/bash
 # This requires bash > 4.0
 
-set -ex
+set -e
 
 foreach() { 
   arr="$(declare -p $1)" ; eval "declare -A f="${arr#*=}; 
@@ -9,7 +9,7 @@ foreach() {
 }
 
 schemadiff() {
-    psql -d sdetest -t -A -F"," -c "SELECT * FROM \"$1\" ORDER BY \"$2\"" > /tmp/diffs/$1.public.csv
+    psql -d sdetest -t -A -F"," -c "SELECT * FROM \"$1\" ORDER BY \"$2\"" > /tmp/diffs/$1.sdetest.csv
     psql -d sdeyaml -t -A -F"," -c "SELECT * FROM \"$1\" ORDER BY \"$2\"" > /tmp/diffs/$1.sdeyaml.csv
 }
 
@@ -96,3 +96,8 @@ declare -A tables=(
 )
 
 foreach tables schemadiff
+
+pushd /tmp/diffs
+echo "Files differing:"
+shasum -a 256 *.sdeyaml.csv | sed -e 's/sdeyaml/sdetest/' > shasums ; shasum -a 256 -c shasums  | grep FAILED | cut -f1 -d: | sed -e 's/.sdetest.csv//'
+popd
