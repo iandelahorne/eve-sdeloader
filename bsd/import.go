@@ -10,13 +10,10 @@ import (
 	"os"
 	"path"
 	"sort"
-	"strconv"
 	"strings"
 
 	"github.com/lib/pq"
 	"gopkg.in/yaml.v2"
-
-	"github.com/lflux/eve-sdeloader/utils"
 )
 
 type Importer struct {
@@ -112,19 +109,7 @@ func (i *Importer) importToTable(tableName string, r io.Reader) error {
 			v := row[k]
 			key := i.fixPostgresColumns(k)
 			dbKeys = append(dbKeys, pq.QuoteIdentifier(key))
-			// XXX this is to handle the case of stastations.security, which is
-			// an integer in the database but a float in the yaml.
-			// See https://github.com/fuzzysteve/yamlloader/issues/13
-			if tableName == "stastations" && k == "security" {
-				var f float64
-				f, err = strconv.ParseFloat(v, 64)
-				if err != nil {
-					return err
-				}
-				vals = append(vals, utils.Round(f))
-			} else {
-				vals = append(vals, v)
-			}
+			vals = append(vals, v)
 		}
 		stmt, err := i.statement(tx, tableName, dbKeys)
 		if err != nil {

@@ -79,21 +79,6 @@ func distance(a, b []float64) float64 {
 
 func insertCelestialStatistics(stmt *sql.Stmt, id int64, stats CelestialStatistics) error {
 	var err error
-	var radius *int64
-	var pressure *int64
-	// This is bug compatibility with the python importer, which rounds radius.
-	// https://github.com/fuzzysteve/yamlloader/issues/12
-	if stats.Radius != nil {
-		r := utils.Round(*stats.Radius)
-		radius = &r
-	}
-
-	// This rounds as well.
-	if stats.Pressure != nil {
-		p := utils.Round(*stats.Pressure)
-		pressure = &p
-	}
-
 	_, err = stmt.Exec(
 		id,
 		stats.Temperature,
@@ -112,8 +97,8 @@ func insertCelestialStatistics(stmt *sql.Stmt, id int64, stats CelestialStatisti
 		stats.OrbitPeriod,
 		stats.RotationRate,
 		stats.Locked,
-		pressure,
-		radius,
+		stats.Pressure,
+		stats.Radius,
 		nil,
 	)
 	return err

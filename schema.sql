@@ -993,8 +993,8 @@ CREATE TABLE mapcelestialstatistics (
     orbitperiod double precision,
     rotationrate double precision,
     locked boolean,
-    pressure bigint,
-    radius bigint,
+    pressure double precision,
+    radius double precision,
     mass integer
 );
 
@@ -1408,8 +1408,7 @@ CREATE TABLE staservices (
 
 CREATE TABLE stastations (
     stationid bigint NOT NULL,
-    -- this is a double precision in the yaml, see https://github.com/fuzzysteve/yamlloader/issues/13
-    security integer,
+    security double precision,
     dockingcostpervolume double precision,
     maxshipvolumedockable double precision,
     officerentalcost integer,
