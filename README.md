@@ -39,7 +39,7 @@ CREATE DATABASE sdtest OWNER sdetest;
 
 ```bash
 $ cd /tmp
-$ unzip ~/Downloads/sde-20170818-TRANQUILITY.zip
+$ unzip ~/Downloads/sde-20171024-TRANQUILITY.zip
 $ curl -O https://raw.githubusercontent.com/fuzzysteve/yamlloader/master/invVolumes1.csv # or copy from this repo
 $ curl -O https://raw.githubusercontent.com/fuzzysteve/yamlloader/master/invVolumes2.csv # or copy from this repo
 # One entry needs fixing due to YAML vagaries
