@@ -5,3 +5,5 @@ vendor
 .DS_Store
 coverage.txt
 *.dump
+*.pprof
+*.svg
