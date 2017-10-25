@@ -3,11 +3,15 @@
 
 # eve-sdeloader
 
-`eve-sdeloader` is a tool for importing an EVE static data export from [EVE Developer Resources](https://developers.eveonline.com/resource/resources) to a Postgresql database. 
+`eve-sdeloader` is a tool for importing an EVE static data export from [EVE
+Developer Resources](https://developers.eveonline.com/resource/resources) to a
+Postgresql database. 
 
 # Installing
 
-`go get github.com/lflux/eve-sdeloader` should install the tool. If this fails, check out the repository under your `$GOPATH` and use [dep](https://github.com/golang/dep) to fetch the dependencies:
+`go get github.com/lflux/eve-sdeloader` should install the tool. If this fails,
+check out the repository under your `$GOPATH` and use
+[dep](https://github.com/golang/dep) to fetch the dependencies:
 
 ```bash
 $ mkdir -p $GOPATH/src/github.com/lflux
@@ -22,7 +26,9 @@ The tool will be in `$GOPATH/bin/eve-sdeloader` (by default `GOPATH` is `~/go` a
 
 # Database preparation
 
-Easiest way to create a database for this tool is to connect to the database as a superuser and create a role that can log in, along with a database owned by that user:
+Easiest way to create a database for this tool is to connect to the database as
+a superuser and create a role that can log in, along with a database owned by
+that user:
 
 ```sql
 CREATE ROLE sdetest LOGIN;
@@ -31,16 +37,19 @@ CREATE DATABASE sdtest OWNER sdetest;
 
 # Usage
 
-```shell
+```bash
 $ cd /tmp
 $ unzip ~/Downloads/sde-20170818-TRANQUILITY.zip
-$ curl -O https://raw.githubusercontent.com/fuzzysteve/yamlloader/master/invVolumes1.csv
-$ curl -O https://raw.githubusercontent.com/fuzzysteve/yamlloader/master/invVolumes2.csv
+$ curl -O https://raw.githubusercontent.com/fuzzysteve/yamlloader/master/invVolumes1.csv # or copy from this repo
+$ curl -O https://raw.githubusercontent.com/fuzzysteve/yamlloader/master/invVolumes2.csv # or copy from this repo
+# One entry needs fixing due to YAML vagaries
 $ gsed -i -e 's/radius: 0.0059e18/radius: 0.0059e\+18/' sde/fsd/universe/wormhole/G-R00031/G-C00311/constellation.static
 $ eve-sdeloader
 ```
 
-By default `eve-sdeloader` will try to import SDE files from under `./sde` and `./invVolumes{1,2}.csv` to the database `sdetest` on `localhost` with the user `sdetest`. This is all overridable with CLI flags:
+By default `eve-sdeloader` will try to import SDE files from under `./sde` and
+`./invVolumes{1,2}.csv` to the database `sdetest` on `localhost` with the user
+`sdetest`. This is all overridable with CLI flags:
 
 ```
 Usage of ./eve-sdeloader:
@@ -72,14 +81,20 @@ Usage of ./eve-sdeloader:
 
 # Current status
 
-More or less done. A full import currently takes about 7 minutes on a Macbook Pro (to contrast with 48 minutes for the python importer). The [TODO](TODO.md) file attempts to keep track of project status.
+Import works with Postgres and is 99% compatible with the importer from
+@fuzzysteve. A full import currently takes about 7 minutes on a Macbook Pro (to
+contrast with 48 minutes for the python importer). The [TODO](TODO.md)
+file attempts to keep track of project status.
 
-Currently tested on Go 1.9 with Postgres 9.6 on OSX 10.12 (Sierra), but it probably works all the way back to Postgres 8.4 and should work fine on Linux.
+Currently tested on Go 1.9 with Postgres 9.6 on OSX 10.12 (Sierra), but it
+probably works all the way back to Postgres 8.4 and should work fine on Linux.
 
 # Differences from the Python importer
-- Negative 0 floats are imported as `-0`
-- `invtraits` has different traitids due to insertion order.
-- `trntranslations` has more tranlsations
+- Negative 0 floats are imported as `-0`, whereas the python importer treats
+  both as 0
+- `invtraits` has different traitids due to insertion order. We attempt to keep
+  these mostly the same by sorting types and skills, but the python importer
+  doesn't sort at all and uses whatever order python map iteration gives you.
 
 # Profiling
 
@@ -93,4 +108,5 @@ Please raise issues on [Github](https://github.com/lflux/eve-sdeloader/issues).
 
 # License
 
-`eve-sdeloader` is copyright (c) 2017 Ian Delahorne and licensed under the MIT license, which can be found in the [LICENSE](LICENSE) file.
+`eve-sdeloader` is copyright (c) 2017 Ian Delahorne and licensed under the MIT
+license, which can be found in the [LICENSE](LICENSE) file.
