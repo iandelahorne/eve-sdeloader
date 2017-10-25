@@ -3,13 +3,28 @@ package inventory
 import (
 	"database/sql"
 	"io"
+	"sort"
 
 	"github.com/lflux/eve-sdeloader/utils"
 )
 
-var TypeIDs map[string]*Type
+type int64arr []int64
 
-func InsertBonuses(stmt, insertTranslations *sql.Stmt, typeID string, skillID int64, bonuses []Bonus) error {
+func (a int64arr) Len() int {
+	return len(a)
+}
+
+func (a int64arr) Swap(i, j int) {
+	a[i], a[j] = a[j], a[i]
+}
+
+func (a int64arr) Less(i, j int) bool {
+	return a[i] < a[j]
+}
+
+var TypeIDs map[int64]*Type
+
+func InsertBonuses(stmt, insertTranslations *sql.Stmt, typeID, skillID int64, bonuses []Bonus) error {
 	for _, bonus := range bonuses {
 		var traitID int
 		err := stmt.QueryRow(typeID,
@@ -66,7 +81,7 @@ func InsertTraitStatement(tx *sql.Tx) (*sql.Stmt, error) {
 
 // Import imports from a reader containing typeID YAML to the table `invtypes`
 func Import(db *sql.DB, r io.Reader) error {
-	entries := make(map[string]*Type)
+	entries := make(map[int64]*Type)
 
 	err := utils.LoadFromReader(r, entries)
 	if err != nil {
@@ -99,8 +114,15 @@ func Import(db *sql.DB, r io.Reader) error {
 	if err != nil {
 		return err
 	}
+	keys := make(int64arr, 0, len(entries))
+	for typeID := range entries {
+		keys = append(keys, typeID)
+	}
 
-	for typeID, entry := range entries {
+	// This sorting is to make the insert order closer to the python loader
+	sort.Sort(keys)
+	for _, typeID := range keys {
+		entry := entries[typeID]
 		vals := []interface{}{
 			typeID,
 			entry.GroupID,
@@ -133,7 +155,13 @@ func Import(db *sql.DB, r io.Reader) error {
 		}
 
 		if entry.Traits != nil {
-			for skill, typeBonus := range entry.Traits.Types {
+			skills := make(int64arr, 0, len(entry.Traits.Types))
+			for skill := range entry.Traits.Types {
+				skills = append(skills, skill)
+			}
+			sort.Sort(skills)
+			for _, skill := range skills {
+				typeBonus := entry.Traits.Types[skill]
 				err = InsertBonuses(traitStmt, insertTranslations, typeID, skill, typeBonus)
 				if err != nil {
 					return err

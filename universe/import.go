@@ -6,7 +6,6 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"strconv"
 
 	"github.com/lflux/eve-sdeloader/inventory"
 	"github.com/lflux/eve-sdeloader/utils"
@@ -59,8 +58,7 @@ func getGroupIDByTypeID(typeID int64) (int64, error) {
 	if len(inventory.TypeIDs) == 0 {
 		return 0, errors.New("Inventory must be imported before universe")
 	}
-	id := strconv.FormatInt(typeID, 10)
-	if e, ok := inventory.TypeIDs[id]; ok {
+	if e, ok := inventory.TypeIDs[typeID]; ok {
 		return e.GroupID, nil
 	}
 

@@ -29,8 +29,8 @@ type Type struct {
 }
 
 type Bonus struct {
-	Amount     int               `yaml:"bonus"`
+	Amount     *float64          `yaml:"bonus"`
 	BonusText  map[string]string `yaml:"bonusText"`
-	Importance int
-	UnitID     int `yaml:"unitID"`
+	Importance int64
+	UnitID     *int64 `yaml:"unitID"`
 }
