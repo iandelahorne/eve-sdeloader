@@ -1,7 +1,7 @@
 #!/usr/local/bin/bash
-# This requires bash > 4.0
+# This requires bash > 4.0 for the associative array
 
-set -e
+set -eo pipefail
 
 foreach() { 
   arr="$(declare -p $1)" ; eval "declare -A f="${arr#*=}; 
@@ -99,5 +99,5 @@ foreach tables schemadiff
 
 pushd /tmp/diffs
 echo "Files differing:"
-shasum -a 256 *.sdeyaml.csv | sed -e 's/sdeyaml/sdetest/' > shasums ; shasum -a 256 -c shasums  | grep FAILED | cut -f1 -d: | sed -e 's/.sdetest.csv//'
+shasum -a 256 *.sdeyaml.csv | sed -e 's/sdeyaml/sdetest/' | shasum -a 256 -c  | grep FAILED | cut -f1 -d: | sed -e 's/.sdetest.csv//'
 popd
