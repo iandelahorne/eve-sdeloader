@@ -1,4 +1,4 @@
-package universe
+package statements
 
 import "database/sql"
 

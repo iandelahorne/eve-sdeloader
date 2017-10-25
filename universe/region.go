@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/lflux/eve-sdeloader/statements"
 	"github.com/lflux/eve-sdeloader/utils"
 )
 
@@ -46,26 +47,26 @@ func ImportRegion(db *sql.DB, path string) error {
 		return err
 	}
 
-	stmt, err := InsertRegionStmt(tx)
+	regionStmt, err := statements.InsertRegionStmt(tx)
 	if err != nil {
 		return err
 	}
-	denormStmt, err := InsertOrbitalDenormStmt(tx)
-	if err != nil {
-		return err
-	}
-
-	locStmt, err := InsertMapLocationScenesStmt(tx)
+	denormStmt, err := statements.InsertOrbitalDenormStmt(tx)
 	if err != nil {
 		return err
 	}
 
-	whClassStmt, err := InsertMapWHClassesStmt(tx)
+	locStmt, err := statements.InsertMapLocationScenesStmt(tx)
 	if err != nil {
 		return err
 	}
 
-	_, err = stmt.Exec(region.RegionID,
+	whClassStmt, err := statements.InsertMapWHClassesStmt(tx)
+	if err != nil {
+		return err
+	}
+
+	_, err = regionStmt.Exec(region.RegionID,
 		regionName,
 		region.Center[0],
 		region.Center[1],

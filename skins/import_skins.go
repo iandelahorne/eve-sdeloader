@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"io"
 
+	"github.com/lflux/eve-sdeloader/statements"
 	"github.com/lflux/eve-sdeloader/utils"
 )
 
@@ -17,13 +18,6 @@ type Skin struct {
 	VisibleTranquility bool
 }
 
-func InsertSkinStmt(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO skins VALUES ($1, $2, $3)`)
-}
-
-func InsertSkinShipStmt(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO "skinShip" VALUES ($1, $2)`)
-}
 func ImportSkins(db *sql.DB, r io.Reader) error {
 
 	entries := make(map[string]*Skin)
@@ -38,12 +32,12 @@ func ImportSkins(db *sql.DB, r io.Reader) error {
 		return err
 	}
 
-	skinStmt, err := InsertSkinStmt(tx)
+	skinStmt, err := statements.InsertSkinStmt(tx)
 	if err != nil {
 		return err
 	}
 
-	skinShipStmt, err := InsertSkinShipStmt(tx)
+	skinShipStmt, err := statements.InsertSkinShipStmt(tx)
 	if err != nil {
 		return err
 	}

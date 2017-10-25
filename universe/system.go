@@ -8,6 +8,7 @@ import (
 
 	"github.com/pkg/errors"
 
+	"github.com/lflux/eve-sdeloader/statements"
 	"github.com/lflux/eve-sdeloader/utils"
 )
 
@@ -121,27 +122,27 @@ func (c *Constellation) ImportSystem(path string) error {
 		return err
 	}
 
-	s.denormStmt, err = InsertOrbitalDenormStmt(c.tx)
+	s.denormStmt, err = statements.InsertOrbitalDenormStmt(c.tx)
 	if err != nil {
 		return errors.Wrap(err, "Error creating OrbitalDenormalize statement")
 	}
 
-	solarSystemStmt, err := InsertSolarSystemStmt(c.tx)
+	solarSystemStmt, err := statements.InsertSolarSystemStmt(c.tx)
 	if err != nil {
 		return errors.Wrap(err, "Error creating solar system statement")
 	}
 
-	whClassStmt, err := InsertMapWHClassesStmt(c.tx)
+	whClassStmt, err := statements.InsertMapWHClassesStmt(c.tx)
 	if err != nil {
 		return errors.Wrap(err, "Error creating InsertMapWHClassesStmt")
 	}
 
-	s.celestialStmt, err = InsertCelestialStatsStmt(c.tx)
+	s.celestialStmt, err = statements.InsertCelestialStatsStmt(c.tx)
 	if err != nil {
 		return errors.Wrap(err, "Error creating InsertCelestialStatsStmt")
 	}
 
-	mapJumpStmt, err := InsertMapJumpStmt(c.tx)
+	mapJumpStmt, err := statements.InsertMapJumpStmt(c.tx)
 
 	_, err = s.denormStmt.Exec(
 		s.Star.ID,

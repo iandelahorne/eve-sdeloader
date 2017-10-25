@@ -5,6 +5,7 @@ import (
 	"io"
 	"sort"
 
+	"github.com/lflux/eve-sdeloader/statements"
 	"github.com/lflux/eve-sdeloader/utils"
 )
 
@@ -46,39 +47,6 @@ func InsertBonuses(stmt, insertTranslations *sql.Stmt, typeID, skillID int64, bo
 	return nil
 }
 
-func InsertInvTypeStatement(tx *sql.Tx) (*sql.Stmt, error) {
-	stmt := `INSERT INTO "invTypes" (
-	"typeID",
-	"groupID",
-	"typeName",
-	"description",
-	"mass",
-	"volume",
-	"capacity",
-	"portionSize",
-	"raceID",
-	"basePrice",
-	"published",
-	"marketGroupID",
-	"graphicID",
-	"iconID",
-	"soundID"
-) VALUES (
-	$1, $2, $3, $4, $5,
-	$6, $7, $8, $9, $10,
-	$11, $12, $13, $14, $15)`
-
-	return tx.Prepare(stmt)
-}
-
-func InsertCertMasteryStatement(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO "certMasteries" ("typeID", "masteryLevel", "certID") VALUES ($1, $2, $3)`)
-}
-
-func InsertTraitStatement(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO "invTraits" ("typeID", "skillID", bonus, "unitID", "bonusText") VALUES ($1, $2, $3, $4, $5) RETURNING "traitID"`)
-}
-
 // Import imports from a reader containing typeID YAML to the table `invtypes`
 func Import(db *sql.DB, r io.Reader) error {
 	entries := make(map[int64]*Type)
@@ -95,22 +63,22 @@ func Import(db *sql.DB, r io.Reader) error {
 		return err
 	}
 
-	invStmt, err := InsertInvTypeStatement(txn)
+	invStmt, err := statements.InsertInvTypeStatement(txn)
 	if err != nil {
 		return err
 	}
 
-	mastStmt, err := InsertCertMasteryStatement(txn)
+	mastStmt, err := statements.InsertCertMasteryStatement(txn)
 	if err != nil {
 		return err
 	}
 
-	traitStmt, err := InsertTraitStatement(txn)
+	traitStmt, err := statements.InsertTraitStatement(txn)
 	if err != nil {
 		return err
 	}
 
-	insertTranslations, err := utils.InsertTrnTranslations(txn)
+	insertTranslations, err := statements.InsertTrnTranslationsStmt(txn)
 	if err != nil {
 		return err
 	}

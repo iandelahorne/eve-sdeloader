@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"io"
 
+	"github.com/lflux/eve-sdeloader/statements"
 	"github.com/lflux/eve-sdeloader/utils"
 )
 
@@ -11,10 +12,6 @@ type SkinLicense struct {
 	Duration int64
 	TypeID   int64 `yaml:"licenseTypeID"`
 	SkinID   int64 `yaml:"skinID"`
-}
-
-func InsertLicenseStmt(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO "skinLicense" VALUES ($1, $2, $3)`)
 }
 
 func ImportLicenses(db *sql.DB, r io.Reader) error {
@@ -31,7 +28,7 @@ func ImportLicenses(db *sql.DB, r io.Reader) error {
 		return err
 	}
 
-	stmt, err := InsertLicenseStmt(tx)
+	stmt, err := statements.InsertLicenseStmt(tx)
 	if err != nil {
 		return err
 	}

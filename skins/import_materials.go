@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"io"
 
+	"github.com/lflux/eve-sdeloader/statements"
 	"github.com/lflux/eve-sdeloader/utils"
 )
 
@@ -11,10 +12,6 @@ type SkinMaterial struct {
 	DisplayNameID int64 `yaml:"displayNameID"`
 	MaterialSetID int64 `yaml:"materialSetID"`
 	ID            int64 `yaml:"skinMaterialID"`
-}
-
-func InsertMaterialStmt(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO "skinMaterials" VALUES ($1, $2, $3)`)
 }
 
 func ImportMaterials(db *sql.DB, r io.Reader) error {
@@ -31,7 +28,7 @@ func ImportMaterials(db *sql.DB, r io.Reader) error {
 		return err
 	}
 
-	stmt, err := InsertMaterialStmt(tx)
+	stmt, err := statements.InsertMaterialStmt(tx)
 	if err != nil {
 		return err
 	}

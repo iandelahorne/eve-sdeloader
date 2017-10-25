@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"io"
 
+	"github.com/lflux/eve-sdeloader/statements"
 	"github.com/lflux/eve-sdeloader/utils"
 )
 
@@ -56,30 +57,6 @@ type Blueprint struct {
 	MaxProductionLimit int64 `yaml:"maxProductionLimit"`
 }
 
-func InsertIndustryBlueprintsStmt(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO "industryBlueprints" VALUES ($1, $2)`)
-}
-
-func InsertIndustryActivitiesStmt(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO "industryActivity" VALUES ($1, $2, $3)`)
-}
-
-func InsertActivityMaterialsStmt(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO "industryActivitySkills" VALUES ($1, $2, $3, $4)`)
-}
-
-func InsertActivityProbabilitiesStmt(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO "industryActivityProbabilities" VALUES ($1, $2, $3, $4)`)
-}
-
-func InsertActivityProductsStmt(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO "industryActivityProducts" VALUES ($1, $2, $3, $4)`)
-}
-
-func InsertActivitySkillsStmt(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO "industryActivitySkills" VALUES ($1, $2, $3, $4)`)
-}
-
 func insertIndustryActivity(entryID string, a Activity) error {
 	_, err := insertIndustryActivities.Exec(entryID, a.ActivityID(), a.GetTime())
 	return err
@@ -125,32 +102,32 @@ var (
 
 func prepareStatements(tx *sql.Tx) error {
 	var err error
-	insertBlueprints, err = InsertIndustryBlueprintsStmt(tx)
+	insertBlueprints, err = statements.InsertIndustryBlueprintsStmt(tx)
 	if err != nil {
 		return err
 	}
 
-	insertIndustryActivities, err = InsertIndustryActivitiesStmt(tx)
+	insertIndustryActivities, err = statements.InsertIndustryActivitiesStmt(tx)
 	if err != nil {
 		return err
 	}
 
-	insertActivityMaterials, err = InsertActivityMaterialsStmt(tx)
+	insertActivityMaterials, err = statements.InsertActivityMaterialsStmt(tx)
 	if err != nil {
 		return err
 	}
 
-	insertActivityProbabilities, err = InsertActivityProbabilitiesStmt(tx)
+	insertActivityProbabilities, err = statements.InsertActivityProbabilitiesStmt(tx)
 	if err != nil {
 		return err
 	}
 
-	insertActivityProducts, err = InsertActivityProductsStmt(tx)
+	insertActivityProducts, err = statements.InsertActivityProductsStmt(tx)
 	if err != nil {
 		return err
 	}
 
-	insertActivitySkills, err = InsertActivitySkillsStmt(tx)
+	insertActivitySkills, err = statements.InsertActivitySkillsStmt(tx)
 
 	return err
 }

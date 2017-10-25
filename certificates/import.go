@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"io"
 
+	"github.com/lflux/eve-sdeloader/statements"
 	"github.com/lflux/eve-sdeloader/utils"
 )
 
@@ -23,14 +24,6 @@ type Certificate struct {
 	SkillTypes     map[string]map[string]int64 `yaml:"skillTypes"`
 }
 
-func InsertCertCertsStmt(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO "certCerts" ("certID", description, "groupID", name) VALUES ($1, $2, $3, $4)`)
-}
-
-func InsertCertSkillsStmt(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO "certSkills" ("certID", "skillID", "certLevelInt", "certLevelText", "skillLevel") VALUES ($1, $2, $3, $4, $5)`)
-}
-
 func Import(db *sql.DB, r io.Reader) error {
 	entries := make(map[string]*Certificate)
 
@@ -44,12 +37,12 @@ func Import(db *sql.DB, r io.Reader) error {
 		return err
 	}
 
-	insertCertCerts, err := InsertCertCertsStmt(tx)
+	insertCertCerts, err := statements.InsertCertCertsStmt(tx)
 	if err != nil {
 		return err
 	}
 
-	insertCertSkills, err := InsertCertSkillsStmt(tx)
+	insertCertSkills, err := statements.InsertCertSkillsStmt(tx)
 	if err != nil {
 		return err
 	}

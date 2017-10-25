@@ -4,12 +4,9 @@ import (
 	"database/sql"
 	"io"
 
+	"github.com/lflux/eve-sdeloader/statements"
 	"github.com/lflux/eve-sdeloader/utils"
 )
-
-func InsertGroupStmt(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO "invGroups" VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`)
-}
 
 func Import(db *sql.DB, r io.Reader) error {
 	entries := make(map[string]*Group)
@@ -24,11 +21,11 @@ func Import(db *sql.DB, r io.Reader) error {
 		return err
 	}
 
-	stmt, err := InsertGroupStmt(tx)
+	stmt, err := statements.InsertGroupStmt(tx)
 	if err != nil {
 		return err
 	}
-	insertTrnTranslations, err := utils.InsertTrnTranslations(tx)
+	insertTrnTranslations, err := statements.InsertTrnTranslationsStmt(tx)
 	for groupID, group := range entries {
 		_, err = stmt.Exec(groupID, group.CategoryID, group.Name["en"], group.IconID, group.UseBasePrice, group.Anchored, group.Anchorable, group.FittableNonSingleton, group.Published)
 		if err != nil {

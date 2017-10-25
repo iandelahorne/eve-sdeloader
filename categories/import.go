@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"io"
 
+	"github.com/lflux/eve-sdeloader/statements"
 	"github.com/lflux/eve-sdeloader/utils"
 )
 
@@ -11,10 +12,6 @@ type Category struct {
 	Name      map[string]string
 	IconID    *int `yaml:"iconID"`
 	Published bool
-}
-
-func InsertCategoryStmt(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO "invCategories" VALUES ($1, $2, $3, $4)`)
 }
 
 func Import(db *sql.DB, r io.Reader) error {
@@ -30,12 +27,12 @@ func Import(db *sql.DB, r io.Reader) error {
 		return err
 	}
 
-	stmt, err := InsertCategoryStmt(tx)
+	stmt, err := statements.InsertCategoryStmt(tx)
 	if err != nil {
 		return err
 	}
 
-	insertTrnTranslations, err := utils.InsertTrnTranslations(tx)
+	insertTrnTranslations, err := statements.InsertTrnTranslationsStmt(tx)
 	if err != nil {
 		return err
 	}

@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/lflux/eve-sdeloader/statements"
 	"github.com/lflux/eve-sdeloader/utils"
 )
 
@@ -36,7 +37,7 @@ func (r *Region) ImportConstellation(path string) error {
 		return err
 	}
 
-	constStmt, err := InsertConstellationsStmt(r.tx)
+	constStmt, err := statements.InsertConstellationsStmt(r.tx)
 	if err != nil {
 		return err
 	}
@@ -46,12 +47,12 @@ func (r *Region) ImportConstellation(path string) error {
 		return err
 	}
 
-	denormStmt, err := InsertOrbitalDenormStmt(r.tx)
+	denormStmt, err := statements.InsertOrbitalDenormStmt(r.tx)
 	if err != nil {
 		return err
 	}
 
-	whClassStmt, err := InsertMapWHClassesStmt(r.tx)
+	whClassStmt, err := statements.InsertMapWHClassesStmt(r.tx)
 	if err != nil {
 		return err
 	}

@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"io"
 
+	"github.com/lflux/eve-sdeloader/statements"
 	"github.com/lflux/eve-sdeloader/utils"
 )
 
@@ -14,10 +15,6 @@ type Graphic struct {
 	Faction     string `yaml:"sofFactionName"`
 	Hull        string `yaml:"sofHullName"`
 	Race        string `yaml:"sofRaceName"`
-}
-
-func InsertGraphicStmt(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO "eveGraphics" VALUES ($1, $2, $3, $4, $5, $6)`)
 }
 
 func Import(db *sql.DB, r io.Reader) error {
@@ -33,7 +30,7 @@ func Import(db *sql.DB, r io.Reader) error {
 		return err
 	}
 
-	stmt, err := InsertGraphicStmt(tx)
+	stmt, err := statements.InsertGraphicStmt(tx)
 	if err != nil {
 		return err
 	}
