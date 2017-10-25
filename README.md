@@ -34,7 +34,7 @@ CREATE DATABASE sdtest OWNER sdetest;
 ```shell
 $ cd /tmp
 $ unzip ~/Downloads/sde-20170818-TRANQUILITY.zip
-$ curl -O  https://raw.githubusercontent.com/fuzzysteve/yamlloader/master/invVolumes1.csv
+$ curl -O https://raw.githubusercontent.com/fuzzysteve/yamlloader/master/invVolumes1.csv
 $ curl -O https://raw.githubusercontent.com/fuzzysteve/yamlloader/master/invVolumes2.csv
 $ gsed -i -e 's/radius: 0.0059e18/radius: 0.0059e\+18/' sde/fsd/universe/wormhole/G-R00031/G-C00311/constellation.static
 $ eve-sdeloader
