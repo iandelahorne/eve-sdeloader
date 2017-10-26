@@ -11,7 +11,9 @@ import (
 	"path"
 	"sort"
 	"strings"
+	"time"
 
+	"github.com/lflux/eve-sdeloader/utils"
 	"github.com/lib/pq"
 	"gopkg.in/yaml.v2"
 )
@@ -134,8 +136,9 @@ func (i *Importer) importFile(root, fileName string) error {
 	if !i.dontLowerCase {
 		tableName = strings.ToLower(tableName)
 	}
-
-	log.Printf("Importing %s into %s", fileName, tableName)
+	s := fmt.Sprintf("Importing %s into %s", fileName, tableName)
+	log.Println(s)
+	defer utils.TimeTrack(time.Now(), s)
 	f, err := os.Open(path.Join(root, fileName))
 	if err != nil {
 		return err
@@ -150,6 +153,8 @@ func (i *Importer) importFile(root, fileName string) error {
 }
 
 func (i *Importer) Import(root, singleFile string) error {
+	defer utils.TimeTrack(time.Now(), "BSD Import")
+
 	if i.DB == nil {
 		return errors.New("Nil database pointer")
 	}
