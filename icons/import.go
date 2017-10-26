@@ -3,11 +3,14 @@ package icons
 import (
 	"database/sql"
 	"io"
+	"time"
 
 	"github.com/lflux/eve-sdeloader/utils"
 )
 
 func Import(db *sql.DB, r io.Reader) error {
+	defer utils.TimeTrack(time.Now(), "icons")
+
 	entries := make(map[int64]*Icon)
 
 	err := utils.LoadFromReader(r, entries)

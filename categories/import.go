@@ -3,6 +3,7 @@ package categories
 import (
 	"database/sql"
 	"io"
+	"time"
 
 	"github.com/lflux/eve-sdeloader/statements"
 	"github.com/lflux/eve-sdeloader/utils"
@@ -15,6 +16,8 @@ type Category struct {
 }
 
 func Import(db *sql.DB, r io.Reader) error {
+	defer utils.TimeTrack(time.Now(), "categories")
+
 	entries := make(map[string]*Category)
 
 	err := utils.LoadFromReader(r, entries)

@@ -4,6 +4,9 @@ import (
 	"database/sql"
 	"encoding/csv"
 	"os"
+	"time"
+
+	"github.com/lflux/eve-sdeloader/utils"
 )
 
 const vol1Stmt = `INSERT INTO "invVolumes" (
@@ -43,6 +46,8 @@ func readCSV(path string) ([][]string, error) {
 }
 
 func ImportVolume1(db *sql.DB, path string) error {
+	defer utils.TimeTrack(time.Now(), "volume1")
+
 	records, err := readCSV(path)
 	if err != nil {
 		return err
@@ -66,6 +71,8 @@ func ImportVolume1(db *sql.DB, path string) error {
 }
 
 func ImportVolume2(db *sql.DB, path string) error {
+	defer utils.TimeTrack(time.Now(), "volume2")
+
 	records, err := readCSV(path)
 	if err != nil {
 		return err

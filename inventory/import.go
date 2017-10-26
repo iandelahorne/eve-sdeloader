@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"io"
 	"sort"
+	"time"
 
 	"github.com/lflux/eve-sdeloader/statements"
 	"github.com/lflux/eve-sdeloader/utils"
@@ -23,9 +24,20 @@ func (a int64arr) Less(i, j int) bool {
 	return a[i] < a[j]
 }
 
-var TypeIDs map[int64]*Type
+var (
+	TypeIDs map[int64]*Type
+)
 
-func InsertBonuses(stmt, insertTranslations *sql.Stmt, typeID, skillID int64, bonuses []Bonus) error {
+var (
+	stmts     = make(map[string]*statements.Statement, 0)
+	stmtFuncs = map[string]statements.StatementGenerator{
+		"invType":      statements.InsertInvTypeStatement,
+		"certMastery":  statements.InsertCertMasteryStatement,
+		"translations": statements.CopyTrnTranslationsStmt,
+	}
+)
+
+func InsertBonuses(stmt *sql.Stmt, typeID, skillID int64, bonuses []Bonus) error {
 	for _, bonus := range bonuses {
 		var traitID int
 		err := stmt.QueryRow(typeID,
@@ -38,7 +50,7 @@ func InsertBonuses(stmt, insertTranslations *sql.Stmt, typeID, skillID int64, bo
 		}
 
 		for lang, val := range bonus.BonusText {
-			_, err = insertTranslations.Exec(1002, traitID, lang, val)
+			_, err = stmts["translations"].Stmt.Exec(1002, traitID, lang, val)
 			if err != nil {
 				return err
 			}
@@ -49,39 +61,30 @@ func InsertBonuses(stmt, insertTranslations *sql.Stmt, typeID, skillID int64, bo
 
 // Import imports from a reader containing typeID YAML to the table `invtypes`
 func Import(db *sql.DB, r io.Reader) error {
+	defer utils.TimeTrack(time.Now(), "inventory")
 	entries := make(map[int64]*Type)
 
 	err := utils.LoadFromReader(r, entries)
 	if err != nil {
 		return err
 	}
-
 	TypeIDs = entries
 
-	txn, err := db.Begin()
+	tx, err := db.Begin()
 	if err != nil {
 		return err
 	}
 
-	invStmt, err := statements.InsertInvTypeStatement(txn)
+	traitStmt, err := statements.InsertTraitStatement(tx)
 	if err != nil {
 		return err
 	}
 
-	mastStmt, err := statements.InsertCertMasteryStatement(txn)
+	err = statements.Prepare(db, stmtFuncs, stmts)
 	if err != nil {
 		return err
 	}
 
-	traitStmt, err := statements.InsertTraitStatement(txn)
-	if err != nil {
-		return err
-	}
-
-	insertTranslations, err := statements.InsertTrnTranslationsStmt(txn)
-	if err != nil {
-		return err
-	}
 	keys := make(int64arr, 0, len(entries))
 	for typeID := range entries {
 		keys = append(keys, typeID)
@@ -108,14 +111,14 @@ func Import(db *sql.DB, r io.Reader) error {
 			entry.IconID,
 			entry.SoundID,
 		}
-		_, err = invStmt.Exec(vals...)
+		_, err = stmts["invType"].Stmt.Exec(vals...)
 		if err != nil {
 			return err
 		}
 
 		for level, masteries := range entry.Masteries {
 			for _, certID := range masteries {
-				_, err = mastStmt.Exec(typeID, level, certID)
+				_, err = stmts["certMastery"].Stmt.Exec(typeID, level, certID)
 				if err != nil {
 					return err
 				}
@@ -130,12 +133,12 @@ func Import(db *sql.DB, r io.Reader) error {
 			sort.Sort(skills)
 			for _, skill := range skills {
 				typeBonus := entry.Traits.Types[skill]
-				err = InsertBonuses(traitStmt, insertTranslations, typeID, skill, typeBonus)
+				err = InsertBonuses(traitStmt, typeID, skill, typeBonus)
 				if err != nil {
 					return err
 				}
 			}
-			err = InsertBonuses(traitStmt, insertTranslations, typeID, -1, entry.Traits.RoleBonuses)
+			err = InsertBonuses(traitStmt, typeID, -1, entry.Traits.RoleBonuses)
 			if err != nil {
 				return err
 			}
@@ -143,7 +146,7 @@ func Import(db *sql.DB, r io.Reader) error {
 
 		if len(entry.Name) > 0 {
 			for lang, val := range entry.Name {
-				_, err = insertTranslations.Exec(8, typeID, lang, val)
+				_, err = stmts["translations"].Stmt.Exec(8, typeID, lang, val)
 				if err != nil {
 					return err
 				}
@@ -152,7 +155,7 @@ func Import(db *sql.DB, r io.Reader) error {
 
 		if len(entry.Description) > 0 {
 			for lang, val := range entry.Description {
-				_, err = insertTranslations.Exec(33, typeID, lang, val)
+				_, err = stmts["translations"].Stmt.Exec(33, typeID, lang, val)
 			}
 			if err != nil {
 				return err
@@ -160,18 +163,14 @@ func Import(db *sql.DB, r io.Reader) error {
 		}
 	}
 
-	err = invStmt.Close()
-	if err != nil {
-		return err
-	}
-	err = mastStmt.Close()
-	if err != nil {
-		return err
-	}
 	err = traitStmt.Close()
 	if err != nil {
 		return err
 	}
+	err = tx.Commit()
+	if err != nil {
+		return err
+	}
 
-	return txn.Commit()
+	return statements.Finalize(stmts)
 }

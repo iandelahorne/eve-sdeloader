@@ -3,6 +3,7 @@ package certificates
 import (
 	"database/sql"
 	"io"
+	"time"
 
 	"github.com/lflux/eve-sdeloader/statements"
 	"github.com/lflux/eve-sdeloader/utils"
@@ -25,6 +26,8 @@ type Certificate struct {
 }
 
 func Import(db *sql.DB, r io.Reader) error {
+	defer utils.TimeTrack(time.Now(), "certificates")
+
 	entries := make(map[string]*Certificate)
 
 	err := utils.LoadFromReader(r, entries)

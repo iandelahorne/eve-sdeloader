@@ -3,6 +3,7 @@ package skins
 import (
 	"database/sql"
 	"io"
+	"time"
 
 	"github.com/lflux/eve-sdeloader/statements"
 	"github.com/lflux/eve-sdeloader/utils"
@@ -19,6 +20,7 @@ type Skin struct {
 }
 
 func ImportSkins(db *sql.DB, r io.Reader) error {
+	defer utils.TimeTrack(time.Now(), "skins")
 
 	entries := make(map[string]*Skin)
 

@@ -1,27 +1,50 @@
 package statements
 
-import "database/sql"
+import (
+	"database/sql"
+
+	"github.com/lib/pq"
+)
 
 func InsertIndustryBlueprintsStmt(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO "industryBlueprints" VALUES ($1, $2)`)
+	return tx.Prepare(pq.CopyIn("industryBlueprints", "typeID", "maxProductionLimit"))
 }
 
 func InsertIndustryActivitiesStmt(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO "industryActivity" VALUES ($1, $2, $3)`)
+	return tx.Prepare(pq.CopyIn("industryActivity",
+		"typeID",
+		"activityID",
+		"time"))
 }
 
 func InsertActivityMaterialsStmt(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO "industryActivitySkills" VALUES ($1, $2, $3, $4)`)
+	return tx.Prepare(pq.CopyIn("industryActivityMaterials",
+		"typeID",
+		"activityID",
+		"materialTypeID",
+		"quantity"))
 }
 
 func InsertActivityProbabilitiesStmt(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO "industryActivityProbabilities" VALUES ($1, $2, $3, $4)`)
+	return tx.Prepare(pq.CopyIn("industryActivityProbabilities",
+		"typeID",
+		"activityID",
+		"productTypeID",
+		"probability"))
 }
 
 func InsertActivityProductsStmt(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO "industryActivityProducts" VALUES ($1, $2, $3, $4)`)
+	return tx.Prepare(pq.CopyIn("industryActivityProducts",
+		"typeID",
+		"activityID",
+		"productTypeID",
+		"quantity"))
 }
 
 func InsertActivitySkillsStmt(tx *sql.Tx) (*sql.Stmt, error) {
-	return tx.Prepare(`INSERT INTO "industryActivitySkills" VALUES ($1, $2, $3, $4)`)
+	return tx.Prepare(pq.CopyIn("industryActivitySkills",
+		"typeID",
+		"activityID",
+		"skillID",
+		"level"))
 }

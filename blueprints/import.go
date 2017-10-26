@@ -3,9 +3,11 @@ package blueprints
 import (
 	"database/sql"
 	"io"
+	"time"
 
 	"github.com/lflux/eve-sdeloader/statements"
 	"github.com/lflux/eve-sdeloader/utils"
+	"github.com/pkg/errors"
 )
 
 type ActivityID int
@@ -57,32 +59,44 @@ type Blueprint struct {
 	MaxProductionLimit int64 `yaml:"maxProductionLimit"`
 }
 
+var (
+	stmts     = make(map[string]*statements.Statement, 0)
+	stmtFuncs = map[string]statements.StatementGenerator{
+		"insertBlueprints":            statements.InsertIndustryBlueprintsStmt,
+		"insertIndustryActivities":    statements.InsertIndustryActivitiesStmt,
+		"insertActivityMaterials":     statements.InsertActivityMaterialsStmt,
+		"insertActivityProbabilities": statements.InsertActivityProbabilitiesStmt,
+		"insertActivityProducts":      statements.InsertActivityProductsStmt,
+		"insertActivitySkills":        statements.InsertActivitySkillsStmt,
+	}
+)
+
 func insertIndustryActivity(entryID string, a Activity) error {
-	_, err := insertIndustryActivities.Exec(entryID, a.ActivityID(), a.GetTime())
+	_, err := stmts["insertIndustryActivities"].Stmt.Exec(entryID, a.ActivityID(), a.GetTime())
 	return err
 }
 
 func insertProductionActivity(entryID string, a ProductionActivity) error {
 	var err error
 	for _, material := range a.GetMaterials() {
-		_, err = insertActivityMaterials.Exec(entryID, a.ActivityID(), material.TypeID, material.Quantity)
+		_, err = stmts["insertActivityMaterials"].Stmt.Exec(entryID, a.ActivityID(), material.TypeID, material.Quantity)
 		if err != nil {
 			return err
 		}
 	}
 
 	for _, product := range a.GetProducts() {
-		_, err = insertActivityProducts.Exec(entryID, a.ActivityID(), product.TypeID, product.Quantity)
+		_, err = stmts["insertActivityProducts"].Stmt.Exec(entryID, a.ActivityID(), product.TypeID, product.Quantity)
 		if err != nil {
 			return err
 		}
 		if product.Probability != nil {
-			_, err = insertActivityProbabilities.Exec(entryID, a.ActivityID(), product.TypeID, *product.Probability)
+			_, err = stmts["insertActivityProbabilities"].Stmt.Exec(entryID, a.ActivityID(), product.TypeID, *product.Probability)
 		}
 	}
 
 	for _, skill := range a.GetSkills() {
-		_, err = insertActivitySkills.Exec(entryID, a.ActivityID(), skill.TypeID, skill.Level)
+		_, err = stmts["insertActivitySkills"].Stmt.Exec(entryID, a.ActivityID(), skill.TypeID, skill.Level)
 		if err != nil {
 			return err
 		}
@@ -91,48 +105,9 @@ func insertProductionActivity(entryID string, a ProductionActivity) error {
 	return nil
 }
 
-var (
-	insertActivityProducts      *sql.Stmt
-	insertIndustryActivities    *sql.Stmt
-	insertActivityMaterials     *sql.Stmt
-	insertActivityProbabilities *sql.Stmt
-	insertActivitySkills        *sql.Stmt
-	insertBlueprints            *sql.Stmt
-)
-
-func prepareStatements(tx *sql.Tx) error {
-	var err error
-	insertBlueprints, err = statements.InsertIndustryBlueprintsStmt(tx)
-	if err != nil {
-		return err
-	}
-
-	insertIndustryActivities, err = statements.InsertIndustryActivitiesStmt(tx)
-	if err != nil {
-		return err
-	}
-
-	insertActivityMaterials, err = statements.InsertActivityMaterialsStmt(tx)
-	if err != nil {
-		return err
-	}
-
-	insertActivityProbabilities, err = statements.InsertActivityProbabilitiesStmt(tx)
-	if err != nil {
-		return err
-	}
-
-	insertActivityProducts, err = statements.InsertActivityProductsStmt(tx)
-	if err != nil {
-		return err
-	}
-
-	insertActivitySkills, err = statements.InsertActivitySkillsStmt(tx)
-
-	return err
-}
-
 func Import(db *sql.DB, r io.Reader) error {
+	defer utils.TimeTrack(time.Now(), "blueprints")
+
 	entries := make(map[string]*Blueprint)
 
 	err := utils.LoadFromReader(r, entries)
@@ -140,27 +115,22 @@ func Import(db *sql.DB, r io.Reader) error {
 		return err
 	}
 
-	tx, err := db.Begin()
-	if err != nil {
-		return err
-	}
-
-	err = prepareStatements(tx)
+	err = statements.Prepare(db, stmtFuncs, stmts)
 	if err != nil {
 		return err
 	}
 
 	for entryID, entry := range entries {
-		_, err = insertBlueprints.Exec(entryID, entry.MaxProductionLimit)
+		_, err = stmts["insertBlueprints"].Stmt.Exec(entryID, entry.MaxProductionLimit)
 		if err != nil {
-			return err
+			return errors.Wrap(err, "blueprints: error inserting blueprint")
 		}
 
 		a := entry.Activities
 		if a.Copying != nil {
 			err = insertIndustryActivity(entryID, a.Copying)
 			if err != nil {
-				return err
+				return errors.Wrap(err, "blueprints: error inserting industry activity")
 			}
 		}
 
@@ -213,8 +183,7 @@ func Import(db *sql.DB, r io.Reader) error {
 				return err
 			}
 		}
-
 	}
 
-	return tx.Commit()
+	return statements.Finalize(stmts)
 }
