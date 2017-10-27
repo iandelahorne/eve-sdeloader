@@ -24,6 +24,26 @@ type Importer struct {
 	statements    map[string]*sql.Stmt
 }
 
+type invPosition struct {
+	ItemID int64 `yaml:"itemID"`
+	Pitch  *float64
+	Yaw    *float64
+	Roll   *float64
+	X      float64
+	Y      float64
+	Z      float64
+}
+
+type importFunc func(db *sql.DB, r io.Reader) error
+
+var specificImporters = map[string]importFunc{
+	"dgmTypeAttributes.yaml": importDgmTypeAttributes,
+	"invNames.yaml":          importInvNames,
+	"invItems.yaml":          importInvItems,
+	"invPositions.yaml":      importInvPositions,
+	"invUniqueNames.yaml":    importInvUniqueNames,
+}
+
 func (i *Importer) fixPostgresColumns(colname string) string {
 	if !i.dontLowerCase {
 		colname = strings.ToLower(colname)
@@ -143,8 +163,11 @@ func (i *Importer) importFile(root, fileName string) error {
 	if err != nil {
 		return err
 	}
-
-	err = i.importToTable(tableName, f)
+	if fn, ok := specificImporters[fileName]; ok {
+		err = fn(i.DB, f)
+	} else {
+		err = i.importToTable(tableName, f)
+	}
 	if err != nil {
 		return err
 	}
