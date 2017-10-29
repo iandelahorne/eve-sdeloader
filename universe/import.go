@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"sync"
 
 	"github.com/lflux/eve-sdeloader/inventory"
 	"github.com/lflux/eve-sdeloader/utils"
@@ -142,13 +143,19 @@ func Import(db *sql.DB, regionPath, invNamePath string) error {
 		invNames[entry.ID] = entry.Name
 	}
 
+	var wg sync.WaitGroup
 	for _, regionFile := range regions {
 		log.Println(regionFile)
-		err = ImportRegion(db, regionFile)
-		if err != nil {
-			return err
-		}
+		wg.Add(1)
+		go func(db *sql.DB, regionFile string) {
+			defer wg.Done()
+			e := ImportRegion(db, regionFile)
+			if e != nil {
+				log.Println(e)
+			}
+		}(db, regionFile)
 	}
+	wg.Wait()
 
 	err = FixMapJumps(db)
 	if err != nil {

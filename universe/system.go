@@ -301,6 +301,31 @@ func (c *Constellation) ImportSystem(path string) error {
 		return errors.Wrap(err, fmt.Sprintf("Error inserting planet data for solar system %s", solarSystemName))
 	}
 
+	err = s.denormStmt.Close()
+	if err != nil {
+		return err
+	}
+
+	solarSystemStmt.Close()
+	if err != nil {
+		return err
+	}
+
+	whClassStmt.Close()
+	if err != nil {
+		return err
+	}
+
+	s.celestialStmt.Close()
+	if err != nil {
+		return err
+	}
+
+	err = mapJumpStmt.Close()
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

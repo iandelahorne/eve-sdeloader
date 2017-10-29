@@ -113,7 +113,27 @@ func (r *Region) ImportConstellation(path string) error {
 	c.tx = r.tx
 	c.path, _ = filepath.Split(path)
 	c.region = r
-	return c.ImportSystems()
+	err = c.ImportSystems()
+	if err != nil {
+		return err
+	}
+
+	err = constStmt.Close()
+	if err != nil {
+		return err
+	}
+
+	err = denormStmt.Close()
+	if err != nil {
+		return err
+	}
+
+	err = whClassStmt.Close()
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (r *Region) ImportConstellations() error {

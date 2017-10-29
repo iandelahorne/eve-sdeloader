@@ -124,5 +124,25 @@ func ImportRegion(db *sql.DB, path string) error {
 	if err != nil {
 		return err
 	}
+
+	err = regionStmt.Close()
+	if err != nil {
+		return err
+	}
+	err = denormStmt.Close()
+	if err != nil {
+		return err
+	}
+
+	err = locStmt.Close()
+	if err != nil {
+		return err
+	}
+
+	err = whClassStmt.Close()
+	if err != nil {
+		return err
+	}
+
 	return tx.Commit()
 }
