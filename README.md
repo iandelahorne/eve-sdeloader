@@ -82,7 +82,7 @@ Usage of ./eve-sdeloader:
 # Current status
 
 Import works with Postgres and is 99% compatible with the importer from
-@fuzzysteve. A full import currently takes about 7 minutes on a Macbook Pro (to
+@fuzzysteve. A full import currently takes about 4 minutes on a Macbook Pro (to
 contrast with 48 minutes for the python importer). The [TODO](TODO.md)
 file attempts to keep track of project status.
 
