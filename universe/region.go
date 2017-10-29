@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"os"
 	"path/filepath"
+	"time"
 
 	"github.com/lflux/eve-sdeloader/statements"
 	"github.com/lflux/eve-sdeloader/utils"
@@ -24,6 +25,8 @@ type Region struct {
 }
 
 func ImportRegion(db *sql.DB, path string) error {
+	defer utils.TimeTrack(time.Now(), path)
+
 	f, err := os.Open(path)
 	if err != nil {
 		return err

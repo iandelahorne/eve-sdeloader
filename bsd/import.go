@@ -11,6 +11,7 @@ import (
 	"path"
 	"sort"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/lflux/eve-sdeloader/utils"
@@ -21,7 +22,6 @@ import (
 type Importer struct {
 	DB            *sql.DB
 	dontLowerCase bool
-	statements    map[string]*sql.Stmt
 }
 
 type invPosition struct {
@@ -36,6 +36,7 @@ type invPosition struct {
 
 type importFunc func(db *sql.DB, r io.Reader) error
 
+var importMutex sync.Mutex
 var specificImporters = map[string]importFunc{
 	"dgmTypeAttributes.yaml": importDgmTypeAttributes,
 	"invNames.yaml":          importInvNames,
@@ -68,9 +69,10 @@ func (i *Importer) fixPostgresColumns(colname string) string {
 	return colname
 }
 
-func (i *Importer) statement(tx *sql.Tx, tableName string, keys []string) (*sql.Stmt, error) {
+func (i *Importer) statement(statements map[string]*sql.Stmt, tx *sql.Tx, tableName string, keys []string) (*sql.Stmt, error) {
 	splattedKeys := strings.Join(keys, ",")
-	stmt, ok := i.statements[splattedKeys]
+
+	stmt, ok := statements[splattedKeys]
 	if ok {
 		return stmt, nil
 	}
@@ -94,12 +96,12 @@ func (i *Importer) statement(tx *sql.Tx, tableName string, keys []string) (*sql.
 		log.Printf("Error preparing query  `%s`: %s", query, err)
 		return nil, err
 	}
-	i.statements[splattedKeys] = stmt
+	statements[splattedKeys] = stmt
 	return stmt, nil
 }
 
 func (i *Importer) importToTable(tableName string, r io.Reader) error {
-	i.statements = make(map[string]*sql.Stmt)
+	statements := make(map[string]*sql.Stmt)
 
 	buf, err := ioutil.ReadAll(r)
 	if err != nil {
@@ -133,7 +135,7 @@ func (i *Importer) importToTable(tableName string, r io.Reader) error {
 			dbKeys = append(dbKeys, pq.QuoteIdentifier(key))
 			vals = append(vals, v)
 		}
-		stmt, err := i.statement(tx, tableName, dbKeys)
+		stmt, err := i.statement(statements, tx, tableName, dbKeys)
 		if err != nil {
 			return err
 		}
@@ -144,7 +146,7 @@ func (i *Importer) importToTable(tableName string, r io.Reader) error {
 		}
 	}
 
-	for _, s := range i.statements {
+	for _, s := range statements {
 		s.Close()
 	}
 	return tx.Commit()
@@ -163,7 +165,11 @@ func (i *Importer) importFile(root, fileName string) error {
 	if err != nil {
 		return err
 	}
-	if fn, ok := specificImporters[fileName]; ok {
+
+	importMutex.Lock()
+	fn, ok := specificImporters[fileName]
+	importMutex.Unlock()
+	if ok {
 		err = fn(i.DB, f)
 	} else {
 		err = i.importToTable(tableName, f)
@@ -186,15 +192,19 @@ func (i *Importer) Import(root, singleFile string) error {
 	if err != nil {
 		return err
 	}
+	var wg sync.WaitGroup
 
 	for _, file := range files {
-		if singleFile == "" || (singleFile != "" && file.Name() == singleFile) {
-			err = i.importFile(root, file.Name())
+		wg.Add(1)
+		go func(fileName string) {
+			defer wg.Done()
+			err = i.importFile(root, fileName)
 			if err != nil {
-				return err
+				log.Println(err)
 			}
-		}
+		}(file.Name())
 	}
 
+	wg.Wait()
 	return nil
 }
