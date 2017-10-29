@@ -89,7 +89,6 @@ func (i *Importer) statement(statements map[string]*sql.Stmt, tx *sql.Tx, tableN
 		splattedKeys,
 		placeholders,
 	)
-	// TODO cache statements
 	stmt, err := tx.Prepare(query)
 
 	if err != nil {
@@ -159,7 +158,6 @@ func (i *Importer) importFile(root, fileName string) error {
 		tableName = strings.ToLower(tableName)
 	}
 	s := fmt.Sprintf("Importing %s into %s", fileName, tableName)
-	log.Println(s)
 	defer utils.TimeTrack(time.Now(), s)
 	f, err := os.Open(path.Join(root, fileName))
 	if err != nil {
